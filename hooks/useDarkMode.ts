@@ -37,7 +37,7 @@ const useDarkMode = () => {
       "(prefers-color-scheme: dark)"
     ).matches;
 
-    // if it is on the device, sets blog to dark mode, if not sets to defaultTheme
+    // if it is on the device, sets to dark mode, if not sets to defaultTheme
     if (runningOnDarkMode) {
       updateTheme(darkTheme);
       storeThemeToLs(darkTheme);
