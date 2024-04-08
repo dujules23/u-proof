@@ -20,6 +20,9 @@ const config: Config = {
           light: "#F2EFE9",
           dark: "#101010",
         },
+        secondary: {
+          light: "#C4C6C7",
+        },
       },
     },
   },

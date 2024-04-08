@@ -29,15 +29,20 @@ export default function MessageForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Contact Leadership</h1>
+    <div className="max-w-lg mx-auto mt-32">
+      <h1 className="text-2xl font-bold mb-6 text-primary-dark dark:text-primary-light">
+        Submit Your Message
+      </h1>
       {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
       {successMessage && (
         <p className="text-green-500 mb-4">{successMessage}</p>
       )}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
+          <label
+            htmlFor="name"
+            className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
+          >
             Name:
           </label>
           <input
@@ -46,11 +51,14 @@ export default function MessageForm() {
             value={name}
             onChange={(event) => setName(event.target.value)}
             required
-            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black"
+            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline  text-black dark:bg-primary-light"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
+          <label
+            htmlFor="email"
+            className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
+          >
             Email:
           </label>
           <input
@@ -59,13 +67,13 @@ export default function MessageForm() {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             required
-            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black"
+            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
           />
         </div>
-        <div className="mb-4">
+        <div className="mb-4 h-92">
           <label
             htmlFor="message"
-            className="block text-gray-700 font-bold mb-2"
+            className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
           >
             Message:
           </label>
@@ -74,7 +82,7 @@ export default function MessageForm() {
             value={message}
             onChange={(event) => setMessage(event.target.value)}
             required
-            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black"
+            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light "
           />
         </div>
         <button
