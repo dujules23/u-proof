@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Editor from "./editor/Editor";
 
 export default function MessageForm() {
   const [name, setName] = useState("");
@@ -77,13 +78,14 @@ export default function MessageForm() {
           >
             Message:
           </label>
-          <textarea
+          {/* <textarea
             id="message"
             value={message}
             onChange={(event) => setMessage(event.target.value)}
             required
             className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light "
-          />
+          /> */}
+          <Editor />
         </div>
         <button
           type="submit"
