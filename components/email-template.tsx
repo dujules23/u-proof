@@ -11,7 +11,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
 }) => (
   <div>
     <h1>{firstName} has sent a message for review.</h1>
-    <p>{message}</p>
+    <p className="prose ">{message}</p>
     <p>If this message is satisfactory, click here for approval.</p>
   </div>
 );
