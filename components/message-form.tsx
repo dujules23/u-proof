@@ -44,7 +44,7 @@ export default function MessageForm() {
             htmlFor="name"
             className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
           >
-            Name:
+            Your Name:
           </label>
           <input
             type="text"
@@ -78,18 +78,22 @@ export default function MessageForm() {
           >
             Message:
           </label>
-          {/* <textarea
+          <textarea
             id="message"
             value={message}
             onChange={(event) => setMessage(event.target.value)}
             required
-            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light "
+            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light min-h-[15rem]"
+          />
+          {/* <Editor
+            value={message}
+            onChange={(event) => setMessage(event.target.value)}
           /> */}
-          <Editor />
         </div>
         <button
+          disabled={!name || !email || !message}
           type="submit"
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
+          className="bg-nav disabled:bg-gray-600 text-white font-bold py-2 px-4 rounded hover:bg-green-900"
         >
           Send Message
         </button>

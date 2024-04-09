@@ -7,13 +7,14 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   const { name, email, message } = await req.json();
+
   try {
     const { data, error } = await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
+      from: `${email}`,
       to: `${email}`,
       subject: "A new message is ready to be approved.",
       react: EmailTemplate({
-        firstName: "John",
+        firstName: name,
         message: message,
       }) as React.ReactElement,
     });
