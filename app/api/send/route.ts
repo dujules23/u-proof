@@ -1,4 +1,4 @@
-import { EmailTemplate } from "../../../components/email-template";
+import { Email } from "../../../emails/email-template";
 import { Resend } from "resend";
 import * as React from "react";
 import { NextRequest } from "next/server";
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       from: "Acme <onboarding@resend.dev>",
       to: `${email}`,
       subject: "A new message is ready to be approved.",
-      react: EmailTemplate({
+      react: Email({
         firstName: name,
         message: message,
       }) as React.ReactElement,
