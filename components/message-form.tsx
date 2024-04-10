@@ -12,7 +12,18 @@ export default function MessageForm() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // sends message to database
+    try {
+      await fetch("/api/message", {
+        method: "POST",
+        body: JSON.stringify({ name, email, message }),
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
+    // sends message out via email
     try {
       await fetch("/api/send", {
         method: "POST",
