@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Editor from "./editor/Editor";
+import ActionButton from "./buttons/ActionButton";
 
 export default function MessageForm() {
   const [name, setName] = useState("");
@@ -9,35 +10,41 @@ export default function MessageForm() {
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
+    // event.preventDefault();
     // sends message to database
-    try {
-      await fetch("/api/message", {
-        method: "POST",
-        body: JSON.stringify({ name, email, message }),
-        headers: { "Content-Type": "application/json" },
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   await fetch("/api/message", {
+    //     method: "POST",
+    //     body: JSON.stringify({ name, email, message }),
+    //     headers: { "Content-Type": "application/json" },
+    //   });
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    setTimeout(() => {
+      setSubmitting(true);
+    }, 5000);
+
+    setSubmitting(false);
 
     // sends message out via email
-    try {
-      await fetch("/api/send", {
-        method: "POST",
-        body: JSON.stringify({ name, email, message }),
-        headers: { "Content-Type": "application/json" },
-      });
+    // try {
+    //   await fetch("/api/send", {
+    //     method: "POST",
+    //     body: JSON.stringify({ name, email, message }),
+    //     headers: { "Content-Type": "application/json" },
+    //   });
 
-      setSuccessMessage("Message sent successfully!");
-      setName("");
-      setEmail("");
-      setMessage("");
-    } catch (error) {
-      setErrorMessage("Error sending message. Please try again later.");
-    }
+    //   setSuccessMessage("Message sent successfully!");
+    //   setName("");
+    //   setEmail("");
+    //   setMessage("");
+    // } catch (error) {
+    //   setErrorMessage("Error sending message. Please try again later.");
+    // }
   };
 
   return (
@@ -101,13 +108,21 @@ export default function MessageForm() {
             onChange={(event) => setMessage(event.target.value)}
           /> */}
         </div>
-        <button
+        {/* <button
           disabled={!name || !email || !message}
           type="submit"
           className="bg-nav disabled:bg-gray-600 text-white font-bold py-2 px-4 rounded hover:bg-green-900"
         >
           Send Message
-        </button>
+        </button> */}
+        <div className="inline-block">
+          <ActionButton
+            title="Send Message"
+            disabled={!name || !email || !message}
+            onClick={handleSubmit}
+            busy={submitting}
+          />
+        </div>
       </form>
     </div>
   );
