@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import Editor from "./editor/Editor";
 import ActionButton from "./buttons/ActionButton";
+import { toast } from "sonner";
 
 export default function MessageForm() {
   const [name, setName] = useState("");
@@ -12,43 +13,46 @@ export default function MessageForm() {
   const [successMessage, setSuccessMessage] = useState("");
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const handleSubmit = async () => {
-    // event.preventDefault();
-    // sends message to database
-    // try {
-    //   await fetch("/api/message", {
-    //     method: "POST",
-    //     body: JSON.stringify({ name, email, message }),
-    //     headers: { "Content-Type": "application/json" },
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    setTimeout(() => {
-      setSubmitting(true);
-    }, 5000);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmitting(true);
+    // sends message out via resend and sends message to database
+    try {
+      const messageSent = await fetch("/api/message", {
+        method: "POST",
+        body: JSON.stringify({ name, email, message }),
+        headers: { "Content-Type": "application/json" },
+      });
 
-    setSubmitting(false);
+      // handles error on the frontend
+      if (messageSent.status !== 200) {
+        toast.error("Message did not send.", {
+          classNames: {
+            toast: "bg-red-300",
+          },
+        });
+        setSubmitting(false);
+        throw new Error("Failed to send message, Not Found");
+      }
 
-    // sends message out via email
-    // try {
-    //   await fetch("/api/send", {
-    //     method: "POST",
-    //     body: JSON.stringify({ name, email, message }),
-    //     headers: { "Content-Type": "application/json" },
-    //   });
+      setName("");
+      setEmail("");
+      setMessage("");
+      toast.success("Message sent for review!", {
+        classNames: {
+          toast: "bg-green-300",
+        },
+      });
 
-    //   setSuccessMessage("Message sent successfully!");
-    //   setName("");
-    //   setEmail("");
-    //   setMessage("");
-    // } catch (error) {
-    //   setErrorMessage("Error sending message. Please try again later.");
-    // }
+      setSubmitting(false);
+    } catch (error) {
+      console.log("Error: ", error);
+      setErrorMessage("Error sending message. Please try again later.");
+    }
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-32">
+    <div className="max-w-lg mx-auto mt-24">
       <h1 className="text-2xl font-bold mb-6 text-primary-dark dark:text-primary-light">
         Submit Your Message
       </h1>
@@ -119,7 +123,7 @@ export default function MessageForm() {
           <ActionButton
             title="Send Message"
             disabled={!name || !email || !message}
-            onClick={handleSubmit}
+            onClick={(event: FormEvent<HTMLFormElement>) => handleSubmit(event)}
             busy={submitting}
           />
         </div>

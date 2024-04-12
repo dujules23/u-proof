@@ -1,11 +1,11 @@
-import { FC, MouseEventHandler } from "react";
+import { FC, FormEventHandler, MouseEventHandler } from "react";
 import { BiLoader } from "react-icons/bi";
 
 interface Props {
   title: string;
   busy?: boolean;
   disabled?: boolean;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+  onClick?: FormEventHandler<HTMLFormElement>;
 }
 
 const ActionButton: FC<Props> = ({
