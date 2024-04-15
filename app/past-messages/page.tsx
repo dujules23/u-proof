@@ -1,11 +1,22 @@
 import ActionButton from "@/components/buttons/ActionButton";
 import DefaultLayout from "@/components/layout/DefaultLayout";
 import SearchBar from "@/components/search/SearchBar";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 interface Props {}
+const getData = async () => {
+  const response = await fetch("/api/message");
+  if (!response.ok) {
+    throw new Error("Unable to get data");
+  }
+  const data = await response.json();
+  return data;
+};
+const PastMessages: FC<Props> = async (props) => {
+  const apiData = await getData();
 
-const PastMessages: FC<Props> = (props): JSX.Element => {
+  console.log(apiData);
+
   return (
     <DefaultLayout>
       <div className="max-w-xl mx-auto mt-24">
@@ -17,7 +28,7 @@ const PastMessages: FC<Props> = (props): JSX.Element => {
           <SearchBar />
         </div>
         {/* Messages */}
-        <div></div>
+        <div>{JSON.stringify(apiData)}</div>
       </div>
     </DefaultLayout>
   );

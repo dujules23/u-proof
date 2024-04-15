@@ -4,6 +4,7 @@ import { Resend } from "resend";
 import * as React from "react";
 import { NextRequest, NextResponse } from "next/server";
 import { Email } from "@/emails/email-template";
+import { NextApiHandler } from "next";
 
 interface EmailPayload {
   name: string;
@@ -12,6 +13,18 @@ interface EmailPayload {
 }
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+export async function GET(req: NextRequest) {
+  // const { name, email, message }: EmailPayload = await req.json();
+  try {
+    await dbConnect();
+
+    const messagesFromDb = await Message.find();
+    return NextResponse.json(messagesFromDb, { status: 200 });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const { name, email, message }: EmailPayload = await req.json();
