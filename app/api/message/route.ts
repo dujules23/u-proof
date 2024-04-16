@@ -9,13 +9,13 @@ import { NextApiHandler } from "next";
 interface EmailPayload {
   name: string;
   email: string;
+  subject: string;
   message: string;
 }
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function GET(req: NextRequest) {
-  // const { name, email, message }: EmailPayload = await req.json();
   try {
     await dbConnect();
 
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  const { name, email, message }: EmailPayload = await req.json();
+  const { name, email, subject, message }: EmailPayload = await req.json();
   let transaction;
 
   try {
@@ -59,9 +59,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     // Storing the message in the database
-    const newMessage = await Message.create([{ name, email, message }], {
-      session: transaction,
-    });
+    const newMessage = await Message.create(
+      [{ name, email, subject, message }],
+      {
+        session: transaction,
+      }
+    );
 
     // Commit the transaction if both operations are successful
     await transaction.commitTransaction();

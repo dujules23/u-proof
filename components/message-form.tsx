@@ -9,6 +9,7 @@ export default function MessageForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [subject, setSubject] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -20,7 +21,7 @@ export default function MessageForm() {
     try {
       const messageSent = await fetch("/api/message", {
         method: "POST",
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({ name, email, subject, message }),
         headers: { "Content-Type": "application/json" },
       });
 
@@ -38,6 +39,7 @@ export default function MessageForm() {
       setName("");
       setEmail("");
       setMessage("");
+      setSubject("");
       toast.success("Message sent for review!", {
         classNames: {
           toast: "bg-green-300",
@@ -52,7 +54,7 @@ export default function MessageForm() {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-24">
+    <div className="max-w-lg mx-auto mt-16">
       <h1 className="text-2xl font-bold mb-6 text-primary-dark dark:text-primary-light">
         Submit Your Message
       </h1>
@@ -89,6 +91,22 @@ export default function MessageForm() {
             id="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
+            required
+            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="subject"
+            className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
+          >
+            Subject Line:
+          </label>
+          <input
+            type="text"
+            id="subject"
+            value={subject}
+            onChange={(event) => setSubject(event.target.value)}
             required
             className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
           />

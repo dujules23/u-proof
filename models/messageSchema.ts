@@ -4,6 +4,7 @@ export interface MessageModelSchema {
   _id: ObjectId;
   name: string;
   email: string;
+  subject: string;
   message: string;
 }
 
@@ -14,6 +15,11 @@ const MessageSchema = new Schema<MessageModelSchema>(
       required: true,
     },
     email: {
+      type: String,
+      required: true,
+      unique: false,
+    },
+    subject: {
       type: String,
       required: true,
       unique: false,
