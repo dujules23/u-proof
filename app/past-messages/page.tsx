@@ -1,23 +1,44 @@
+"use client";
+
 import ActionButton from "@/components/buttons/ActionButton";
+import InfiniteScrollMessages from "@/components/common/InfiniteScrollMessages";
+import MessageCard from "@/components/common/MessageCard";
 import DefaultLayout from "@/components/layout/DefaultLayout";
 import SearchBar from "@/components/search/SearchBar";
+import { readPostsFromDb } from "@/lib/utils";
+import { MessageDetail } from "@/utils/types";
+import { InferGetServerSidePropsType } from "next";
 import { FC, useEffect, useState } from "react";
+import { GiConsoleController } from "react-icons/gi";
 
 interface Props {}
 
-const getMessages = async () => {
-  const response = await fetch("http://localhost:3000/api/message");
-  if (!response.ok) {
-    throw new Error("Unable to get data");
-  }
-  return response.json();
-};
-const PastMessages: FC<Props> = async (props) => {
-  const apiData = await getMessages();
+const PastMessages: FC<Props> = () => {
+  let pageNo = 0;
+  const limit = 9;
+  // const messages = readPostsFromDb(limit, pageNo);
+
+  // console.log(messages);
+
+  // const messages = await getMessages();
+
+  const [messagesToRender, setMessagesToRender] = useState([]);
+  const [hasMoreMessages, setHasMoreMessages] = useState(
+    messagesToRender.length >= limit
+  );
+
+  useEffect(() => {
+    const getData = fetch("http://localhost:3000/api/message")
+      .then((response) => response.json())
+      .then((message) => setMessagesToRender(message))
+      .catch((error) => console.log(error));
+
+    console.log(getData);
+  }, []);
 
   return (
     <DefaultLayout>
-      <div className="max-w-xl mx-20 mt-24">
+      <div className="max-w-xxl mx-20 mt-24">
         <h1 className="text-2xl font-bold mb-6 text-primary-dark dark:text-primary-light">
           Past Messages
         </h1>
@@ -26,7 +47,16 @@ const PastMessages: FC<Props> = async (props) => {
           <SearchBar />
         </div>
         {/* Messages */}
-        <div>{}</div>
+        <div className="flex justify-center">
+          <InfiniteScrollMessages
+            hasMore={hasMoreMessages}
+            next={() => {}}
+            dataLength={messagesToRender.length}
+            messages={messagesToRender}
+            showControls
+            onMessageRemoved={() => {}}
+          />
+        </div>
       </div>
     </DefaultLayout>
   );

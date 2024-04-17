@@ -1,30 +1,60 @@
+import { trimText } from "@/utils/helper";
 import { MessageDetail } from "@/utils/types";
 import Link from "next/link";
 import { FC } from "react";
+import slugify from "slugify";
 
 interface Props {
-  message: MessageDetail;
+  messageData: MessageDetail;
   busy?: boolean;
   controls?: boolean;
   onDeleteClick?(): void;
 }
 
 const MessageCard: FC<Props> = ({
-  message,
+  messageData,
   controls = false,
   busy,
   onDeleteClick,
 }): JSX.Element => {
+  const { name, email, subject, message } = messageData;
+
+  // const slug = slugify(subject.toLowerCase(), {
+  //   strict: true,
+  // });
+
   return (
-    <div>
+    <div className="rounded shadow-sm shadow-secondary-dark overflow-hidden bg-primary dark:bg-primary-dark transition flex flex-col h-full">
       {/* Message */}
       <Link href={"/"}>
-        <div></div>
+        <div>{trimText(message, 30)}</div>
       </Link>
 
       {/* Message Info */}
+      <div className="p-2 flex-1 flex flex-col">
+        <Link href={"/"}>
+          <div>{name}</div>
+          <div>{email}</div>
 
-      <Link href={"/"}></Link>
+          <h1 className="font-semibold text-primary-dark dark:text-primary">
+            {subject}
+          </h1>
+        </Link>
+
+        {busy ? (
+          <span className="animate-pulse">Removing</span>
+        ) : (
+          <>
+            {/* <div className="hover:underline">
+                  <Link href={"/admin/posts/update/" + slug}>Edit</Link>
+                </div> */}
+
+            <button onClick={onDeleteClick} className="hover:underline">
+              Delete
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 };
