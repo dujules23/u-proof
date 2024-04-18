@@ -24,7 +24,7 @@ const MessageCard: FC<Props> = ({
   // });
 
   return (
-    <div className="rounded shadow-sm shadow-secondary-dark overflow-hidden bg-primary dark:bg-primary-dark transition flex flex-col h-full">
+    <div className="rounded shadow-md border p-4 shadow-secondary-dark overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-full">
       {/* Message */}
       <Link href={"/"}>
         <div>{trimText(message, 30)}</div>
@@ -34,7 +34,6 @@ const MessageCard: FC<Props> = ({
       <div className="p-2 flex-1 flex flex-col">
         <Link href={"/"}>
           <div>{name}</div>
-          <div>{email}</div>
 
           <h1 className="font-semibold text-primary-dark dark:text-primary">
             {subject}

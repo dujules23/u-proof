@@ -38,7 +38,7 @@ const PastMessages: FC<Props> = () => {
 
   return (
     <DefaultLayout>
-      <div className="max-w-xxl mx-20 mt-24">
+      <div className="max-w-xxl mx-20 mt-18">
         <h1 className="text-2xl font-bold mb-6 text-primary-dark dark:text-primary-light">
           Past Messages
         </h1>
@@ -47,7 +47,7 @@ const PastMessages: FC<Props> = () => {
           <SearchBar />
         </div>
         {/* Messages */}
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-6">
           <InfiniteScrollMessages
             hasMore={hasMoreMessages}
             next={() => {}}
