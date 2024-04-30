@@ -2,12 +2,10 @@
 
 import ActionButton from "@/components/buttons/ActionButton";
 import InfiniteScrollMessages from "@/components/common/InfiniteScrollMessages";
-import MessageCard from "@/components/common/MessageCard";
 import DefaultLayout from "@/components/layout/DefaultLayout";
 import SearchBar from "@/components/search/SearchBar";
 import { readPostsFromDb } from "@/lib/utils";
 import { MessageDetail } from "@/utils/types";
-import { InferGetServerSidePropsType } from "next";
 import { FC, useEffect, useState } from "react";
 import { GiConsoleController } from "react-icons/gi";
 
@@ -32,8 +30,6 @@ const PastMessages: FC<Props> = () => {
       .then((response) => response.json())
       .then((message) => setMessagesToRender(message))
       .catch((error) => console.log(error));
-
-    console.log(getData);
   }, []);
 
   return (

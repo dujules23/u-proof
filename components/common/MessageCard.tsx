@@ -2,6 +2,7 @@ import { trimText } from "@/utils/helper";
 import { MessageDetail } from "@/utils/types";
 import Link from "next/link";
 import { FC } from "react";
+import dateformat from "dateformat";
 import slugify from "slugify";
 
 interface Props {
@@ -17,7 +18,7 @@ const MessageCard: FC<Props> = ({
   busy,
   onDeleteClick,
 }): JSX.Element => {
-  const { name, email, subject, message } = messageData;
+  const { name, email, subject, message, createdAt } = messageData;
 
   // const slug = slugify(subject.toLowerCase(), {
   //   strict: true,
@@ -27,17 +28,20 @@ const MessageCard: FC<Props> = ({
     <div className="rounded shadow-md border p-4 shadow-secondary-dark overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-full">
       {/* Message */}
       <Link href={"/"}>
-        <div>{trimText(message, 30)}</div>
+        <div className="dark:text-primary-light text-primary-dark">
+          {trimText(message, 30)}
+        </div>
       </Link>
 
-      {/* Message Info */}
-      <div className="p-2 flex-1 flex flex-col">
-        <Link href={"/"}>
-          <div>{name}</div>
+      <div className="font-bold">{subject}</div>
 
-          <h1 className="font-semibold text-primary-dark dark:text-primary">
-            {subject}
-          </h1>
+      {/* Message Info */}
+      <div className="mt-8 p-2 flex-1 flex flex-col">
+        <Link href={"/"}>
+          <div className="flex justify-between font-semibold text-primary-dark dark:text-primary-light">
+            <div>{name}</div>
+            {dateformat(createdAt, "mm/dd/yy")}
+          </div>
         </Link>
 
         {busy ? (
@@ -48,7 +52,10 @@ const MessageCard: FC<Props> = ({
                   <Link href={"/admin/posts/update/" + slug}>Edit</Link>
                 </div> */}
 
-            <button onClick={onDeleteClick} className="hover:underline">
+            <button
+              onClick={onDeleteClick}
+              className="hover:underline dark:text-primary-light text-primary-dark"
+            >
               Delete
             </button>
           </>
