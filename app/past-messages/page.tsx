@@ -4,32 +4,74 @@ import ActionButton from "@/components/buttons/ActionButton";
 import InfiniteScrollMessages from "@/components/common/InfiniteScrollMessages";
 import DefaultLayout from "@/components/layout/DefaultLayout";
 import SearchBar from "@/components/search/SearchBar";
-import { readPostsFromDb } from "@/lib/utils";
+import { readMessagesFromDb } from "@/lib/utils";
 import { MessageDetail } from "@/utils/types";
 import { FC, useEffect, useState } from "react";
 import { GiConsoleController } from "react-icons/gi";
 
-interface Props {}
+interface Props {
+  messages: MessageDetail[];
+}
 
-const PastMessages: FC<Props> = () => {
+const PastMessages: FC<Props> = ({ messages }) => {
   let pageNo = 0;
   const limit = 9;
-  // const messages = readPostsFromDb(limit, pageNo);
 
-  // console.log(messages);
-
-  // const messages = await getMessages();
-
-  const [messagesToRender, setMessagesToRender] = useState([]);
+  const [messagesToRender, setMessagesToRender] = useState(messages);
   const [hasMoreMessages, setHasMoreMessages] = useState(
     messagesToRender.length >= limit
   );
 
+  console.log(messages);
+
+  console.log(messagesToRender);
+
+  const fetchInitialMessages = async () => {
+    try {
+      let pageNo = 0;
+      const limit = 9;
+      const messages = await readMessagesFromDb(limit, pageNo);
+      console.log(messages);
+      setMessagesToRender(messages);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // pagination function
+  const fetchMorePosts = async () => {
+    try {
+      // increases page number
+      pageNo++;
+      // api call using page number and limit to get next page of data
+      const { data } = await axios(
+        `/api/posts?limit=${limit}&skip=${messagesToRender.length}`
+      );
+      // checks to see if the length of posts are less than 9 (limit), we ran out of posts in the database
+      if (data.messages.length < limit) {
+        // sets posts, as we scroll down we add the posts that were brought in through the endpoint
+        setMessagesToRender([...messagesToRender, ...data.messages]);
+        setHasMoreMessages(false);
+      } else {
+        setMessagesToRender([...messagesToRender, ...data.messages]);
+      }
+    } catch (error) {
+      setHasMoreMessages(false);
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const getData = fetch("http://localhost:3000/api/message")
-      .then((response) => response.json())
-      .then((message) => setMessagesToRender(message))
-      .catch((error) => console.log(error));
+    // const getData = fetch("http://localhost:3000/api/message")
+    //   .then((response) => response.json())
+    //   .then((message) => setMessagesToRender(message))
+    //   .catch((error) => console.log(error));
+    try {
+      let pageNo = 0;
+      const limit = 9;
+      const messages = readMessagesFromDb(limit, pageNo);
+      setMessagesToRender(messages);
+    } catch (error) {}
   }, []);
 
   return (

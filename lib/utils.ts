@@ -1,7 +1,7 @@
 import Message from "@/models/messageSchema";
 import dbConnect from "./dbConnect";
 
-export const readPostsFromDb = async (
+export const readMessagesFromDb = async (
   limit: number,
   pageNo: number,
   skip?: number

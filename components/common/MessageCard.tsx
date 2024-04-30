@@ -18,22 +18,38 @@ const MessageCard: FC<Props> = ({
   busy,
   onDeleteClick,
 }): JSX.Element => {
-  const { name, email, subject, message, createdAt } = messageData;
+  const { name, subject, message, createdAt } = messageData;
 
   // const slug = slugify(subject.toLowerCase(), {
   //   strict: true,
   // });
 
+  // function that turns text to an image
+  const textToImage = (message: string) => {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    ctx.font = "20px Arial";
+    ctx?.fillText(message, 10, 50);
+    const dataUrl = canvas.toDataURL();
+    return dataUrl;
+  };
+
   return (
-    <div className="rounded shadow-md border p-4 shadow-secondary-dark overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-full">
+    <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-full">
       {/* Message */}
       <Link href={"/"}>
         <div className="dark:text-primary-light text-primary-dark">
-          {trimText(message, 30)}
+          {/* {trimText(message, 30)} */}
+          <img
+            className="p-2 rounded-md dark:bg-primary-light bg-gray-300"
+            src={textToImage(trimText(message, 50))}
+          />
         </div>
       </Link>
 
-      <div className="font-bold">{subject}</div>
+      <div className="font-bold dark:text-primary-light text-primary-dark mt-2">
+        {trimText(subject, 30)}
+      </div>
 
       {/* Message Info */}
       <div className="mt-8 p-2 flex-1 flex flex-col">

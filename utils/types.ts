@@ -4,5 +4,5 @@ export interface MessageDetail {
   email: string;
   subject: string;
   message: string;
-  createdAt: string;
+  createdAt?: string;
 }
