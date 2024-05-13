@@ -17,14 +17,14 @@ const PastMessages: FC<Props> = ({ messages }) => {
   let pageNo = 0;
   const limit = 9;
 
-  const [messagesToRender, setMessagesToRender] = useState(messages);
+  const [messagesToRender, setMessagesToRender] = useState(messages || []);
   const [hasMoreMessages, setHasMoreMessages] = useState(
-    messagesToRender.length >= limit
+    messagesToRender?.length >= limit
   );
 
-  console.log(messages);
+  // console.log(messages);
 
-  console.log(messagesToRender);
+  // console.log(messagesToRender);
 
   const fetchInitialMessages = async () => {
     try {
@@ -66,12 +66,13 @@ const PastMessages: FC<Props> = ({ messages }) => {
     //   .then((response) => response.json())
     //   .then((message) => setMessagesToRender(message))
     //   .catch((error) => console.log(error));
-    try {
-      let pageNo = 0;
-      const limit = 9;
-      const messages = readMessagesFromDb(limit, pageNo);
-      setMessagesToRender(messages);
-    } catch (error) {}
+    fetchInitialMessages();
+    // try {
+    //   let pageNo = 0;
+    //   const limit = 9;
+    //   const messages = readMessagesFromDb(limit, pageNo);
+    //   setMessagesToRender(messages);
+    // } catch (error) {}
   }, []);
 
   return (
@@ -89,7 +90,7 @@ const PastMessages: FC<Props> = ({ messages }) => {
           <InfiniteScrollMessages
             hasMore={hasMoreMessages}
             next={() => {}}
-            dataLength={messagesToRender.length}
+            dataLength={messagesToRender?.length}
             messages={messagesToRender}
             showControls
             onMessageRemoved={() => {}}
