@@ -9,13 +9,16 @@ export const readMessagesFromDb = async (
   if (!limit || limit > 10)
     throw Error("Please use limit under 10 and a valid page number");
   const finalSkip = skip || limit * pageNo;
-  await dbConnect();
+  // await dbConnect();
   // finds posts, sorts by createdAt descending, skip increases as we increase page number, Limit to only fetch limited posts.
-  const messages = await Message.find()
-    .sort({ createdAt: "desc" })
-    .select("-content")
-    .skip(finalSkip)
-    .limit(limit);
+  // const messages = await Message.find()
+  //   .sort({ createdAt: "desc" })
+  //   .select("-content")
+  //   .skip(finalSkip)
+  //   .limit(limit);
+  const messages = await fetch("http://localhost:3000/api/messages").then(
+    (res) => res.json()
+  );
 
   return messages;
 };

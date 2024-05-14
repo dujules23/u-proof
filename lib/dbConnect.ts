@@ -1,3 +1,5 @@
+"use server";
+
 // This file will set up the Mongo DB Connection
 
 import mongoose from "mongoose";
