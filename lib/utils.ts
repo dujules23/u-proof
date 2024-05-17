@@ -1,5 +1,7 @@
-import Message from "@/models/messageSchema";
+// import Message from "@/models/messageSchema";
+import { MessageDetail } from "@/utils/types";
 import dbConnect from "./dbConnect";
+import { StringLiteral } from "typescript";
 
 export const readMessagesFromDb = async (
   limit: number,
@@ -21,4 +23,37 @@ export const readMessagesFromDb = async (
   );
 
   return messages;
+};
+
+export const fetchInitialMessages = async (): Promise<MessageDetail[]> => {
+  try {
+    const res = await fetch("http://localhost:3000/api/messages/");
+    if (!res.ok) {
+      throw new Error("Failed to fetch");
+    }
+    const data: MessageDetail[] = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+export const fetchMessagesWithQuery = async (
+  query: string
+): Promise<MessageDetail[]> => {
+  try {
+    const res = await fetch(
+      `http://localhost:3000/api/messages?query=${query}/`
+    );
+    if (!res.ok) {
+      throw new Error("failed to fetch");
+    }
+
+    const data: MessageDetail[] = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 };

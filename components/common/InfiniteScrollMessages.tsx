@@ -1,32 +1,25 @@
 import { MessageDetail } from "@/utils/types";
 import { FC, ReactNode, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import MessageCard from "./MessageCard";
+import MessageCardClient from "../client/MessageCardClient";
 
 interface Props {
+  query: string;
   messages: MessageDetail[];
   showControls?: boolean;
-  hasMore: boolean;
-  next(): void;
   dataLength: number;
   loader?: ReactNode;
   onMessageRemoved(message: MessageDetail): void;
 }
 
 const InfiniteScrollMessages: FC<Props> = ({
+  query,
   messages,
   showControls,
-  hasMore,
-  next,
   dataLength,
   loader,
   onMessageRemoved,
 }): JSX.Element => {
-  const [removing, setRemoving] = useState(false);
-  const [messageToRemove, setMessageToRemove] = useState<MessageDetail | null>(
-    null
-  );
-
   // TODO: build out functions for deleting/marking messages approved
 
   // default loader
@@ -37,26 +30,13 @@ const InfiniteScrollMessages: FC<Props> = ({
   );
 
   return (
-    <InfiniteScroll
-      hasMore={hasMore}
-      next={next}
-      dataLength={dataLength}
-      loader={loader || defaultLoader}
-    >
-      <div className="max-w-4xl justify-center p-3">
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
-          {messages.map((message) => (
-            <MessageCard
-              messageData={message}
-              key={message.id}
-              controls={showControls}
-              onDeleteClick={() => {}}
-              busy={message.id == messageToRemove?.id && removing}
-            />
-          ))}
-        </div>
+    <div className="max-w-4xl justify-center p-3">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
+        {messages.map((message, index) => (
+          <MessageCardClient key={index} messageData={message} />
+        ))}
       </div>
-    </InfiniteScroll>
+    </div>
   );
 };
 

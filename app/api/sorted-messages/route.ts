@@ -16,12 +16,12 @@ export async function GET(req: NextRequest) {
     const pageNo = parseInt(url.searchParams.get("pageNo") || "0");
     const skip = parseInt(url.searchParams.get("skip") || "0");
 
-    // if (!limit || limit > 10) {
-    //   return NextResponse.json(
-    //     { error: "Please use limit under 10 and a valid page number" },
-    //     { status: 400 }
-    //   );
-    // }
+    if (!limit || limit > 10) {
+      return NextResponse.json(
+        { error: "Please use limit under 10 and a valid page number" },
+        { status: 400 }
+      );
+    }
 
     const finalSkip = skip || limit * pageNo;
 

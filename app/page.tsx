@@ -3,9 +3,5 @@ import MessageForm from "@/components/message-form";
 import Image from "next/image";
 
 export default function Home() {
-  return (
-    <DefaultLayout>
-      <MessageForm />
-    </DefaultLayout>
-  );
+  return <MessageForm />;
 }
