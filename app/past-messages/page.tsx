@@ -9,10 +9,9 @@ interface Props {}
 const PastMessages: FC<Props> = async ({
   searchParams,
 }: {
-  searchParams?: { query?: string; page?: string };
+  searchParams?: { query?: string };
 }) => {
-  const messages: MessageDetail[] = await fetchInitialMessages();
-  console.log(messages);
+  // console.log(messages);
 
   const query = searchParams?.query || "";
 
@@ -29,13 +28,7 @@ const PastMessages: FC<Props> = async ({
       {/* Messages */}
       <div className="flex justify-center mt-6">
         <Suspense key={query} fallback="Loading....">
-          <InfiniteScrollMessages
-            query={query}
-            messages={messages}
-            showControls
-            onMessageRemoved={() => {}}
-            dataLength={0}
-          />
+          <InfiniteScrollMessages query={query} />
         </Suspense>
         {/* <MessageCardClient messageData={messages} /> */}
       </div>

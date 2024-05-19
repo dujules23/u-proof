@@ -2,25 +2,27 @@ import { MessageDetail } from "@/utils/types";
 import { FC, ReactNode, useState } from "react";
 import MessageCard from "./MessageCard";
 import MessageCardClient from "../client/MessageCardClient";
+import { fetchInitialMessages, fetchMessagesWithQuery } from "@/lib/utils";
 
 interface Props {
-  query: string;
-  messages: MessageDetail[];
-  showControls?: boolean;
-  dataLength: number;
-  loader?: ReactNode;
-  onMessageRemoved(message: MessageDetail): void;
+  // query: string;
+  // showControls?: boolean;
+  // dataLength: number;
+  // loader?: ReactNode;
+  // onMessageRemoved(message: MessageDetail): void;
 }
 
-const InfiniteScrollMessages: FC<Props> = ({
-  query,
-  messages,
-  showControls,
-  dataLength,
-  loader,
-  onMessageRemoved,
-}): JSX.Element => {
+const InfiniteScrollMessages = async ({ query }: { query: string }) => {
+  const messages: MessageDetail[] = await fetchMessagesWithQuery(query);
+
+  console.log(messages);
   // TODO: build out functions for deleting/marking messages approved
+
+  const filteredMessages = Array.isArray(messages)
+    ? messages.filter((message) => {
+        return message.subject.toLowerCase().includes(query.toLowerCase());
+      })
+    : [];
 
   // default loader
   const defaultLoader = (
@@ -32,7 +34,7 @@ const InfiniteScrollMessages: FC<Props> = ({
   return (
     <div className="max-w-4xl justify-center p-3">
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
-        {messages.map((message, index) => (
+        {filteredMessages.map((message, index) => (
           <MessageCardClient key={index} messageData={message} />
         ))}
       </div>
