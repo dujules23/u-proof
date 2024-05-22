@@ -4,7 +4,6 @@ import { Resend } from "resend";
 import * as React from "react";
 import { NextRequest, NextResponse } from "next/server";
 import { Email } from "@/emails/email-template";
-import { NextApiHandler } from "next";
 
 interface EmailPayload {
   name: string;
@@ -14,18 +13,23 @@ interface EmailPayload {
 }
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
+// GET for retrieving emails using query
 export async function GET(req: NextRequest) {
   try {
     await dbConnect();
 
-    const messagesFromDb = await Message.find();
+    const url = new URL(req.url);
+    const searchParams = new URLSearchParams(url.searchParams);
+    const query = searchParams.get("query");
+    const messagesFromDb = await Message.find({ query });
+
     return NextResponse.json(messagesFromDb, { status: 200 });
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching messages:", error);
   }
 }
 
+// POST for sending email message to be reviewed
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const { name, email, subject, message }: EmailPayload = await req.json();
   let transaction;

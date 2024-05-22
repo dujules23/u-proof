@@ -1,7 +1,5 @@
 import InfiniteScrollMessages from "@/components/common/InfiniteScrollMessages";
 import SearchBar from "@/components/search/SearchBar";
-import { fetchInitialMessages } from "@/lib/utils";
-import { MessageDetail } from "@/utils/types";
 import { FC, Suspense } from "react";
 
 interface Props {}
