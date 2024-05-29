@@ -5,7 +5,7 @@ interface Props {
   title: string;
   busy?: boolean;
   disabled?: boolean;
-  onClick?: FormEventHandler<HTMLFormElement>;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const ActionButton: FC<Props> = ({

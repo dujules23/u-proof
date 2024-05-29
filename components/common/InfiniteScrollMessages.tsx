@@ -20,20 +20,21 @@ const InfiniteScrollMessages = async ({ query }: { query: string }) => {
   // filters messages from endpoint based on the query typed in the search bar
   const filteredMessages = Array.isArray(messages)
     ? messages.filter((message) => {
-        return (
-          (message.subject &&
-            message.subject.toLowerCase().includes(query.toLowerCase())) ||
-          (message.message &&
-            message.message.toLowerCase().includes(query.toLowerCase())) ||
-          (message.name &&
-            message.name.toLowerCase().includes(query.toLowerCase())) ||
-          (message.email &&
-            message.email.toLowerCase().includes(query.toLowerCase())) ||
-          (dateFormat(message.createdAt, "mm/dd/yy") &&
-            dateFormat(message.createdAt, "mm/dd/yy")
-              .toLowerCase()
-              .includes(query.toLowerCase()))
-        );
+        const searchQuery = query.toLowerCase();
+        const subjectMatch = message.subject
+          ?.toLowerCase()
+          .includes(searchQuery);
+        console.log(subjectMatch);
+        const nameMatch = message.name?.toLowerCase().includes(searchQuery);
+        // console.log(nameMatch);
+        const emailMatch = message.email?.toLowerCase().includes(searchQuery);
+        // console.log(emailMatch);
+        const createdAtMatch = dateFormat(
+          message.createdAt?.toLowerCase()
+        ).includes(searchQuery);
+        // console.log(createdAtMatch);
+
+        return subjectMatch || nameMatch || emailMatch || createdAtMatch;
       })
     : [];
 

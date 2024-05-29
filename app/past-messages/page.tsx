@@ -1,5 +1,6 @@
 import InfiniteScrollMessages from "@/components/common/InfiniteScrollMessages";
 import SearchBar from "@/components/search/SearchBar";
+import { fetchAllMessages, fetchMessagesWithQuery } from "@/lib/utils";
 import { FC, Suspense } from "react";
 
 interface Props {}
@@ -7,11 +8,16 @@ interface Props {}
 const PastMessages: FC<Props> = async ({
   searchParams,
 }: {
-  searchParams?: { query?: string };
+  searchParams?: { query?: string; page?: string };
 }) => {
   // console.log(messages);
 
   const query = searchParams?.query || "";
+  const currentPage = Number(searchParams?.page) || 1;
+
+  const totalPages = await fetchMessagesWithQuery(query);
+
+  // console.log(totalPages);
 
   return (
     // <div>hello</div>
@@ -28,7 +34,7 @@ const PastMessages: FC<Props> = async ({
         <Suspense key={query} fallback="Loading....">
           <InfiniteScrollMessages query={query} />
         </Suspense>
-        {/* <MessageCardClient messageData={messages} /> */}
+        {/* <Pagination totalPages={totalPages} /> */}
       </div>
     </div>
   );

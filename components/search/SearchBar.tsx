@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
 
 import { FC } from "react";
 import ActionButton from "../buttons/ActionButton";
@@ -14,7 +15,8 @@ const SearchBar: FC<Props> = ({ placeholder }): JSX.Element => {
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const handleSearch = (term: string) => {
+  const handleSearch = useDebouncedCallback((term: string) => {
+    // console.log(`Searching... ${term}`);
     const params = new URLSearchParams(searchParams);
 
     if (term) {
@@ -23,7 +25,7 @@ const SearchBar: FC<Props> = ({ placeholder }): JSX.Element => {
       params.delete("query");
     }
     replace(`${pathname}?${params.toString()}`);
-  };
+  }, 300);
 
   return (
     <div className="flex">

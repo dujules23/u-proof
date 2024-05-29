@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, use, useState } from "react";
 import { MessageDetail } from "@/utils/types";
 import MessageCard from "../common/MessageCard";
 
@@ -8,6 +8,7 @@ interface Props {
   messageData: MessageDetail;
   controls?: boolean;
   onDeleteClick?(message: MessageDetail): void;
+  handleApproved?(): void;
 }
 
 const MessageCardClient: FC<Props> = ({
@@ -16,6 +17,7 @@ const MessageCardClient: FC<Props> = ({
   onDeleteClick,
 }) => {
   const [busy, setBusy] = useState(false);
+  const [approved, setApproved] = useState(false);
 
   const handleDeleteClick = () => {
     if (onDeleteClick) {
@@ -25,9 +27,19 @@ const MessageCardClient: FC<Props> = ({
     }
   };
 
+  const handleApproved = () => {
+    setApproved(!approved);
+  };
+
   return (
     <div>
-      <MessageCard messageData={messageData} controls={controls} busy={busy} />
+      <MessageCard
+        messageData={messageData}
+        controls={controls}
+        busy={busy}
+        handleApproved={handleApproved}
+        approved={approved}
+      />
       {controls && (
         <button
           onClick={handleDeleteClick}

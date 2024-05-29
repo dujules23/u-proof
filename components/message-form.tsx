@@ -19,7 +19,7 @@ export default function MessageForm() {
     setSubmitting(true);
     // sends message out via resend and sends message to database
     try {
-      const messageSent = await fetch("/api/message", {
+      const messageSent = await fetch("/api/messages", {
         method: "POST",
         body: JSON.stringify({ name, email, subject, message }),
         headers: { "Content-Type": "application/json" },
@@ -141,7 +141,7 @@ export default function MessageForm() {
           <ActionButton
             title="Send Message"
             disabled={!name || !email || !message}
-            onClick={(event: FormEvent<HTMLFormElement>) => handleSubmit(event)}
+            // onClick={(event: FormEvent<HTMLFormElement>) => handleSubmit(event)}
             busy={submitting}
           />
         </div>

@@ -20,12 +20,16 @@ interface Props {
   messageData: MessageDetail;
   controls?: boolean;
   busy?: boolean;
+  approved?: boolean;
+  handleApproved?(): void;
 }
 
 const MessageCard: FC<Props> = ({
   messageData,
   controls = false,
   busy = false,
+  handleApproved,
+  approved,
 }): JSX.Element => {
   const { name, subject, message, createdAt } = messageData;
 
@@ -48,6 +52,12 @@ const MessageCard: FC<Props> = ({
             {dateformat(createdAt, "mm/dd/yy")}
           </div>
         </Link>
+
+        {approved ? (
+          <button onClick={handleApproved}>Approved</button>
+        ) : (
+          <button onClick={handleApproved}>Approve Message</button>
+        )}
 
         {busy ? (
           <span className="animate-pulse">Removing</span>

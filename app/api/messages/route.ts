@@ -3,7 +3,7 @@ import Message from "@/models/messageSchema";
 import { Resend } from "resend";
 import * as React from "react";
 import { NextRequest, NextResponse } from "next/server";
-import { Email } from "@/emails/email-template";
+import { Email } from "@/emails/template";
 
 interface EmailPayload {
   name: string;
@@ -21,11 +21,24 @@ export async function GET(req: NextRequest) {
     const url = new URL(req.url);
     const searchParams = new URLSearchParams(url.searchParams);
     const query = searchParams.get("query");
-    const messagesFromDb = await Message.find({ query });
+    // const messagesFromDb = await Message.find({ query });
+
+    const searchQuery = query ? query.toLowerCase() : "";
+    const messagesFromDb = await Message.find({
+      $or: [
+        { subject: { $regex: new RegExp(searchQuery, "i") } },
+        { name: { $regex: new RegExp(searchQuery, "i") } },
+        { email: { $regex: new RegExp(searchQuery, "i") } },
+        { createdAt: { $regex: new RegExp(searchQuery, "i") } },
+      ],
+    });
 
     return NextResponse.json(messagesFromDb, { status: 200 });
   } catch (error) {
-    console.error("Error fetching messages:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch messages" },
+      { status: 500 }
+    );
   }
 }
 
