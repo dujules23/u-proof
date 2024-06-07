@@ -3,7 +3,7 @@ import Message from "@/models/messageSchema";
 import { Resend } from "resend";
 import * as React from "react";
 import { NextRequest, NextResponse } from "next/server";
-import { Email } from "@/emails/template";
+import { AirbnbReviewEmail } from "@/emails/template";
 
 interface EmailPayload {
   name: string;
@@ -59,9 +59,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       from: "Acme <onboarding@resend.dev>",
       to: email,
       subject: "A new message is ready to be approved.",
-      react: Email({
-        firstName: name,
-        message: message,
+      react: AirbnbReviewEmail({
+        authorName: name,
+        reviewText: message,
       }) as React.ReactElement,
     });
 
