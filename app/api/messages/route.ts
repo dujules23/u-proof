@@ -17,22 +17,24 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function GET(req: NextRequest) {
   try {
     await dbConnect();
-
+    console.log("Getting data");
     const url = new URL(req.url);
     const searchParams = new URLSearchParams(url.searchParams);
     const query = searchParams.get("query");
-    // const messagesFromDb = await Message.find({ query });
+    const messagesFromDb = await Message.find();
 
-    const searchQuery = query ? query.toLowerCase() : "";
-    const messagesFromDb = await Message.find({
-      $or: [
-        { subject: { $regex: new RegExp(searchQuery, "i") } },
-        { name: { $regex: new RegExp(searchQuery, "i") } },
-        { email: { $regex: new RegExp(searchQuery, "i") } },
-        { createdAt: { $regex: new RegExp(searchQuery, "i") } },
-      ],
-    });
+    // const searchQuery = query ? query.toLowerCase() : "";
+    // const messagesFromDb = await Message.find({
+    //   $or: [
+    //     { subject: { $regex: new RegExp(searchQuery, "i") } },
+    //     { name: { $regex: new RegExp(searchQuery, "i") } },
+    //     { email: { $regex: new RegExp(searchQuery, "i") } },
+    //     { createdAt: { $regex: new RegExp(searchQuery, "i") } },
+    //   ],
+    // });
 
+    console.log(messagesFromDb.length);
+    console.log("Data Received");
     return NextResponse.json(messagesFromDb, { status: 200 });
   } catch (error) {
     return NextResponse.json(

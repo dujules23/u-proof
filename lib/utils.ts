@@ -4,12 +4,12 @@ import { MessageDetail } from "@/utils/types";
 // Function that fetches all messages
 export const fetchAllMessages = async (): Promise<MessageDetail[]> => {
   try {
-    const res = await fetch("http://localhost:3000/api/messages/");
+    const res = await fetch("http://localhost:3000/api/messages");
     if (!res.ok) {
       throw new Error("Failed to fetch");
     }
     const data: MessageDetail[] = await res.json();
-    console.log(data);
+    console.log(data.length);
     return data;
   } catch (error) {
     console.log(error);

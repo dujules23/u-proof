@@ -2,7 +2,7 @@ import { MessageDetail } from "@/utils/types";
 import { FC, ReactNode, useState } from "react";
 import MessageCard from "./MessageCard";
 import MessageCardClient from "../client/MessageCardClient";
-import { fetchMessagesWithQuery } from "@/lib/utils";
+import { fetchAllMessages, fetchMessagesWithQuery } from "@/lib/utils";
 import dateFormat from "dateformat";
 
 interface Props {
@@ -14,7 +14,10 @@ interface Props {
 }
 
 const InfiniteScrollMessages = async ({ query }: { query: string }) => {
-  const messages: MessageDetail[] = await fetchMessagesWithQuery(query);
+  const messages: MessageDetail[] = await fetchAllMessages();
+  console.log(messages.length);
+  const allMessages: MessageDetail[] = await fetchAllMessages();
+  // console.log(allMessages.length);
   // TODO: build out functions for deleting/marking messages approved
 
   // filters messages from endpoint based on the query typed in the search bar
@@ -24,7 +27,7 @@ const InfiniteScrollMessages = async ({ query }: { query: string }) => {
         const subjectMatch = message.subject
           ?.toLowerCase()
           .includes(searchQuery);
-        console.log(subjectMatch);
+        // console.log(subjectMatch);
         const nameMatch = message.name?.toLowerCase().includes(searchQuery);
         // console.log(nameMatch);
         const emailMatch = message.email?.toLowerCase().includes(searchQuery);
@@ -38,6 +41,12 @@ const InfiniteScrollMessages = async ({ query }: { query: string }) => {
       })
     : [];
 
+  const noMessageFound = (messages: []) => {
+    if (!messages) {
+      return <p>No Message Found</p>;
+    }
+  };
+
   // default loader
   const defaultLoader = (
     <p className="p-3 text-secondary-dark opacity-50 text-center font-semibold text-xl animate-pulse">
@@ -48,9 +57,16 @@ const InfiniteScrollMessages = async ({ query }: { query: string }) => {
   return (
     <div className="max-w-4xl justify-center p-3">
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
-        {filteredMessages.map((message) => (
-          <MessageCardClient key={message.id} messageData={message} />
-        ))}
+        {!messages && noMessageFound(messages)}
+        {filteredMessages.length === 0 ? (
+          <p className="flex justify-center mt-6 sm:col-span-2 md:col-span-1 md:col-start-2 text-xl">
+            Message Not Found.
+          </p>
+        ) : (
+          filteredMessages.map((message) => (
+            <MessageCardClient key={message.id} messageData={message} />
+          ))
+        )}
       </div>
     </div>
   );

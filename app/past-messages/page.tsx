@@ -17,7 +17,7 @@ const PastMessages: FC<Props> = async ({
 
   const totalPages = await fetchMessagesWithQuery(query);
 
-  // console.log(totalPages);
+  // console.log(totalPages.length);
 
   return (
     // <div>hello</div>
@@ -31,7 +31,14 @@ const PastMessages: FC<Props> = async ({
       </div>
       {/* Messages */}
       <div className="flex justify-center mt-6">
-        <Suspense key={query} fallback="Loading....">
+        <Suspense
+          key={query}
+          fallback={
+            <p className="p-3 text-secondary-dark opacity-50 text-center font-semibold text-xl animate-pulse">
+              Loading...
+            </p>
+          }
+        >
           <InfiniteScrollMessages query={query} />
         </Suspense>
         {/* <Pagination totalPages={totalPages} /> */}
