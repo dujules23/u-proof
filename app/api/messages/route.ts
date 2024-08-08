@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
     const url = new URL(req.url);
     const searchParams = new URLSearchParams(url.searchParams);
     const query = searchParams.get("query");
-    const messagesFromDb = await Message.find();
+    const messagesFromDb = await Message.find().limit(3);
 
     // const searchQuery = query ? query.toLowerCase() : "";
     // const messagesFromDb = await Message.find({

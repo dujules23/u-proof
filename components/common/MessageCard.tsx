@@ -15,6 +15,7 @@ import { MessageDetail } from "@/utils/types";
 import Link from "next/link";
 import { FC } from "react";
 import dateformat from "dateformat";
+import ActionButton from "../buttons/ActionButton";
 
 interface Props {
   messageData: MessageDetail;
@@ -56,7 +57,7 @@ const MessageCard: FC<Props> = ({
         {approved ? (
           <button onClick={handleApproved}>Approved</button>
         ) : (
-          <button onClick={handleApproved}>Approve Message</button>
+          <ActionButton onClick={handleApproved} title="Awaiting Approval" />
         )}
 
         {busy ? (

@@ -6,18 +6,31 @@ import { fetchAllMessages, fetchMessagesWithQuery } from "@/lib/utils";
 import dateFormat from "dateformat";
 
 interface Props {
-  // query: string;
+  query: string;
   // showControls?: boolean;
   // dataLength: number;
   // loader?: ReactNode;
   // onMessageRemoved(message: MessageDetail): void;
 }
 
+const getData = async () => {
+  const res = await fetch("http://localhost:3000/api/messages/");
+  // The return value is *not* serialized
+  // You can return Date, Map, Set, etc.
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+};
+
 const InfiniteScrollMessages = async ({ query }: { query: string }) => {
-  const messages: MessageDetail[] = await fetchAllMessages();
+  const messages: MessageDetail[] = await getData();
   console.log(messages.length);
-  const allMessages: MessageDetail[] = await fetchAllMessages();
+  // const allMessages: MessageDetail[] = await fetchAllMessages();
   // console.log(allMessages.length);
+
   // TODO: build out functions for deleting/marking messages approved
 
   // filters messages from endpoint based on the query typed in the search bar
@@ -40,6 +53,8 @@ const InfiniteScrollMessages = async ({ query }: { query: string }) => {
         return subjectMatch || nameMatch || emailMatch || createdAtMatch;
       })
     : [];
+
+  // console.log(filteredMessages.length);
 
   const noMessageFound = (messages: []) => {
     if (!messages) {

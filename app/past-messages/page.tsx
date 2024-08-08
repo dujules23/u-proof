@@ -1,3 +1,4 @@
+import { PaginationComponent } from "@/components/buttons/Pagination";
 import InfiniteScrollMessages from "@/components/common/InfiniteScrollMessages";
 import SearchBar from "@/components/search/SearchBar";
 import { fetchAllMessages, fetchMessagesWithQuery } from "@/lib/utils";
@@ -41,7 +42,7 @@ const PastMessages: FC<Props> = async ({
         >
           <InfiniteScrollMessages query={query} />
         </Suspense>
-        {/* <Pagination totalPages={totalPages} /> */}
+        {/* <PaginationComponent totalPages={totalPages} /> */}
       </div>
     </div>
   );
