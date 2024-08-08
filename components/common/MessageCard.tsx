@@ -57,7 +57,11 @@ const MessageCard: FC<Props> = ({
         {approved ? (
           <button onClick={handleApproved}>Approved</button>
         ) : (
-          <ActionButton onClick={handleApproved} title="Awaiting Approval" />
+          <ActionButton
+            variant="danger"
+            onClick={handleApproved}
+            title="Awaiting Approval"
+          />
         )}
 
         {busy ? (
