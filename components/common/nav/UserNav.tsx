@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FC } from "react";
 import DarkModeButton from "@/components/buttons/DarkModeButton";
 import { FaBookOpenReader } from "react-icons/fa6";
+import Notifications from "@/components/buttons/Notifications";
 
 interface Props {}
 
@@ -24,6 +25,7 @@ const UserNav: FC<Props> = (props): JSX.Element => {
           <Link href="/past-messages">Past Messages</Link>
         </div>
         <DarkModeButton />
+        <Notifications />
       </div>
     </div>
   );
