@@ -29,10 +29,33 @@ const MessageCard: FC<Props> = ({
   messageData,
   controls = false,
   busy = false,
-  handleApproved,
+  handleApproved = () => {},
   approved,
 }): JSX.Element => {
-  const { name, subject, message, createdAt } = messageData;
+  const { _id, name, subject, message, createdAt } = messageData;
+
+  // Post request that sends approval to db, triggers button switch to approved
+  const handleApprove = async (id: string) => {
+    try {
+      const response = await fetch("/api/approve", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, approved: !approved }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        console.log("Approval flagged:", data.data);
+        handleApproved();
+      } else {
+        console.error("Failed to flag approval:", data.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-full">
@@ -55,11 +78,15 @@ const MessageCard: FC<Props> = ({
         </Link>
 
         {approved ? (
-          <button onClick={handleApproved}>Approved</button>
+          <ActionButton
+            title="Approved"
+            variant="primary"
+            onClick={() => handleApprove(_id)}
+          />
         ) : (
           <ActionButton
             variant="danger"
-            onClick={handleApproved}
+            onClick={() => handleApprove(_id)}
             title="Awaiting Approval"
           />
         )}

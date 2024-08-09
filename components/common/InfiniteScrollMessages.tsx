@@ -26,8 +26,9 @@ const getData = async () => {
 };
 
 const InfiniteScrollMessages = async ({ query }: { query: string }) => {
-  const messages: MessageDetail[] = await getData();
-  console.log(messages.length);
+  console.log("Fetching messages with query:", query);
+  const messages: MessageDetail[] = await fetchAllMessages();
+  console.log("Fetched messages:", messages);
   // const allMessages: MessageDetail[] = await fetchAllMessages();
   // console.log(allMessages.length);
 
@@ -79,7 +80,7 @@ const InfiniteScrollMessages = async ({ query }: { query: string }) => {
           </p>
         ) : (
           filteredMessages.map((message) => (
-            <MessageCardClient key={message.id} messageData={message} />
+            <MessageCardClient key={message._id} messageData={message} />
           ))
         )}
       </div>

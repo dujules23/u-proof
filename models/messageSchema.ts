@@ -6,6 +6,7 @@ export interface MessageModelSchema {
   email: string;
   subject: string;
   message: string;
+  approved: boolean;
 }
 
 const MessageSchema = new Schema<MessageModelSchema>(
@@ -27,6 +28,10 @@ const MessageSchema = new Schema<MessageModelSchema>(
     message: {
       type: String,
       required: true,
+    },
+    approved: {
+      type: Boolean,
+      default: false,
     },
   },
   {

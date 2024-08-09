@@ -10,6 +10,7 @@ interface EmailPayload {
   email: string;
   subject: string;
   message: string;
+  approved: boolean;
 }
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -21,7 +22,7 @@ export async function GET(req: NextRequest) {
     const url = new URL(req.url);
     const searchParams = new URLSearchParams(url.searchParams);
     const query = searchParams.get("query");
-    const messagesFromDb = await Message.find().limit(3);
+    const messagesFromDb = await Message.find();
 
     // const searchQuery = query ? query.toLowerCase() : "";
     // const messagesFromDb = await Message.find({
@@ -36,6 +37,7 @@ export async function GET(req: NextRequest) {
     console.log(messagesFromDb.length);
     console.log("Data Received");
     return NextResponse.json(messagesFromDb, { status: 200 });
+    // return NextResponse.json([], { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch messages" },
@@ -46,7 +48,8 @@ export async function GET(req: NextRequest) {
 
 // POST for sending email message to be reviewed
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  const { name, email, subject, message }: EmailPayload = await req.json();
+  const { name, email, subject, message, approved }: EmailPayload =
+    await req.json();
   let transaction;
 
   try {
@@ -79,7 +82,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     // Storing the message in the database
     const newMessage = await Message.create(
-      [{ name, email, subject, message }],
+      [{ name, email, subject, message, approved }],
       {
         session: transaction,
       }
