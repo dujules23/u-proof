@@ -18,19 +18,27 @@ interface AirbnbReviewEmailProps {
   authorName?: string;
   authorImage?: string;
   reviewText?: string;
+  messageId: string;
 }
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "";
+// const baseUrl = process.env.VERCEL_URL
+//   ? `https://${process.env.VERCEL_URL}`
+//   : "";
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
 
 export const AirbnbReviewEmail = ({
   authorName,
   authorImage,
   reviewText,
+  messageId,
 }: AirbnbReviewEmailProps) => {
   const previewText = `${authorName} sent you a message for review.`;
   const APP_NAME = "uProof";
+
+  console.log(messageId);
+
+  const approveLink = `${baseUrl}/approve-page?id=${messageId}&approved=true`;
 
   return (
     <Html>
@@ -68,7 +76,7 @@ export const AirbnbReviewEmail = ({
                 message.`}
               </Text>
 
-              <Button style={button} href="https://airbnb.com/">
+              <Button style={button} href={approveLink}>
                 Approve/Edit Message
               </Button>
             </Row>

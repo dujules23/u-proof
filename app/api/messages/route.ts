@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { AirbnbReviewEmail } from "@/emails/template";
 
 interface EmailPayload {
+  id: string;
   name: string;
   email: string;
   subject: string;
@@ -59,6 +60,19 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     transaction = await Message.startSession();
     transaction.startTransaction();
 
+    // Storing the message in the database
+    const newMessage = await Message.create(
+      [{ name, email, subject, message, approved }],
+      {
+        session: transaction,
+      }
+    );
+
+    // grabs the id from the message in the database
+    const messageId = newMessage[0]._id.toString();
+
+    console.log(messageId);
+
     // Sending email using Resend
     const { data, error } = await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
@@ -67,6 +81,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       react: AirbnbReviewEmail({
         authorName: name,
         reviewText: message,
+        messageId: messageId,
       }) as React.ReactElement,
     });
 
@@ -79,14 +94,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         error: "Failed to send email",
       });
     }
-
-    // Storing the message in the database
-    const newMessage = await Message.create(
-      [{ name, email, subject, message, approved }],
-      {
-        session: transaction,
-      }
-    );
 
     // Commit the transaction if both operations are successful
     await transaction.commitTransaction();
