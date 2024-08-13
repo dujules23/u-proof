@@ -35,27 +35,27 @@ const MessageCard: FC<Props> = ({
   const { _id, name, subject, message, createdAt } = messageData;
 
   // Post request that sends approval to db, triggers button switch to approved
-  const handleApprove = async (id: string) => {
-    try {
-      const response = await fetch("/api/approve", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id, approved: !approved }),
-      });
+  // const handleApprove = async (id: string) => {
+  //   try {
+  //     const response = await fetch("/api/approve", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ id, approved: !approved }),
+  //     });
 
-      const data = await response.json();
-      if (data.success) {
-        console.log("Approval flagged:", data.data);
-        handleApproved();
-      } else {
-        console.error("Failed to flag approval:", data.error);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  //     const data = await response.json();
+  //     if (data.success) {
+  //       console.log("Approval flagged:", data.data);
+  //       handleApproved();
+  //     } else {
+  //       console.error("Failed to flag approval:", data.error);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
 
   return (
     <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-full">
@@ -78,15 +78,11 @@ const MessageCard: FC<Props> = ({
         </Link>
 
         {approved ? (
-          <ActionButton
-            title="Approved"
-            variant="primary"
-            onClick={() => handleApprove(_id)}
-          />
+          <ActionButton title="Approved" variant="primary" onClick={() => {}} />
         ) : (
           <ActionButton
             variant="danger"
-            onClick={() => handleApprove(_id)}
+            onClick={() => {}}
             title="Awaiting Approval"
           />
         )}

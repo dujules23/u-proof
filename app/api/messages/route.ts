@@ -19,7 +19,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function GET(req: NextRequest) {
   try {
     await dbConnect();
-    console.log("Getting data");
+    // console.log("Getting data");
     const url = new URL(req.url);
     const searchParams = new URLSearchParams(url.searchParams);
     const query = searchParams.get("query");
@@ -35,8 +35,8 @@ export async function GET(req: NextRequest) {
     //   ],
     // });
 
-    console.log(messagesFromDb.length);
-    console.log("Data Received");
+    // console.log(messagesFromDb.length);
+    // console.log("Data Received");
     return NextResponse.json(messagesFromDb, { status: 200 });
     // return NextResponse.json([], { status: 200 });
   } catch (error) {
@@ -54,6 +54,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   let transaction;
 
   try {
+    console.log("Received email payload:", {
+      name,
+      email,
+      subject,
+      message,
+      approved,
+    });
+
     await dbConnect();
 
     // Start a transaction
@@ -61,19 +69,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     transaction.startTransaction();
 
     // Storing the message in the database
+    console.log("Storing message in database...");
     const newMessage = await Message.create(
       [{ name, email, subject, message, approved }],
-      {
-        session: transaction,
-      }
+      { session: transaction }
     );
 
-    // grabs the id from the message in the database
+    // Extracting the id from the message in the database
     const messageId = newMessage[0]._id.toString();
-
-    console.log(messageId);
+    console.log("Message stored with ID:", messageId);
 
     // Sending email using Resend
+    console.log("Sending email...");
     const { data, error } = await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
       to: email,
@@ -85,8 +92,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }) as React.ReactElement,
     });
 
+    // Log email sending result
+    console.log("Email send result:", { data, error });
+
     // If there's an error sending the email, rollback the transaction
     if (error) {
+      console.error("Error sending email:", error);
       await transaction.abortTransaction();
       return NextResponse.json({
         success: false,
@@ -96,6 +107,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     // Commit the transaction if both operations are successful
+    console.log("Committing transaction...");
     await transaction.commitTransaction();
 
     return NextResponse.json({
@@ -106,9 +118,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } catch (error) {
     // Rollback the transaction if any operation fails
     if (transaction) {
+      console.log("Aborting transaction due to error...");
       await transaction.abortTransaction();
     }
-    console.error(error);
+    console.error("Error processing request:", error);
     return NextResponse.json({
       success: false,
       status: 500,
@@ -117,6 +130,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } finally {
     // End the transaction session
     if (transaction) {
+      console.log("Ending transaction session...");
       transaction.endSession();
     }
   }

@@ -1,6 +1,7 @@
 import { Schema, model, models, Model, ObjectId } from "mongoose";
 
 export interface NotificationsSchema {
+  _id: ObjectId;
   message: string;
   status: "approved" | "not_approved" | "viewed";
   // userId: string;

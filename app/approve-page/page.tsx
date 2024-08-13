@@ -1,47 +1,62 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 const ApprovePage = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const approved = searchParams.get("approved");
+  const [isProcessing, setIsProcessing] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (id && approved) {
-      console.log("Extracted ID:", id);
-      console.log("Extracted Approved Status:", approved);
-      const approveMessage = async () => {
-        try {
-          const response = await fetch("/api/approve", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              id,
-              approved: approved === "true",
-            }),
-          });
+    if (!id || !approved) return;
 
-          const data = await response.json();
-          console.log("Approval Response:", data);
+    console.log("Extracted ID:", id);
+    console.log("Extracted Approved Status:", approved);
 
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-        } catch (error) {
-          console.error("Error processing message:", error);
+    const approveMessage = async () => {
+      try {
+        const response = await fetch("/api/approve", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id,
+            approved: approved === "true",
+          }),
+        });
+
+        const data = await response.json();
+        console.log("Approval Response:", data);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      };
+      } catch (error: any) {
+        console.error("Error processing message:", error);
+        setError(error.message);
+      } finally {
+        setIsProcessing(false);
+      }
+    };
 
-      approveMessage();
-    }
+    approveMessage();
   }, [id, approved]);
 
-  //* write conditional logic to show message was approved here *//
-  return <div>Processing your request...</div>;
+  return (
+    <div>
+      {isProcessing ? (
+        <p>Processing your request...</p>
+      ) : error ? (
+        <p>Error: {error}</p>
+      ) : (
+        <p>Message has been processed successfully.</p>
+      )}
+    </div>
+  );
 };
 
 export default ApprovePage;

@@ -7,6 +7,7 @@ export interface MessageModelSchema {
   subject: string;
   message: string;
   approved: boolean;
+  processed: boolean;
 }
 
 const MessageSchema = new Schema<MessageModelSchema>(
@@ -30,6 +31,10 @@ const MessageSchema = new Schema<MessageModelSchema>(
       required: true,
     },
     approved: {
+      type: Boolean,
+      default: false,
+    },
+    processed: {
       type: Boolean,
       default: false,
     },

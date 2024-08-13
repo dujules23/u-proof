@@ -26,9 +26,9 @@ const getData = async () => {
 };
 
 const InfiniteScrollMessages = async ({ query }: { query: string }) => {
-  console.log("Fetching messages with query:", query);
+  // console.log("Fetching messages with query:", query);
   const messages: MessageDetail[] = await fetchAllMessages();
-  console.log("Fetched messages:", messages);
+  // console.log("Fetched messages:", messages);
   // const allMessages: MessageDetail[] = await fetchAllMessages();
   // console.log(allMessages.length);
 

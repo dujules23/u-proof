@@ -36,7 +36,7 @@ export const AirbnbReviewEmail = ({
   const previewText = `${authorName} sent you a message for review.`;
   const APP_NAME = "uProof";
 
-  console.log(messageId);
+  console.log("Message Id:--------->", messageId);
 
   const approveLink = `${baseUrl}/approve-page?id=${messageId}&approved=true`;
 

@@ -4,14 +4,14 @@ import { FC, useState, useEffect } from "react";
 import { FaBell } from "react-icons/fa";
 
 interface Notification {
-  id: string;
+  _id: string;
   message: string;
   status: "approved" | "not_approved" | "viewed"; // or any other statuses you need
 }
 
 interface Props {}
 
-const Notifications: FC<Notification> = ({ id }): JSX.Element => {
+const Notifications: FC<Notification> = (): JSX.Element => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -19,27 +19,49 @@ const Notifications: FC<Notification> = ({ id }): JSX.Element => {
     try {
       const response = await fetch("/api/notifications");
       const data = await response.json();
+      console.log("Fetched notifications:", data.notifications);
       setNotifications(data.notifications);
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
   };
 
-  console.log(id);
+  const handleNotificationClick = async (_id: string) => {
+    console.log("Handling notification click for ID:", _id);
+    if (!_id) {
+      console.error("Notification ID is missing");
+      return;
+    }
 
-  const handleNotificationClick = async (id: string) => {
-    // Route to the message page
-    // router.push(`/message/${id}`);
-
-    // Optionally mark the notification as viewed before deletion
-    // await markNotificationAsViewed(id);
-
-    // Delete the notification
     try {
-      console.log(id);
-      await deleteNotification(id);
+      // Route to the message page
+      // router.push(`/message/${id}`);
+
+      // Optionally mark the notification as viewed before deletion
+      // await markNotificationAsViewed(id);
+
+      // Delete the notification
+      console.log("Deleting notification with ID:", _id);
+
+      const response = await fetch("/api/notifications/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(_id),
+      });
+
+      console.log(response.body);
+
+      if (!response.ok) {
+        const errorDetails = await response.text();
+        console.error("Failed to delete notification:", errorDetails);
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      // If successful, remove the notification from the state
+      setNotifications((prev) => prev.filter((notif) => notif._id !== _id));
     } catch (error) {
       console.error("Error handling notification click", error);
+      alert("An unexpected error occurred. Please try again later.");
     }
   };
 
@@ -67,37 +89,37 @@ const Notifications: FC<Notification> = ({ id }): JSX.Element => {
     );
   };
 
-  const deleteNotification = async (id: string) => {
-    try {
-      console.log("Deleting notification with ID:", id);
+  // const deleteNotification = async (id: string) => {
+  //   try {
+  //     console.log("Deleting notification with ID:", id);
 
-      // Delete the notification in the backend
-      const response = await fetch("/api/notifications/delete", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }), // Make sure this `id` is correctly passed
-      });
+  //     // Delete the notification in the backend
+  //     const response = await fetch("/api/notifications/delete", {
+  //       method: "DELETE",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ id }), // Make sure this `id` is correctly passed
+  //     });
 
-      // Log the response for debugging
-      const responseData = await response.json();
-      console.log("Response data:", responseData);
+  //     // Log the response for debugging
+  //     const responseData = await response.json();
+  //     console.log("Response data:", responseData);
 
-      if (!response.ok) {
-        throw new Error(responseData.error || "Failed to delete notification");
-      }
+  //     if (!response.ok) {
+  //       throw new Error(responseData.error || "Failed to delete notification");
+  //     }
 
-      // Update the state immediately for better UX
-      setNotifications((prev) =>
-        prev.filter((notification) => notification.id !== id)
-      );
+  //     // Update the state immediately for better UX
+  //     setNotifications((prev) =>
+  //       prev.filter((notification) => notification.id !== id)
+  //     );
 
-      fetchNotifications();
-    } catch (error) {
-      console.error("Error deleting notification:", error);
+  //     fetchNotifications();
+  //   } catch (error) {
+  //     console.error("Error deleting notification:", error);
 
-      fetchNotifications();
-    }
-  };
+  //     fetchNotifications();
+  //   }
+  // };
 
   return (
     <div className="relative">
@@ -114,8 +136,8 @@ const Notifications: FC<Notification> = ({ id }): JSX.Element => {
             {notifications.length > 0 ? (
               notifications.map((notification) => (
                 <li
-                  onClick={() => handleNotificationClick(notification.id)}
-                  key={notification.id}
+                  onClick={() => handleNotificationClick(notification._id)}
+                  key={notification._id}
                   className="text-sm cursor-pointer"
                 >
                   {notification.message} -{" "}
