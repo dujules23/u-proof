@@ -40,6 +40,7 @@ const ApprovePage = () => {
     }
   }, [id, approved]);
 
+  //* write conditional logic to show message was approved here *//
   return <div>Processing your request...</div>;
 };
 

@@ -11,7 +11,7 @@ interface Notification {
 
 interface Props {}
 
-const Notifications: FC<Props> = (): JSX.Element => {
+const Notifications: FC<Notification> = ({ id }): JSX.Element => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -22,6 +22,24 @@ const Notifications: FC<Props> = (): JSX.Element => {
       setNotifications(data.notifications);
     } catch (error) {
       console.error("Error fetching notifications:", error);
+    }
+  };
+
+  console.log(id);
+
+  const handleNotificationClick = async (id: string) => {
+    // Route to the message page
+    // router.push(`/message/${id}`);
+
+    // Optionally mark the notification as viewed before deletion
+    // await markNotificationAsViewed(id);
+
+    // Delete the notification
+    try {
+      console.log(id);
+      await deleteNotification(id);
+    } catch (error) {
+      console.error("Error handling notification click", error);
     }
   };
 
@@ -49,6 +67,38 @@ const Notifications: FC<Props> = (): JSX.Element => {
     );
   };
 
+  const deleteNotification = async (id: string) => {
+    try {
+      console.log("Deleting notification with ID:", id);
+
+      // Delete the notification in the backend
+      const response = await fetch("/api/notifications/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }), // Make sure this `id` is correctly passed
+      });
+
+      // Log the response for debugging
+      const responseData = await response.json();
+      console.log("Response data:", responseData);
+
+      if (!response.ok) {
+        throw new Error(responseData.error || "Failed to delete notification");
+      }
+
+      // Update the state immediately for better UX
+      setNotifications((prev) =>
+        prev.filter((notification) => notification.id !== id)
+      );
+
+      fetchNotifications();
+    } catch (error) {
+      console.error("Error deleting notification:", error);
+
+      fetchNotifications();
+    }
+  };
+
   return (
     <div className="relative">
       <button onClick={toggleModal} className="relative">
@@ -63,7 +113,11 @@ const Notifications: FC<Props> = (): JSX.Element => {
           <ul className="space-y-2">
             {notifications.length > 0 ? (
               notifications.map((notification) => (
-                <li key={notification.id} className="text-sm">
+                <li
+                  onClick={() => handleNotificationClick(notification.id)}
+                  key={notification.id}
+                  className="text-sm cursor-pointer"
+                >
                   {notification.message} -{" "}
                   <strong className="capitalize">{notification.status}</strong>
                 </li>
