@@ -21,7 +21,6 @@ interface Props {
   messageData: MessageDetail;
   controls?: boolean;
   busy?: boolean;
-  approved?: boolean;
   handleApproved?(): void;
 }
 
@@ -30,9 +29,8 @@ const MessageCard: FC<Props> = ({
   controls = false,
   busy = false,
   handleApproved = () => {},
-  approved,
 }): JSX.Element => {
-  const { _id, name, subject, message, createdAt } = messageData;
+  const { _id, name, subject, message, createdAt, approved } = messageData;
 
   // Post request that sends approval to db, triggers button switch to approved
   // const handleApprove = async (id: string) => {

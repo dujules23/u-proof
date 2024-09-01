@@ -5,4 +5,5 @@ export interface MessageDetail {
   subject: string;
   message: string;
   createdAt?: string;
+  approved: boolean;
 }
