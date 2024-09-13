@@ -32,32 +32,11 @@ const MessageCard: FC<Props> = ({
 }): JSX.Element => {
   const { _id, name, subject, message, createdAt, approved } = messageData;
 
-  // Post request that sends approval to db, triggers button switch to approved
-  // const handleApprove = async (id: string) => {
-  //   try {
-  //     const response = await fetch("/api/approve", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ id, approved: !approved }),
-  //     });
-
-  //     const data = await response.json();
-  //     if (data.success) {
-  //       console.log("Approval flagged:", data.data);
-  //       handleApproved();
-  //     } else {
-  //       console.error("Failed to flag approval:", data.error);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
+  console.log(_id);
 
   return (
     <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-full">
-      <Link href={"/"}>
+      <Link href={`/messages/${_id}`}>
         <div className="dark:text-primary-light text-primary-dark">
           {trimText(message, 30)}
         </div>
