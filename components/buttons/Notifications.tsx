@@ -1,12 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { FC, useState, useEffect } from "react";
 import { FaBell } from "react-icons/fa";
 
 interface Notification {
   _id: string;
   message: string;
-  status: "approved" | "not_approved" | "viewed"; // or any other statuses you need
+  messageId: string;
+  status: "approved" | "not_approved" | "viewed";
 }
 
 interface Props {}
@@ -14,6 +16,8 @@ interface Props {}
 const Notifications: FC<Notification> = (): JSX.Element => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const router = useRouter();
 
   const fetchNotifications = async () => {
     try {
@@ -26,7 +30,9 @@ const Notifications: FC<Notification> = (): JSX.Element => {
     }
   };
 
-  const handleNotificationClick = async (_id: string) => {
+  const handleNotificationClick = async (notification: Notification) => {
+    const { _id, messageId } = notification;
+
     console.log("Handling notification click for ID:", _id);
     if (!_id) {
       console.error("Notification ID is missing");
@@ -34,9 +40,6 @@ const Notifications: FC<Notification> = (): JSX.Element => {
     }
 
     try {
-      // Route to the message page
-      // router.push(`/message/${id}`);
-
       // Optionally mark the notification as viewed before deletion
       // await markNotificationAsViewed(id);
 
@@ -59,6 +62,10 @@ const Notifications: FC<Notification> = (): JSX.Element => {
 
       // If successful, remove the notification from the state
       setNotifications((prev) => prev.filter((notif) => notif._id !== _id));
+
+      // Route to the message page
+
+      router.push(`/messages/${messageId}`);
     } catch (error) {
       console.error("Error handling notification click", error);
       alert("An unexpected error occurred. Please try again later.");
@@ -136,7 +143,7 @@ const Notifications: FC<Notification> = (): JSX.Element => {
             {notifications.length > 0 ? (
               notifications.map((notification) => (
                 <li
-                  onClick={() => handleNotificationClick(notification._id)}
+                  onClick={() => handleNotificationClick(notification)}
                   key={notification._id}
                   className="text-sm cursor-pointer"
                 >

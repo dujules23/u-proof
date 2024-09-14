@@ -32,8 +32,6 @@ const MessageCard: FC<Props> = ({
 }): JSX.Element => {
   const { _id, name, subject, message, createdAt, approved } = messageData;
 
-  console.log(_id);
-
   return (
     <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-full">
       <Link href={`/messages/${_id}`}>

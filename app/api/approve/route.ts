@@ -35,7 +35,10 @@ export async function POST(request: NextRequest) {
       ? `A message from ${existingMessage.name} has been approved.`
       : `A message from ${existingMessage.name} has not been approved.`;
 
+    const messageId = existingMessage.id;
+
     await Notifications.create({
+      messageId: messageId,
       message: notificationMessage,
       status: approved ? "approved" : "not_approved",
     });
