@@ -2,6 +2,7 @@
 
 import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import ActionButton from "@/components/buttons/ActionButton";
 
 interface MessageDetail {
   _id: string;
@@ -43,15 +44,22 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
   const { name, subject, message, createdAt, approved } = messageData;
 
   return (
-    <div className="p-4 bg-white rounded shadow-md">
-      <h1 className="text-2xl font-bold mb-2">{subject}</h1>
-      <p className="text-gray-700 mb-4">{message}</p>
-      <div className="text-sm text-gray-500 mb-4">
-        <span>By: {name}</span> |{" "}
-        <span>{new Date(createdAt).toLocaleDateString()}</span>
-      </div>
-      <div className={`badge ${approved ? "badge-success" : "badge-warning"}`}>
-        {approved ? "Approved" : "Pending Approval"}
+    <div className="flex justify-center items-center min-w-screen m-20">
+      <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-auto sm:min-w-auto md:min-w-96">
+        <h1 className="text-2xl font-bold mb-2">{subject}</h1>
+        <div className="text-sm text-gray-500 mb-4">
+          <span>By: {name}</span> |{" "}
+          <span>{new Date(createdAt).toLocaleDateString()}</span>
+        </div>
+        <p className="text-gray-700 mb-4">{message}</p>
+        <div className="flex place-content-between">
+          <div className="place-content-center">
+            {approved ? "Approved" : "Pending Approval"}
+          </div>
+          <div>
+            <ActionButton title="Edit" />
+          </div>
+        </div>
       </div>
     </div>
   );
