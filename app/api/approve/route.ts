@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     const existingMessage = await Message.findById(id);
     if (!existingMessage) {
       return NextResponse.json(
-        { success: false, error: "Message not found" },
+        { success: false, error: "Message(s) not found" },
         { status: 404 }
       );
     }

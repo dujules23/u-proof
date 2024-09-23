@@ -76,7 +76,7 @@ const InfiniteScrollMessages = async ({ query }: { query: string }) => {
         {!messages && noMessageFound(messages)}
         {filteredMessages.length === 0 ? (
           <p className="flex justify-center mt-6 sm:col-span-2 md:col-span-1 md:col-start-2 text-xl">
-            Message Not Found.
+            Message(s) Not Found.
           </p>
         ) : (
           filteredMessages.map((message) => (
