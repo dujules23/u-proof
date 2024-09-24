@@ -11,6 +11,8 @@ interface EmailPayload {
   email: string;
   subject: string;
   message: string;
+  location: string;
+  ministry: string;
   approved: boolean;
 }
 
@@ -25,18 +27,6 @@ export async function GET(req: NextRequest) {
     const query = searchParams.get("query");
     const messagesFromDb = await Message.find();
 
-    // const searchQuery = query ? query.toLowerCase() : "";
-    // const messagesFromDb = await Message.find({
-    //   $or: [
-    //     { subject: { $regex: new RegExp(searchQuery, "i") } },
-    //     { name: { $regex: new RegExp(searchQuery, "i") } },
-    //     { email: { $regex: new RegExp(searchQuery, "i") } },
-    //     { createdAt: { $regex: new RegExp(searchQuery, "i") } },
-    //   ],
-    // });
-
-    // console.log(messagesFromDb.length);
-    // console.log("Data Received");
     return NextResponse.json(messagesFromDb, { status: 200 });
     // return NextResponse.json([], { status: 200 });
   } catch (error) {
@@ -49,8 +39,15 @@ export async function GET(req: NextRequest) {
 
 // POST for sending email message to be reviewed
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  const { name, email, subject, message, approved }: EmailPayload =
-    await req.json();
+  const {
+    name,
+    email,
+    subject,
+    message,
+    location,
+    ministry,
+    approved,
+  }: EmailPayload = await req.json();
   let transaction;
 
   try {
@@ -59,6 +56,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       email,
       subject,
       message,
+      location,
+      ministry,
       approved,
     });
 
@@ -71,7 +70,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // Storing the message in the database
     console.log("Storing message in database...");
     const newMessage = await Message.create(
-      [{ name, email, subject, message, approved }],
+      [{ name, email, subject, message, location, ministry, approved }],
       { session: transaction }
     );
 

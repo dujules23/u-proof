@@ -1,6 +1,7 @@
 import {
   Body,
   Button,
+  Column,
   Container,
   Head,
   Hr,
@@ -47,20 +48,8 @@ export const AirbnbReviewEmail = ({
 
       <Body style={main}>
         <Container style={container}>
-          <Section style={icon}>
-            <FaBookOpenReader />
-            {/* <svg strokeWidth="0" viewBox="0 0 512 512 height="1em">  */}
-            {/* <svg
-              stroke="currentColor"
-              fill="currentColor"
-              stroke-width="0"
-              viewBox="0 0 512 512"
-              height="1em"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M352 96c0-53.02-42.98-96-96-96s-96 42.98-96 96 42.98 96 96 96 96-42.98 96-96zM233.59 241.1c-59.33-36.32-155.43-46.3-203.79-49.05C13.55 191.13 0 203.51 0 219.14v222.8c0 14.33 11.59 26.28 26.49 27.05 43.66 2.29 131.99 10.68 193.04 41.43 9.37 4.72 20.48-1.71 20.48-11.87V252.56c-.01-4.67-2.32-8.95-6.42-11.46zm248.61-49.05c-48.35 2.74-144.46 12.73-203.78 49.05-4.1 2.51-6.41 6.96-6.41 11.63v245.79c0 10.19 11.14 16.63 20.54 11.9 61.04-30.72 149.32-39.11 192.97-41.4 14.9-.78 26.49-12.73 26.49-27.06V219.14c-.01-15.63-13.56-28.01-29.81-27.09z"></path>
-            </svg> */}
+          <Section style={header}>
+            <FaBookOpenReader style={icon} />
 
             <span style={title}>{APP_NAME}</span>
           </Section>
@@ -72,17 +61,22 @@ export const AirbnbReviewEmail = ({
               <Text style={heading}>{`Here's what ${authorName} wrote:`}</Text>
               <Text style={review}>{reviewText}</Text>
               <Text style={paragraph}>
-                {`Click the button below to approve or request an edit for ${authorName}'s
-                message.`}
+                {`Approve or request an edit for ${authorName}'s
+                message below.`}
               </Text>
-
-              <Button style={button} href={approveLink}>
-                Approve/Edit Message
-              </Button>
             </Row>
           </Section>
 
           <Hr style={hr} />
+        </Container>
+        <Container style={container2}>
+          <Button style={button1} href={approveLink}>
+            Approve Message
+          </Button>
+
+          <Button style={button2} href={approveLink}>
+            Request Edit
+          </Button>
         </Container>
       </Body>
     </Html>
@@ -106,11 +100,21 @@ const main = {
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
 };
 
+const buttonArea = {
+  display: "flex",
+  justifyContent: "space-between",
+};
+
 const container = {
   margin: "0 auto",
   padding: "20px 0 48px",
   width: "580px",
   maxWidth: "100%",
+};
+
+const container2 = {
+  paddingLeft: "35px",
+  justifyContent: "space-between",
 };
 
 const userImage = {
@@ -139,8 +143,21 @@ const review = {
   borderRadius: "4px",
 };
 
-const button = {
+const button1 = {
   backgroundColor: "#038C4C",
+  borderRadius: "3px",
+  color: "#fff",
+  fontSize: "18px",
+  paddingTop: "19px",
+  paddingBottom: "19px",
+  textDecoration: "none",
+  textAlign: "center" as const,
+  display: "block",
+  width: "100%",
+};
+
+const button2 = {
+  backgroundColor: "#bb2124",
   borderRadius: "3px",
   color: "#fff",
   fontSize: "18px",
@@ -175,9 +192,13 @@ const footer = {
   marginBottom: "10px",
 };
 
-const icon = {
+const header = {
   fontSize: "40px",
   justifyContent: "space-between",
+};
+
+const icon = {
+  color: "#000000",
 };
 
 const title = {

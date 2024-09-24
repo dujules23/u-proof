@@ -6,6 +6,7 @@ interface Props {
   title: string;
   busy?: boolean;
   disabled?: boolean;
+  disabledColor?: string;
   textColor?: string;
   padding?: string;
   borderRadius?: string;
@@ -15,6 +16,7 @@ interface Props {
 
 const ActionButton: FC<Props> = ({
   disabled,
+  disabledColor = "disabled:grey-500",
   busy = false,
   title,
   onClick,
@@ -27,6 +29,7 @@ const ActionButton: FC<Props> = ({
     textColor,
     padding,
     borderRadius,
+    disabledColor,
     "border-none", // Add common button classes here
     "cursor-pointer",
     "focus:outline-none",

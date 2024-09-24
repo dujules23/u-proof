@@ -10,6 +10,8 @@ export default function MessageForm() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [subject, setSubject] = useState("");
+  const [location, setLocation] = useState("");
+  const [ministry, setMinistry] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -21,7 +23,14 @@ export default function MessageForm() {
     try {
       const messageSent = await fetch("/api/messages", {
         method: "POST",
-        body: JSON.stringify({ name, email, subject, message }),
+        body: JSON.stringify({
+          name,
+          email,
+          subject,
+          message,
+          location,
+          ministry,
+        }),
         headers: { "Content-Type": "application/json" },
       });
 
@@ -40,6 +49,8 @@ export default function MessageForm() {
       setEmail("");
       setMessage("");
       setSubject("");
+      setLocation("");
+      setMinistry("");
       toast.success("Message sent for review!", {
         classNames: {
           toast: "bg-green-300",
@@ -54,7 +65,7 @@ export default function MessageForm() {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-16">
+    <div className="max-w-xl mx-auto mt-16">
       <h1 className="text-2xl font-bold mb-6 text-primary-dark dark:text-primary-light">
         Submit Your Message
       </h1>
@@ -63,12 +74,12 @@ export default function MessageForm() {
         <p className="text-green-500 mb-4">{successMessage}</p>
       )}
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
+        <div className="flex items-center space-x-1 mb-5">
           <label
             htmlFor="name"
             className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
           >
-            Your Name:
+            Name:
           </label>
           <input
             type="text"
@@ -78,8 +89,6 @@ export default function MessageForm() {
             required
             className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline  text-black dark:bg-primary-light"
           />
-        </div>
-        <div className="mb-4">
           <label
             htmlFor="email"
             className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
@@ -95,6 +104,89 @@ export default function MessageForm() {
             className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
           />
         </div>
+        {/* <div className="mb-4">
+          <label
+            htmlFor="email"
+            className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
+          >
+            Email:
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
+            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
+          />
+        </div> */}
+        <div className="flex items-center space-x-1 mb-4">
+          <label
+            htmlFor="location"
+            className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
+          >
+            Location:
+          </label>
+          <select
+            name="location"
+            id="location"
+            // defaultValue="default"
+            value={location}
+            onChange={(event) => setLocation(event.target.value)}
+            required
+            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
+          >
+            <option value="florence">Florence</option>
+            <option value="columbia">Columbia</option>
+            <option value="georgetown">Georgetown</option>
+            <option value="sumter">Sumter</option>
+          </select>
+          <label
+            htmlFor="Ministry"
+            className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
+          >
+            Ministry:
+          </label>
+          <select
+            name="ministry"
+            id="ministry"
+            // defaultValue="default"
+            value={ministry}
+            onChange={(event) => setMinistry(event.target.value)}
+            required
+            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
+          >
+            <option value="music">Music</option>
+            <option value="media">Media</option>
+            <option value="yby">YBY</option>
+            <option value="50+">50+</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        {/* <div className="mb-4">
+          <label
+            htmlFor="Ministry"
+            className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
+          >
+            Ministry:
+          </label>
+          <select
+            name="ministry"
+            id="ministry"
+            defaultValue="default"
+            value={ministry}
+            onChange={(event) => setMinistry(event.target.value)}
+            required
+            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
+          >
+            <option value="default">Select your ministry...</option>
+            <option>Music</option>
+            <option>Media</option>
+            <option>YBY</option>
+            <option>50+</option>
+            <option>Other</option>
+          </select>
+        </div> */}
         <div className="mb-4">
           <label
             htmlFor="subject"
@@ -125,22 +217,11 @@ export default function MessageForm() {
             required
             className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light min-h-[15rem]"
           />
-          {/* <Editor
-            value={message}
-            onChange={(event) => setMessage(event.target.value)}
-          /> */}
         </div>
-        {/* <button
-          disabled={!name || !email || !message}
-          type="submit"
-          className="bg-nav disabled:bg-gray-600 text-white font-bold py-2 px-4 rounded hover:bg-green-900"
-        >
-          Send Message
-        </button> */}
         <div className="inline-block">
           <ActionButton
             title="Send Message"
-            disabled={!name || !email || !message}
+            disabled={!name || !email || !message || !location || !ministry}
             // onClick={(event: FormEvent<HTMLFormElement>) => handleSubmit(event)}
             busy={submitting}
           />
