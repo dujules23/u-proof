@@ -78,32 +78,30 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const messageId = newMessage[0]._id.toString();
     console.log("Message stored with ID:", messageId);
 
-    let recipientEmail: string | null = null;
+    // let recipientEmail: string | null = null;
 
-    console.log(location);
+    // console.log(location);
 
-    switch (location) {
-      // Get Domain to test, then setup env files for emails
-      case "florence":
-        recipientEmail = "";
-        break;
-      case "columbia":
-        recipientEmail = "";
-        break;
-      default:
-        return NextResponse.json(
-          { error: "Invalid location" },
-          { status: 400 }
-        );
-    }
-
-    console.log(recipientEmail);
+    // switch (location) {
+    //   // Get Domain to test, then setup env files for emails
+    //   case "florence":
+    //     recipientEmail = "";
+    //     break;
+    //   case "columbia":
+    //     recipientEmail = "";
+    //     break;
+    //   default:
+    //     return NextResponse.json(
+    //       { error: "Invalid location" },
+    //       { status: 400 }
+    //     );
+    // }
 
     // Sending email using Resend
     console.log("Sending email...");
     const { data, error } = await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
-      to: recipientEmail,
+      to: email,
       subject: "A new message is ready to be approved.",
       react: AirbnbReviewEmail({
         authorName: name,

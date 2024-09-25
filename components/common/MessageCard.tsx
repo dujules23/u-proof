@@ -33,7 +33,7 @@ const MessageCard: FC<Props> = ({
   const { _id, name, subject, message, createdAt, approved } = messageData;
 
   return (
-    <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-full">
+    <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-full space-y-3">
       <Link href={`/messages/${_id}`}>
         <div className="dark:text-primary-light text-primary-dark">
           {trimText(message, 30)}
@@ -53,13 +53,13 @@ const MessageCard: FC<Props> = ({
         </Link>
 
         {approved ? (
-          <ActionButton title="Approved" variant="primary" onClick={() => {}} />
+          <span className="mt-4 px-6 py-2 bg-nav rounded cursor-pointer flex justify-center">
+            Approved
+          </span>
         ) : (
-          <ActionButton
-            variant="danger"
-            onClick={() => {}}
-            title="Awaiting Approval"
-          />
+          <span className="mt-4 px-6 py-2 bg-red-600 rounded cursor-pointer flex justify-center">
+            Awaiting Approval
+          </span>
         )}
 
         {busy ? (

@@ -33,8 +33,11 @@ const ActionButton: FC<Props> = ({
     "border-none", // Add common button classes here
     "cursor-pointer",
     "focus:outline-none",
+    "flex",
+    "items-center",
+    "space-x-5",
     {
-      "bg-nav hover:bg-green-700": variant === "primary",
+      "bg-nav hover:bg-button-light": variant === "primary",
       "bg-red-600 hover:bg-red-700": variant === "danger",
     }
   );
