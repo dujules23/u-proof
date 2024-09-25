@@ -69,10 +69,10 @@ export default function MessageForm() {
       <h1 className="text-2xl font-bold mb-6 text-primary-dark dark:text-primary-light">
         Submit Your Message
       </h1>
-      {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
+      {/* {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
       {successMessage && (
         <p className="text-green-500 mb-4">{successMessage}</p>
-      )}
+      )} */}
       <form onSubmit={handleSubmit}>
         <div className="flex items-center space-x-1 mb-5">
           <label
@@ -104,22 +104,6 @@ export default function MessageForm() {
             className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
           />
         </div>
-        {/* <div className="mb-4">
-          <label
-            htmlFor="email"
-            className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
-          >
-            Email:
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            required
-            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
-          />
-        </div> */}
         <div className="flex items-center space-x-1 mb-4">
           <label
             htmlFor="location"
@@ -163,30 +147,6 @@ export default function MessageForm() {
             <option value="other">Other</option>
           </select>
         </div>
-        {/* <div className="mb-4">
-          <label
-            htmlFor="Ministry"
-            className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
-          >
-            Ministry:
-          </label>
-          <select
-            name="ministry"
-            id="ministry"
-            defaultValue="default"
-            value={ministry}
-            onChange={(event) => setMinistry(event.target.value)}
-            required
-            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
-          >
-            <option value="default">Select your ministry...</option>
-            <option>Music</option>
-            <option>Media</option>
-            <option>YBY</option>
-            <option>50+</option>
-            <option>Other</option>
-          </select>
-        </div> */}
         <div className="mb-4">
           <label
             htmlFor="subject"
