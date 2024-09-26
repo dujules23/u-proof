@@ -82,9 +82,12 @@ export default function MessageForm() {
 
   return (
     <div className="max-w-xl mx-auto mt-16">
-      <h1 className="text-2xl font-bold mb-6 text-primary-dark dark:text-primary-light">
+      <h1 className="text-2xl font-bold mb-4 text-primary-dark dark:text-primary-light">
         Submit Your Message
       </h1>
+      <p className="mb-4">
+        Please make sure to complete all fields before submitting your message.
+      </p>
       <form onSubmit={handleSubmit}>
         <div className="items-center grid grid-cols-2 space-x-3 mb-4">
           <Input

@@ -20,7 +20,7 @@ const UserNav: FC<Props> = (props): JSX.Element => {
       </Link>
 
       {/* Dark Mode Button  and Past Messages Link*/}
-      <div className="flex space-x-5">
+      <div className="flex items-center space-x-5">
         <div className="hover:text-black transition ease-in-out">
           <Link href="/past-messages">Past Messages</Link>
         </div>
