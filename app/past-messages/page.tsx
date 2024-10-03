@@ -1,37 +1,44 @@
 import { PaginationComponent } from "@/components/buttons/Pagination";
-import InfiniteScrollMessages from "@/components/common/InfiniteScrollMessages";
+import MessageCard from "@/components/common/MessageCard";
 import SearchBar from "@/components/search/SearchBar";
-import { fetchAllMessages, fetchMessagesWithQuery } from "@/lib/utils";
+import { getData } from "@/lib/utils";
+import Message, { MessageModelSchema } from "@/models/messageSchema";
 import { FC, Suspense } from "react";
 
-interface Props {}
+interface Props {
+  searchParams?: { page: string; query: string };
+}
 
 const PastMessages: FC<Props> = async ({
   searchParams,
 }: {
-  searchParams?: { query?: string; page?: string };
+  searchParams?: { query: string; page: string };
 }) => {
   // console.log(messages);
 
+  let page = parseInt(searchParams?.page || "1", 10);
+
+  page = !page || page < 1 ? 1 : page;
+
+  let perPage = 6;
   const query = searchParams?.query || "";
-  const currentPage = Number(searchParams?.page) || 1;
+  const data = await getData(perPage, page, query);
 
-  const totalPages = await fetchMessagesWithQuery(query);
+  const { itemCount, messagesFromDb } = data;
 
-  // console.log(totalPages.length);
+  const pageCount = Math.ceil(itemCount / perPage);
 
   return (
-    // <div>hello</div>
     <div className="max-w-xxl mx-20 mt-18">
       <h1 className="text-2xl font-bold mb-6 text-primary-dark dark:text-primary-light">
         Past Messages
       </h1>
-      {/* Search Bar and View Slider */}
+
       <div className="flex col col-start-2">
         <SearchBar placeholder="Search..." />
       </div>
-      {/* Messages */}
-      <div className="flex justify-center mt-6">
+
+      <div className="grid space-y-6 justify-center mt-6">
         <Suspense
           key={query}
           fallback={
@@ -40,10 +47,20 @@ const PastMessages: FC<Props> = async ({
             </p>
           }
         >
-          <InfiniteScrollMessages query={query} />
+          {data.messagesFromDb.length === 0 ? (
+            <p className="flex justify-center mt-6 sm:col-span-2 md:col-span-1 md:col-start-2 text-xl">
+              Message(s) Not Found.
+            </p>
+          ) : (
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
+              {messagesFromDb.map((item) => (
+                <MessageCard key={item._id} messageData={item} />
+              ))}
+            </div>
+          )}
         </Suspense>
-        {/* <PaginationComponent totalPages={totalPages} /> */}
       </div>
+      <PaginationComponent pageCount={pageCount} />
     </div>
   );
 };

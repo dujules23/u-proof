@@ -18,14 +18,16 @@ interface EmailPayload {
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 // GET for retrieving emails using query
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest, perPage: number, page: number) {
   try {
     await dbConnect();
     // console.log("Getting data");
     const url = new URL(req.url);
     const searchParams = new URLSearchParams(url.searchParams);
     const query = searchParams.get("query");
-    const messagesFromDb = await Message.find();
+    const messagesFromDb = await Message.find()
+      .skip(perPage * (page - 1))
+      .limit(perPage);
 
     return NextResponse.json(messagesFromDb, { status: 200 });
     // return NextResponse.json([], { status: 200 });

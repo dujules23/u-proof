@@ -1,5 +1,7 @@
+import { ObjectId } from "mongoose";
+
 export interface MessageDetail {
-  _id: string;
+  _id: ObjectId;
   name: string;
   email: string;
   subject: string;

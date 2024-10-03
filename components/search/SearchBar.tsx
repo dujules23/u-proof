@@ -17,7 +17,7 @@ const SearchBar: FC<Props> = ({ placeholder }): JSX.Element => {
 
   const handleSearch = useDebouncedCallback((term: string) => {
     // console.log(`Searching... ${term}`);
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
     params.set("page", "1");
     if (term) {
       params.set("query", term);
@@ -25,7 +25,7 @@ const SearchBar: FC<Props> = ({ placeholder }): JSX.Element => {
       params.delete("query");
     }
     replace(`${pathname}?${params.toString()}`);
-  }, 300);
+  }, 1000);
 
   return (
     <div className="flex">

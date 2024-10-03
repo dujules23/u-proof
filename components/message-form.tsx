@@ -85,7 +85,7 @@ export default function MessageForm() {
       <h1 className="text-2xl font-bold mb-4 text-primary-dark dark:text-primary-light">
         Submit Your Message
       </h1>
-      <p className="mb-4">
+      <p className="mb-4 text-primary-dark dark:text-primary-light">
         Please make sure to complete all fields before submitting your message.
       </p>
       <form onSubmit={handleSubmit}>

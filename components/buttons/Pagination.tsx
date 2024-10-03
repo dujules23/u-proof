@@ -3,15 +3,10 @@
 import { FC } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
-// import {
-//   Pagination,
-//   PaginationContent,
-//   PaginationItem,
-// } from "@/components/ui/pagination";
+// take a look at adding ui for this from shadcn, check ui folder for this.
 
 interface PaginationProps {
-  pageCount: number;
-  totalPages: [];
+  pageCount: number; // This is the total number of pages.
 }
 
 interface PaginationArrowProps {
@@ -27,57 +22,66 @@ const PaginationArrow: FC<PaginationArrowProps> = ({
 }) => {
   const router = useRouter();
   const isLeft = direction === "left";
+
+  // Conditionally disable the button if isDisabled is true.
   const disabledClassName = isDisabled ? "opacity-50 cursor-not-allowed" : "";
 
-  return (
+  return !isDisabled ? (
     <button
       onClick={() => router.push(href)}
-      className={`bg-gray-100 text-gray-500 hover:bg-gray-200 ${disabledClassName}`}
+      className={`bg-nav text-primary-light enabled:hover:bg-button-light p-6 text-6xl rounded-xl ${disabledClassName}`}
       aria-disabled={isDisabled}
       disabled={isDisabled}
     >
       {isLeft ? "«" : "»"}
     </button>
+  ) : (
+    <span
+      className={`bg-nav text-primary-light enabled:hover:bg-button-light p-6 text-6xl rounded-xl ${disabledClassName}`}
+      aria-disabled={isDisabled}
+    >
+      {isLeft ? "«" : "»"}
+    </span>
   );
 };
 
-export function PaginationComponent({
-  pageCount,
-  totalPages,
-}: Readonly<PaginationProps>) {
+export function PaginationComponent({ pageCount }: PaginationProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get("page")) || 1;
+  const currentPage = Number(searchParams.get("page")) || 1; // Get current page from search params or default to 1
 
   const createPageURL = (pageNumber: number | string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", pageNumber.toString());
-    return `${pathname}?${params.toString()}`;
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", pageNumber.toString()); // Set the "page" query param
+    return `${pathname}?${params.toString()}`; // Create the URL with updated page number
   };
 
+  // Handle previous and next page logic
+  const prevPage = currentPage > 1 ? currentPage - 1 : 1;
+  const nextPage = currentPage < pageCount ? currentPage + 1 : pageCount;
+
   return (
-    <div>
+    <div className="flex mt-12 justify-evenly items-center">
+      {/* Left arrow for previous page */}
+      <PaginationArrow
+        direction="left"
+        href={createPageURL(prevPage)}
+        isDisabled={currentPage <= 1}
+      />
+
+      {/* Current page indicator */}
       <div>
-        <div>
-          <PaginationArrow
-            direction="left"
-            href={createPageURL(currentPage - 1)}
-            isDisabled={currentPage <= 1}
-          />
-        </div>
-        <div>
-          <span className="p-2 font-semibold text-gray-500">
-            Page {currentPage}
-          </span>
-        </div>
-        <div>
-          <PaginationArrow
-            direction="right"
-            href={createPageURL(currentPage + 1)}
-            isDisabled={currentPage >= pageCount}
-          />
-        </div>
+        <span className="p-2 font-semibold text-gray-500">
+          Page {currentPage} of {pageCount}
+        </span>
       </div>
+
+      {/* Right arrow for next page */}
+      <PaginationArrow
+        direction="right"
+        href={createPageURL(nextPage)}
+        isDisabled={currentPage >= pageCount}
+      />
     </div>
   );
 }
