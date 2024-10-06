@@ -6,12 +6,14 @@ import {
   Head,
   Hr,
   Html,
+  Img,
   Preview,
   Row,
   Section,
   Text,
 } from "@react-email/components";
 import * as React from "react";
+import Image from "next/image";
 
 import { FaBookOpenReader } from "react-icons/fa6";
 
@@ -36,6 +38,7 @@ export const AirbnbReviewEmail = ({
 }: AirbnbReviewEmailProps) => {
   const previewText = `${authorName} sent you a message for review.`;
   const APP_NAME = "uProof";
+  const logo = "./logo.png";
 
   console.log("Message Id:--------->", messageId);
 
@@ -49,8 +52,12 @@ export const AirbnbReviewEmail = ({
       <Body style={main}>
         <Container style={container}>
           <Section style={header}>
-            <FaBookOpenReader style={icon} />
-
+            <Img
+              src="https://res.cloudinary.com/dufnwtwtz/image/upload/v1728185584/uProof/FWC_Logo_Icon_Black_wwns0q.png"
+              alt="logo"
+              width={50}
+              height={50}
+            />
             <span style={title}>{APP_NAME}</span>
           </Section>
           <Section style={{ paddingBottom: "20px" }}>
@@ -193,6 +200,8 @@ const footer = {
 };
 
 const header = {
+  display: "flex",
+  alignItems: "center",
   fontSize: "40px",
   justifyContent: "space-between",
 };
@@ -202,5 +211,5 @@ const icon = {
 };
 
 const title = {
-  paddingLeft: "15px",
+  paddingLeft: "0px",
 };

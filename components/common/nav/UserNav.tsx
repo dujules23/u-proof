@@ -3,6 +3,7 @@ import { FC } from "react";
 import DarkModeButton from "@/components/buttons/DarkModeButton";
 import { FaBookOpenReader } from "react-icons/fa6";
 import Notifications from "@/components/buttons/Notifications";
+import Image from "next/image";
 
 interface Props {}
 
@@ -14,7 +15,7 @@ const UserNav: FC<Props> = (props): JSX.Element => {
       {/* Title */}
       <Link href="/">
         <div className="flex items-center space-x-2">
-          <FaBookOpenReader />
+          <Image alt="logo" src="/logo.png" width={35} height={35} />
           <span className="md:text-xl font-semibold">{APP_NAME}</span>
         </div>
       </Link>
