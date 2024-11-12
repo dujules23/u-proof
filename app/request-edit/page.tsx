@@ -1,34 +1,45 @@
+"use client"; // Mark the component as a client component
+
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { MessageDetail } from "@/utils/types";
+import { useSearchParams } from "next/navigation";
 
-// interface Message {
-//   id: string;
-//   content: string;
-//   user: {
-//     id: string;
-//     name: string;
-//     email: string;
-//   };
-// }
+interface Message {
+  _id: string;
+  content: string;
+  user: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+}
 
-const RequestEditPage = async ({ params }: { params: { _id: string } }) => {
+const RequestEditPage = () => {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  console.log(id);
   const [editSuggestion, setEditSuggestion] = useState("");
+  const [message, setMessage] = useState<MessageDetail | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/messages/${params._id}`
-  );
-  const data = await res.json();
-  const message = data.message;
+  // const messageId = params._id;
 
-  const messageId = params._id;
+  // Fetch message and user data on the client side using useEffect
+  useEffect(() => {
+    const fetchMessageData = async () => {
+      const response = await fetch(`/api/messages/${id}`);
+      const data = await response.json();
+      setMessage(data.message); // Assuming the response includes the message with user data
+    };
+
+    fetchMessageData();
+  }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const response = await fetch(`/api/request-edit`, {
       method: "POST",
-      body: JSON.stringify({ messageId, editSuggestion }),
+      body: JSON.stringify({ id, editSuggestion }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -45,7 +56,7 @@ const RequestEditPage = async ({ params }: { params: { _id: string } }) => {
 
   return (
     <div>
-      <h1>Request Edit for Message {params._id}</h1>
+      <h1>Request Edit for Message {message._id.toString()}</h1>
       <p>
         <strong>
           Message from {message.name} ({message.email}):

@@ -3,7 +3,7 @@ import Message from "@/models/messageSchema";
 import { Resend } from "resend";
 import * as React from "react";
 import { NextRequest, NextResponse } from "next/server";
-import { AirbnbReviewEmail } from "@/emails/template";
+import { sendFollowUpEmail, sendPrimaryEmail } from "@/utils/helper";
 
 interface EmailPayload {
   id: string;
@@ -80,50 +80,62 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const messageId = newMessage[0]._id.toString();
     console.log("Message stored with ID:", messageId);
 
-    let recipientEmail: string | null = null;
+    // Location map of each location and their respective emails
+    const locationEmailMap: { [key: string]: string | undefined } = {
+      "1": process.env.EMAIL_1,
+      "2": process.env.EMAIL_2,
+    };
 
-    // console.log(location);
+    let recipientEmail = locationEmailMap[location];
 
-    switch (location) {
-      // Get Domain to test, then setup env files for emails
-      case "florence":
-        recipientEmail = "";
-        break;
-      case "columbia":
-        recipientEmail = "";
-        break;
-      default:
-        return NextResponse.json(
-          { error: "Invalid location" },
-          { status: 400 }
-        );
+    // if the email isn't in this list, error
+    if (!recipientEmail) {
+      await transaction.abortTransaction();
+      return NextResponse.json({ error: "Invalid location" }, { status: 400 });
     }
 
-    // Sending email using Resend
-    console.log("Sending email...");
-    const { data, error } = await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
-      to: recipientEmail,
-      subject: "A new message is ready to be approved.",
-      react: AirbnbReviewEmail({
-        authorName: name,
-        reviewText: message,
-        messageId: messageId,
-      }) as React.ReactElement,
-    });
+    // sending the primary email
+    const { data, error: primaryError } = await sendPrimaryEmail(
+      recipientEmail,
+      name,
+      message,
+      messageId
+    );
+
+    // if there is an error, rollback the transaction
+    if (primaryError) {
+      console.error("Error sending primary email:", primaryError);
+      await transaction.abortTransaction();
+      return NextResponse.json(
+        { error: "Failed to send primary email" },
+        { status: 500 }
+      );
+    }
 
     // Log email sending result
-    console.log("Email send result:", { data, error });
+    console.log("Email send result:", { data, primaryError });
 
-    // If there's an error sending the email, rollback the transaction
-    if (error) {
-      console.error("Error sending email:", error);
-      await transaction.abortTransaction();
-      return NextResponse.json({
-        success: false,
-        status: 500,
-        error: "Failed to send email",
-      });
+    let otherEmail: string = process.env.SECONDARY_EMAIL!;
+
+    // if specific location, send an additional email to another person
+    if (location === "2") {
+      const { data, error: followUpError } = await sendFollowUpEmail(
+        otherEmail,
+        name,
+        message,
+        messageId
+      );
+      if (followUpError) {
+        console.error("Error sending follow-up email:", followUpError);
+        await transaction.abortTransaction(); // Roll back if sending fails
+        return NextResponse.json(
+          { error: "Failed to send follow-up email" },
+          { status: 500 }
+        );
+      }
+
+      // Log email sending result
+      console.log("Email send result:", { data, followUpError });
     }
 
     // Commit the transaction if both operations are successful
