@@ -44,6 +44,8 @@ export const AirbnbReviewEmail = ({
 
   const approveLink = `${baseUrl}/approve-page?id=${messageId}&approved=true`;
 
+  const editLink = `${baseUrl}/request-edit?id=${messageId}&approved=true`;
+
   return (
     <Html>
       <Head />

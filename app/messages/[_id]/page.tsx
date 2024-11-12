@@ -17,6 +17,8 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
   const [messageData, setMessageData] = useState<MessageDetail | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [editClick, setEditClick] = useState<boolean>(false);
+  const [newMessage, setNewMessage] = useState<string>("");
 
   useEffect(() => {
     const fetchMessage = async () => {
@@ -56,10 +58,35 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
           <div className="place-content-center">
             {approved ? "Approved" : "Pending Approval"}
           </div>
-          <div>
-            <ActionButton title="Edit" />
-          </div>
+
+          {approved ? null : (
+            <div>
+              <ActionButton
+                onClick={() => setEditClick(!editClick)}
+                title={editClick ? "Close" : "Edit"}
+              />
+            </div>
+          )}
         </div>
+
+        {editClick && (
+          <div className="pt-5">
+            <label
+              htmlFor="message"
+              className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
+            >
+              Message:
+            </label>
+            <textarea
+              id="message"
+              value={newMessage}
+              onChange={(event) => setNewMessage(event.target.value)}
+              required
+              className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light min-h-[15rem]"
+            />
+            <ActionButton title="Submit Edit" />
+          </div>
+        )}
       </div>
     </div>
   );
