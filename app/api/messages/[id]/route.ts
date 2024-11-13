@@ -23,3 +23,40 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+export async function PATCH(req: NextRequest) {
+  await dbConnect();
+
+  const body = await req.json();
+
+  const { newMessage } = body;
+
+  const url = new URL(req.url);
+  const _id = url.pathname.split("/").pop();
+
+  if (!_id || !newMessage) {
+    return NextResponse.json({
+      error: "Message ID and new message are required",
+    });
+  }
+
+  try {
+    const updatedMessage = await Message.updateOne(
+      { _id: _id },
+      { $set: { message: newMessage } }
+    );
+
+    if (!updatedMessage) {
+      return NextResponse.json({ error: "Message not found" }, { status: 404 });
+    }
+    return NextResponse.json({
+      message: "Message field updated successfully.",
+    });
+  } catch (error) {
+    console.error("Error updating message:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to update message" },
+      { status: 500 }
+    );
+  }
+}

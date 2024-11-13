@@ -1,8 +1,9 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import ActionButton from "@/components/buttons/ActionButton";
+import { toast } from "sonner";
 
 interface MessageDetail {
   _id: string;
@@ -14,11 +15,14 @@ interface MessageDetail {
 }
 
 const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
+  const router = useRouter();
+
   const [messageData, setMessageData] = useState<MessageDetail | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [editClick, setEditClick] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState<string>("");
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchMessage = async () => {
@@ -43,11 +47,51 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
   if (error) return <div>Error: {error}</div>;
   if (!messageData) return <div>No message found</div>;
 
-  const { name, subject, message, createdAt, approved } = messageData;
+  const { _id, name, subject, message, createdAt, approved } = messageData;
+
+  const approvedColor = approved ? "text-green-600" : "text-red-600";
+
+  const handleSubmit = async () => {
+    setSubmitting(true);
+
+    try {
+      const messageUpdated = await fetch(`/api/messages/${_id}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          newMessage,
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      // handles error on the frontend
+      if (messageUpdated.status !== 200) {
+        toast.error("Message did not get updated.", {
+          classNames: {
+            toast: "bg-red-300",
+          },
+        });
+        setSubmitting(false);
+        throw new Error("Failed to send message, Not Found");
+      }
+
+      setNewMessage("");
+
+      toast.success("Message has been updated!", {
+        classNames: {
+          toast: "bg-green-300",
+        },
+      });
+
+      setSubmitting(false);
+      setEditClick(false);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
 
   return (
-    <div className="flex justify-center items-center min-w-screen m-20">
-      <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-auto sm:min-w-auto md:min-w-96">
+    <div className="flex flex-col justify-center items-center min-w-screen m-12 space-y-6">
+      <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-auto max-w-2xl sm:min-w-auto md:min-w-96">
         <h1 className="text-2xl font-bold mb-2">{subject}</h1>
         <div className="text-sm text-gray-500 mb-4">
           <span>By: {name}</span> |{" "}
@@ -55,18 +99,27 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
         </div>
         <p className="text-gray-700 mb-4">{message}</p>
         <div className="flex place-content-between">
-          <div className="place-content-center">
+          <div className={`place-content-center ${approvedColor}`}>
             {approved ? "Approved" : "Pending Approval"}
           </div>
 
-          {approved ? null : (
-            <div>
+          <div className="flex space-x-2">
+            {approved ? null : (
+              <div>
+                <ActionButton
+                  onClick={() => setEditClick(!editClick)}
+                  title={editClick ? "Close" : "Edit"}
+                />
+              </div>
+            )}
+
+            <div className="">
               <ActionButton
-                onClick={() => setEditClick(!editClick)}
-                title={editClick ? "Close" : "Edit"}
+                onClick={() => router.push("/past-messages")}
+                title="Back"
               />
             </div>
-          )}
+          </div>
         </div>
 
         {editClick && (
@@ -84,7 +137,11 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
               required
               className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light min-h-[15rem]"
             />
-            <ActionButton title="Submit Edit" />
+            <ActionButton
+              busy={submitting}
+              onClick={handleSubmit}
+              title="Submit Edit"
+            />
           </div>
         )}
       </div>
