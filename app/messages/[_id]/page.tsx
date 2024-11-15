@@ -23,6 +23,7 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
   const [editClick, setEditClick] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState<string>("");
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [requestedEdit, setRequestedEdit] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchMessage = async () => {
@@ -90,8 +91,8 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center min-w-screen m-12 space-y-6">
-      <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-auto max-w-2xl sm:min-w-auto md:min-w-96">
+    <div className="flex justify-center items-center min-w-screen m-12 space-y-6 space-x-6">
+      <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-auto max-w-xl sm:min-w-auto md:min-w-96">
         <h1 className="text-2xl font-bold mb-2">{subject}</h1>
         <div className="text-sm text-gray-500 mb-4">
           <span>By: {name}</span> |{" "}
@@ -145,6 +146,18 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
           </div>
         )}
       </div>
+
+      {requestedEdit && (
+        <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-auto max-w-lg sm:min-w-auto md:min-w-96">
+          <h1 className="text-2xl font-bold mb-2">Requested Edit</h1>
+          <p className="text-gray-700 mb-4">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia,
+            quasi voluptates praesentium fugit nihil quas eius ullam et
+            asperiores incidunt ea nulla officiis deleniti, labore architecto
+            minima enim quidem officia.
+          </p>
+        </div>
+      )}
     </div>
   );
 };
