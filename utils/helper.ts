@@ -1,11 +1,5 @@
 import AirbnbReviewEmail from "@/emails/template";
-import { Editor } from "@tiptap/react";
 import { Resend } from "resend";
-
-// Editor function
-export const getFocusedEditor = (editor: Editor) => {
-  return editor.chain().focus();
-};
 
 // function that trims text
 export const trimText = (text: string, trimBy: number) => {

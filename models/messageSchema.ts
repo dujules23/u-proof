@@ -10,6 +10,7 @@ export interface MessageModelSchema {
   ministry: string;
   approved: boolean;
   processed: boolean;
+  needsEdit: boolean;
 }
 
 const MessageSchema = new Schema<MessageModelSchema>(
@@ -45,6 +46,10 @@ const MessageSchema = new Schema<MessageModelSchema>(
       default: false,
     },
     processed: {
+      type: Boolean,
+      default: false,
+    },
+    needsEdit: {
       type: Boolean,
       default: false,
     },

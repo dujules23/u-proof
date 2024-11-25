@@ -4,15 +4,7 @@ import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ActionButton from "@/components/buttons/ActionButton";
 import { toast } from "sonner";
-
-interface MessageDetail {
-  _id: string;
-  name: string;
-  subject: string;
-  message: string;
-  createdAt: string;
-  approved: boolean;
-}
+import { MessageDetail } from "@/utils/types";
 
 const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
   const router = useRouter();
@@ -48,7 +40,16 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
   if (error) return <div>Error: {error}</div>;
   if (!messageData) return <div>No message found</div>;
 
-  const { _id, name, subject, message, createdAt, approved } = messageData;
+  const {
+    _id,
+    name,
+    subject,
+    message,
+    createdAt,
+    approved,
+    needsEdit,
+    processed,
+  } = messageData;
 
   const approvedColor = approved ? "text-green-600" : "text-red-600";
 
@@ -56,10 +57,17 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
     setSubmitting(true);
 
     try {
+      // Find a way to change approved and processed to true permanently.
+      // messageData.approved = true;
+      // messageData.processed = true;
+
       const messageUpdated = await fetch(`/api/messages/${_id}`, {
         method: "PATCH",
         body: JSON.stringify({
           newMessage,
+          needsEdit,
+          approved,
+          processed,
         }),
         headers: { "Content-Type": "application/json" },
       });
@@ -83,6 +91,8 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
         },
       });
 
+      // sets approved and processed to true since this will be edited using the approved suggestion
+
       setSubmitting(false);
       setEditClick(false);
     } catch (error) {
@@ -91,12 +101,16 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
   };
 
   return (
-    <div className="flex justify-center items-center min-w-screen m-12 space-y-6 space-x-6">
+    <div className="flex justify-center items-center min-w-screen m-12 space-x-6">
       <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-auto max-w-xl sm:min-w-auto md:min-w-96">
         <h1 className="text-2xl font-bold mb-2">{subject}</h1>
         <div className="text-sm text-gray-500 mb-4">
           <span>By: {name}</span> |{" "}
-          <span>{new Date(createdAt).toLocaleDateString()}</span>
+          <span>
+            {createdAt
+              ? new Date(createdAt).toLocaleDateString()
+              : "Unknown Date"}
+          </span>
         </div>
         <p className="text-gray-700 mb-4">{message}</p>
         <div className="flex place-content-between">
@@ -139,6 +153,7 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
               className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light min-h-[15rem]"
             />
             <ActionButton
+              disabled={!newMessage}
               busy={submitting}
               onClick={handleSubmit}
               title="Submit Edit"
@@ -147,7 +162,7 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
         )}
       </div>
 
-      {requestedEdit && (
+      {needsEdit && (
         <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-auto max-w-lg sm:min-w-auto md:min-w-96">
           <h1 className="text-2xl font-bold mb-2">Requested Edit</h1>
           <p className="text-gray-700 mb-4">

@@ -5,7 +5,7 @@ export interface NotificationsSchema {
   _id: ObjectId;
   message: string;
   messageId: mongoose.Types.ObjectId;
-  status: "approved" | "not_approved" | "viewed";
+  status: "approved" | "not_approved" | "viewed" | "requested_edit";
   createdAt: Date;
 }
 
@@ -15,7 +15,7 @@ const NotificationsSchema = new Schema<NotificationsSchema>(
     messageId: { type: Schema.Types.ObjectId, ref: "Message", required: true },
     status: {
       type: String,
-      enum: ["approved", "not_approved", "viewed"],
+      enum: ["approved", "not_approved", "viewed", "requested_edit"],
       required: true,
     },
     createdAt: { type: Date, default: Date.now },

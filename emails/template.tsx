@@ -44,7 +44,7 @@ export const AirbnbReviewEmail = ({
 
   const approveLink = `${baseUrl}/approve-page?id=${messageId}&approved=true`;
 
-  const editLink = `${baseUrl}/request-edit?id=${messageId}&approved=true`;
+  const editLink = `${baseUrl}/request-edit?id=${messageId}`;
 
   return (
     <Html>
@@ -83,7 +83,7 @@ export const AirbnbReviewEmail = ({
             Approve Message
           </Button>
 
-          <Button style={button2} href={approveLink}>
+          <Button style={button2} href={editLink}>
             Request Edit
           </Button>
         </Container>

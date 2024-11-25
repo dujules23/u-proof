@@ -8,7 +8,7 @@ interface Notification {
   _id: string;
   message: string;
   messageId: string;
-  status: "approved" | "not_approved" | "viewed";
+  status: "approved" | "not_approved" | "viewed" | "request-edit";
 }
 
 interface Props {}
@@ -116,7 +116,9 @@ const Notifications: FC<Notification> = (): JSX.Element => {
                   className="text-sm cursor-pointer"
                 >
                   {notification.message} -{" "}
-                  <strong className="capitalize">{notification.status}</strong>
+                  <strong className="capitalize">
+                    {notification.status.replace("_", " ")}
+                  </strong>
                 </li>
               ))
             ) : (

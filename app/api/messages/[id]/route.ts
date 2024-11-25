@@ -29,7 +29,7 @@ export async function PATCH(req: NextRequest) {
 
   const body = await req.json();
 
-  const { newMessage } = body;
+  const { newMessage, needsEdit } = body;
 
   const url = new URL(req.url);
   const _id = url.pathname.split("/").pop();
@@ -43,7 +43,7 @@ export async function PATCH(req: NextRequest) {
   try {
     const updatedMessage = await Message.updateOne(
       { _id: _id },
-      { $set: { message: newMessage } }
+      { $set: { message: newMessage }, needsEdit: false }
     );
 
     if (!updatedMessage) {
