@@ -4,9 +4,11 @@ import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ActionButton from "@/components/buttons/ActionButton";
 import { toast } from "sonner";
-import { MessageDetail } from "@/utils/types";
+import { MessageDetail, RequestedEdit } from "@/utils/types";
 
-const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
+const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
+  params,
+}): JSX.Element => {
   const router = useRouter();
 
   const [messageData, setMessageData] = useState<MessageDetail | null>(null);
@@ -15,7 +17,8 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
   const [editClick, setEditClick] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState<string>("");
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [requestedEdit, setRequestedEdit] = useState<boolean>(false);
+  const [requestedEditData, setRequestedEditData] =
+    useState<RequestedEdit | null>(null);
 
   useEffect(() => {
     const fetchMessage = async () => {
@@ -36,6 +39,27 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
     fetchMessage();
   }, [params._id]);
 
+  useEffect(() => {
+    const fetchEdit = async () => {
+      try {
+        const response = await fetch(`/api/requestEdit/${params._id}`);
+        console.log(response);
+        if (!response.ok) {
+          throw new Error("Failed to fetch message");
+        }
+        const data = await response.json();
+        setRequestedEditData(data.data);
+        console.log(requestedEditData?.requestedEdit);
+      } catch (error) {
+        setError((error as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEdit();
+  }, [params._id]);
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!messageData) return <div>No message found</div>;
@@ -50,6 +74,8 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
     needsEdit,
     processed,
   } = messageData;
+
+  // const {requestedEdit  } = requestedEditData
 
   const approvedColor = approved ? "text-green-600" : "text-red-600";
 
@@ -166,10 +192,7 @@ const Message: FC<{ params: { _id: string } }> = ({ params }): JSX.Element => {
         <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-auto max-w-lg sm:min-w-auto md:min-w-96">
           <h1 className="text-2xl font-bold mb-2">Requested Edit</h1>
           <p className="text-gray-700 mb-4">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia,
-            quasi voluptates praesentium fugit nihil quas eius ullam et
-            asperiores incidunt ea nulla officiis deleniti, labore architecto
-            minima enim quidem officia.
+            {requestedEditData?.requestedEdit}
           </p>
         </div>
       )}

@@ -1,6 +1,6 @@
 // import Message from "@/models/messageSchema";
 import Message, { MessageModelSchema } from "@/models/messageSchema";
-import { MessageDetail } from "@/utils/types";
+import { MessageDetail, RequestedEdit } from "@/utils/types";
 import dbConnect from "./dbConnect";
 
 // Function that fetches all messages
@@ -14,6 +14,20 @@ export const fetchAllMessages = async (): Promise<MessageDetail[]> => {
     }
     const data: MessageDetail[] = await res.json();
     // console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+export const fetchRequestedEdit = async (): Promise<RequestedEdit[]> => {
+  try {
+    const res = await fetch("http://localhost:3000/api/requestedEdit");
+    if (!res.ok) {
+      throw new Error("Failed to fetch edit");
+    }
+    const data: RequestedEdit[] = await res.json();
     return data;
   } catch (error) {
     console.log(error);
