@@ -50,6 +50,7 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
         const data = await response.json();
         setRequestedEditData(data.data);
         console.log(requestedEditData?.requestedEdit);
+        // need to create path for rendering the page regardless if there is a requested edit or not.
       } catch (error) {
         setError((error as Error).message);
       } finally {

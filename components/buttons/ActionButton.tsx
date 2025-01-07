@@ -43,7 +43,12 @@ const ActionButton: FC<Props> = ({
     }
   );
   return (
-    <button className={buttonClasses} onClick={onClick} disabled={disabled}>
+    <button
+      id="action-button"
+      className={buttonClasses}
+      onClick={onClick}
+      disabled={disabled}
+    >
       <span>{title}</span>
       {busy && <BiLoader className="animate-spin" size={20} />}
     </button>
