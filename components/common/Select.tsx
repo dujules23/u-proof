@@ -34,6 +34,7 @@ const Select: FC<SelectProps> = ({
         {selectName}
       </label>
       <select
+        id={selectName.toLocaleLowerCase()}
         className="cursor-pointer appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
         value={value}
         disabled={disabled}

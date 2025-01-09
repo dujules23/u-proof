@@ -43,14 +43,13 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
     const fetchEdit = async () => {
       try {
         const response = await fetch(`/api/requestEdit/${params._id}`);
-        console.log(response);
+        // If there is no requested edit, still show the message (not required unless actually requested) This works for now, may need to find a better solution.
         if (!response.ok) {
-          throw new Error("Failed to fetch message");
+          setRequestedEditData(null);
         }
         const data = await response.json();
         setRequestedEditData(data.data);
-        console.log(requestedEditData?.requestedEdit);
-        // need to create path for rendering the page regardless if there is a requested edit or not.
+        // console.log(requestedEditData?.requestedEdit);
       } catch (error) {
         setError((error as Error).message);
       } finally {

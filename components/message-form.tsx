@@ -91,25 +91,25 @@ export default function MessageForm() {
       <form onSubmit={handleSubmit}>
         <div className="items-center grid grid-cols-2 space-x-3 mb-4">
           <Input
-            inputName="Name:"
+            inputName="Name"
             value={name}
             onChange={(event) => setName(event.target.value)}
           />
           <Input
-            inputName="Email:"
+            inputName="Email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
         </div>
         <div className="items-center grid grid-cols-2 space-x-3 mb-4">
           <Select
-            selectName="Locations:"
+            selectName="Locations"
             value={location}
             onChange={(event) => setLocation(event.target.value)}
             options={locationOptions}
           />
           <Select
-            selectName="Ministry:"
+            selectName="Ministry"
             value={ministry}
             onChange={(event) => setMinistry(event.target.value)}
             options={ministryOptions}
@@ -117,7 +117,7 @@ export default function MessageForm() {
         </div>
         <div className="mb-4">
           <Input
-            inputName="Subject:"
+            inputName="Subject"
             value={subject}
             onChange={(event) => setSubject(event.target.value)}
           />

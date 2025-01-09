@@ -13,11 +13,11 @@ const Input: FC<Props> = ({ inputName, value, onChange }): JSX.Element => {
         htmlFor={inputName}
         className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
       >
-        {inputName}
+        {inputName}:
       </label>
       <input
         type="text"
-        id={inputName}
+        id={inputName.toLocaleLowerCase().trimEnd()}
         value={value}
         onChange={onChange}
         required
