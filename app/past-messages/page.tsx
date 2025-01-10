@@ -47,14 +47,16 @@ const PastMessages: FC<Props> = async ({
             </p>
           }
         >
-          {data.messagesFromDb.length === 0 ? (
+          {messagesFromDb.length === 0 ? (
             <p className="flex justify-center mt-6 sm:col-span-2 md:col-span-1 md:col-start-2 text-xl">
               Message(s) Not Found.
             </p>
           ) : (
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
               {messagesFromDb.map((item) => (
-                <MessageCard key={item._id} messageData={item} />
+                <div id={`message-card-${item._id}`} key={item._id.toString()}>
+                  <MessageCard messageData={item} />
+                </div>
               ))}
             </div>
           )}
