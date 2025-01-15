@@ -30,15 +30,15 @@ const SearchBar: FC<Props> = ({ placeholder }): JSX.Element => {
   return (
     <div className="flex">
       <input
+        id="search"
         type="text"
         placeholder={placeholder}
-        className="p-3 w-48 text-black rounded-sm outline-none"
+        className="p-3 w-60 text-black rounded-sm outline-none"
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
         defaultValue={searchParams.get("query")?.toString()}
       />
-      <ActionButton title={"Search"} />
     </div>
   );
 };

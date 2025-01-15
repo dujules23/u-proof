@@ -28,6 +28,7 @@ const PaginationArrow: FC<PaginationArrowProps> = ({
 
   return !isDisabled ? (
     <button
+      id={isLeft ? "left-arrow" : "right-arrow"}
       onClick={() => router.push(href)}
       className={`bg-nav text-primary-light enabled:hover:bg-button-light p-6 text-6xl rounded-xl ${disabledClassName}`}
       aria-disabled={isDisabled}
@@ -37,6 +38,7 @@ const PaginationArrow: FC<PaginationArrowProps> = ({
     </button>
   ) : (
     <span
+      id={isLeft ? "left-arrow" : "right-arrow"}
       className={`bg-nav text-primary-light enabled:hover:bg-button-light p-6 text-6xl rounded-xl ${disabledClassName}`}
       aria-disabled={isDisabled}
     >
@@ -71,7 +73,7 @@ export function PaginationComponent({ pageCount }: PaginationProps) {
 
       {/* Current page indicator */}
       <div>
-        <span className="p-2 font-semibold text-gray-500">
+        <span id="page-counter" className="p-2 font-semibold text-gray-500">
           Page {currentPage} of {pageCount}
         </span>
       </div>
