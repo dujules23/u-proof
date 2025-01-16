@@ -98,20 +98,31 @@ const Notifications: FC<Notification> = (): JSX.Element => {
 
   return (
     <div>
-      <button onClick={toggleModal} className="relative items-center">
+      <button
+        id="notification-button"
+        onClick={toggleModal}
+        className="relative items-center"
+      >
         <FaBell className="text-xxl" />
         {unreadNotifications.length > 0 && (
-          <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full" />
+          <span
+            id="notification-indicator"
+            className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"
+          />
         )}
       </button>
       {isModalOpen && (
-        <div className="text-black absolute top-12 right-0 w-72 bg-gray-400 dark:bg-primary-light shadow-lg rounded-lg z-50 p-4">
+        <div
+          id="notification-modal"
+          className="text-black absolute top-12 right-0 w-72 bg-gray-400 dark:bg-primary-light shadow-lg rounded-lg z-50 p-4"
+        >
           <h4 className="text-lg font-semibold mb-2">Notifications</h4>
-          <ul className="space-y-2">
+          <ul id="notification-list" className="space-y-2">
             {notifications.length > 0 ? (
               notifications.map((notification) => (
                 <li
                   onClick={() => handleNotificationClick(notification)}
+                  id="notification"
                   key={notification._id}
                   className="text-sm cursor-pointer"
                 >
@@ -126,6 +137,7 @@ const Notifications: FC<Notification> = (): JSX.Element => {
             )}
           </ul>
           <button
+            id="notification-close"
             onClick={toggleModal}
             className="mt-4 text-blue-500 hover:text-blue-600"
           >
