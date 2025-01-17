@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import dbConnect from "@/lib/dbConnect"; // Your DB connection utility
-import Message from "@/models/messageSchema"; // Your Message model
+import dbConnect from "@/lib/dbConnect";
+import Message from "@/models/messageSchema";
+import { ObjectId } from "mongodb";
 
 export async function GET(req: NextRequest) {
   await dbConnect();
@@ -56,6 +57,43 @@ export async function PATCH(req: NextRequest) {
     console.error("Error updating message:", error);
     return NextResponse.json(
       { success: false, error: "Failed to update message" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  await dbConnect();
+
+  const url = new URL(req.url);
+  const _id = url.pathname.split("/").pop();
+
+  // if id is not present or not a valid id (ObjectID), endpoint will fail
+  // throws 405 if id is not included in the url and a delete is attempted
+
+  if (!_id || !ObjectId.isValid(_id)) {
+    return NextResponse.json(
+      { error: "Invalid or missing ID" },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const result = await Message.deleteOne({ _id: _id });
+
+    // if there is no deleted count on the message, it does not exist, so the message is not found.
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: "Message not found" }, { status: 404 });
+    }
+
+    // Happy path, Message deleted successfully
+    return NextResponse.json(
+      { message: "Message deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }
