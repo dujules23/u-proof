@@ -5,6 +5,7 @@ import ActionButton from "./buttons/ActionButton";
 import { toast } from "sonner";
 import Input from "./common/Input";
 import Select from "./common/Select";
+import TextArea from "./common/TextArea";
 
 export default function MessageForm() {
   const [name, setName] = useState("");
@@ -123,18 +124,10 @@ export default function MessageForm() {
           />
         </div>
         <div className="mb-4 h-92">
-          <label
-            htmlFor="message"
-            className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
-          >
-            Message:
-          </label>
-          <textarea
-            id="message"
+          <TextArea
+            textAreaName="Message"
             value={message}
             onChange={(event) => setMessage(event.target.value)}
-            required
-            className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light min-h-[15rem]"
           />
         </div>
         <div className="inline-block">

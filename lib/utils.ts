@@ -80,3 +80,5 @@ export const getData = async (
     throw new Error("Failed to fetch data. Please try again later.");
   }
 };
+
+// move api functions from message page here, then import.

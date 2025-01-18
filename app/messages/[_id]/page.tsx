@@ -6,6 +6,7 @@ import ActionButton from "@/components/buttons/ActionButton";
 import { toast } from "sonner";
 import { MessageDetail, RequestedEdit } from "@/utils/types";
 import { Modal } from "@/components/common/Modal";
+import TextArea from "@/components/common/TextArea";
 
 const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
   params,
@@ -225,18 +226,10 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
 
         {editClick && (
           <div className="pt-5">
-            <label
-              htmlFor="message"
-              className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
-            >
-              Message:
-            </label>
-            <textarea
-              id="message"
+            <TextArea
+              textAreaName="Message"
               value={newMessage}
               onChange={(event) => setNewMessage(event.target.value)}
-              required
-              className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light min-h-[15rem]"
             />
             <ActionButton
               disabled={!newMessage}
