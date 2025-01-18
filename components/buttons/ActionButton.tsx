@@ -39,6 +39,7 @@ const ActionButton: FC<Props> = ({
     {
       "bg-nav hover:bg-button-light": variant === "primary",
       "bg-red-600 hover:bg-red-700": variant === "danger",
+      "bg-gray-400 hover:bg-gray-500": variant === "cancel",
       disabledColor: variant === "disabled",
     }
   );

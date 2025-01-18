@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ActionButton from "@/components/buttons/ActionButton";
 import { toast } from "sonner";
 import { MessageDetail, RequestedEdit } from "@/utils/types";
+import { Modal } from "@/components/common/Modal";
 
 const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
   params,
@@ -19,6 +20,7 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [requestedEditData, setRequestedEditData] =
     useState<RequestedEdit | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchMessage = async () => {
@@ -126,6 +128,38 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
     }
   };
 
+  const handleDelete = async () => {
+    // set delete status hear for loader
+
+    try {
+      alert("Message has been successfully deleted.");
+      // Set up for DELETE request
+
+      // const deletedMessage = await fetch(`/api/messages${_id}`, {
+      //   method: "DELETE",
+      //   body: JSON.stringify({
+      //     _id,
+      //   }),
+      //   headers: {"Content-Type": "application/json"}
+      // })
+
+      // if(deletedMessage.status !== 200) {
+      //   toast.error("Error deleting message.", {
+      //     classNames: {
+      //       toast: "bg-red-300",
+      //     },
+      //   });
+      //   // setDelete status to false here
+      //   setIsModalOpen(false);
+      //   throw new Error("Error deleting message.")
+      // }
+
+      setIsModalOpen(false);
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
   return (
     <div
       id="message-container"
@@ -144,7 +178,7 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
           </span>
         </div>
         <p className="text-gray-700 mb-4">{message}</p>
-        <div className="flex place-content-between">
+        <div className="flex place-content-between space-x-8">
           <div className={`place-content-center ${approvedColor}`}>
             {approved ? "Approved" : "Pending Approval"}
           </div>
@@ -159,10 +193,17 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
               </div>
             )}
 
-            <div className="">
+            <div>
               <ActionButton
                 onClick={() => router.push("/past-messages")}
                 title="Back"
+              />
+            </div>
+            <div>
+              <ActionButton
+                variant="danger"
+                onClick={() => setIsModalOpen(true)}
+                title="Delete"
               />
             </div>
           </div>
@@ -201,6 +242,25 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
           </p>
         </div>
       )}
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <p className="text-black">
+          Are you sure you want to delete this message? This action cannot be
+          undone.
+        </p>
+        <div className="mt-4 flex justify-end space-x-2">
+          <ActionButton
+            variant="danger"
+            title="Delete"
+            onClick={handleDelete}
+          />
+          <ActionButton
+            variant="cancel"
+            title="Cancel"
+            onClick={() => setIsModalOpen(false)}
+          />
+        </div>
+      </Modal>
     </div>
   );
 };
