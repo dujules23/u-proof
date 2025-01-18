@@ -18,6 +18,7 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
   const [editClick, setEditClick] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState<string>("");
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [requestedEditData, setRequestedEditData] =
     useState<RequestedEdit | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -130,30 +131,43 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
 
   const handleDelete = async () => {
     // set delete status hear for loader
+    setIsDeleting(true);
 
     try {
-      alert("Message has been successfully deleted.");
+      // alert("Message has been successfully deleted.");
       // Set up for DELETE request
+      console.log(_id);
 
-      // const deletedMessage = await fetch(`/api/messages${_id}`, {
-      //   method: "DELETE",
-      //   body: JSON.stringify({
-      //     _id,
-      //   }),
-      //   headers: {"Content-Type": "application/json"}
-      // })
+      const deletedMessage = await fetch(`/api/messages/${_id}`, {
+        method: "DELETE",
+        body: JSON.stringify({
+          _id,
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
 
-      // if(deletedMessage.status !== 200) {
-      //   toast.error("Error deleting message.", {
-      //     classNames: {
-      //       toast: "bg-red-300",
-      //     },
-      //   });
-      //   // setDelete status to false here
-      //   setIsModalOpen(false);
-      //   throw new Error("Error deleting message.")
-      // }
+      console.log(deletedMessage.status);
 
+      if (deletedMessage.status !== 200) {
+        toast.error("Error deleting message.", {
+          classNames: {
+            toast: "bg-red-300",
+          },
+        });
+
+        // setDelete status to false here
+        setIsDeleting(false);
+        setIsModalOpen(false);
+        throw new Error("Error deleting message.");
+      }
+
+      toast.success("Message has been deleted!", {
+        classNames: {
+          toast: "bg-green-300",
+        },
+      });
+
+      setIsDeleting(false);
       setIsModalOpen(false);
     } catch (error) {
       console.log("Error:", error);
@@ -250,6 +264,7 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
         </p>
         <div className="mt-4 flex justify-end space-x-2">
           <ActionButton
+            busy={isDeleting}
             variant="danger"
             title="Delete"
             onClick={handleDelete}
