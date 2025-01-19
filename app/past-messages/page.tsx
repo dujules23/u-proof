@@ -52,9 +52,12 @@ const PastMessages: FC<Props> = async ({
               Message(s) Not Found.
             </p>
           ) : (
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
-              {messagesFromDb.map((item) => (
-                <div id={`message-card-${item._id}`} key={item._id.toString()}>
+            <div
+              id="message-card-container"
+              className="grid sm:grid-cols-2 md:grid-cols-3 gap-10"
+            >
+              {messagesFromDb.map((item, index) => (
+                <div id={index.toString()} key={item._id.toString()}>
                   <MessageCard messageData={item} />
                 </div>
               ))}

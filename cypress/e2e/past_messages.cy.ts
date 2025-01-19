@@ -7,9 +7,7 @@ describe("Past Messages", () => {
     cy.get('a[href*="past-messages"]').click();
 
     //
-    cy.get("#message-card-6742cc28316c92c1d7e16b60")
-      .should("be.visible")
-      .click();
+    cy.get("#0").should("be.visible").click();
 
     cy.contains("Testing");
     cy.get("button").contains("Edit");
@@ -22,9 +20,7 @@ describe("Past Messages", () => {
   it("allows user to edit a message", () => {
     cy.visit("/past-messages");
 
-    cy.get("#message-card-6742cc28316c92c1d7e16b60")
-      .should("be.visible")
-      .click();
+    cy.get("#0").should("be.visible").click();
 
     cy.get("button").contains("Edit").click();
 
@@ -38,9 +34,7 @@ describe("Past Messages", () => {
   it("allows user to go back to past messages screen", () => {
     cy.visit("/past-messages");
 
-    cy.get("#message-card-6742cc28316c92c1d7e16b60")
-      .should("be.visible")
-      .click();
+    cy.get("#0").should("be.visible").click();
 
     cy.get("button").contains("Back").click();
 
@@ -77,5 +71,21 @@ describe("Past Messages", () => {
     cy.get("div").contains("Terry");
 
     cy.get("#page-counter").contains("Page 1 of 2");
+  });
+
+  it("allows user to delete a message", () => {
+    cy.visit("/past-messages");
+
+    cy.get("#right-arrow").click();
+
+    cy.wait(300);
+
+    cy.get("#2").click();
+
+    cy.get("button").contains("Delete").click();
+
+    cy.get("#modal").should("be.visible");
+
+    cy.get("button").contains("Delete").click();
   });
 });
