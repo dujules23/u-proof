@@ -3,11 +3,10 @@
 import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ActionButton from "@/components/buttons/ActionButton";
-import { toast } from "sonner";
 import { MessageDetail, RequestedEdit } from "@/utils/types";
 import { Modal } from "@/components/common/Modal";
 import TextArea from "@/components/common/TextArea";
-import { deleteMessage, updateMessage } from "@/lib/utils";
+import { deleteMessage, fetchEditData, updateMessage } from "@/lib/utils";
 
 const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
   params,
@@ -45,24 +44,10 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
   }, [params._id]);
 
   useEffect(() => {
-    const fetchEdit = async () => {
-      try {
-        const response = await fetch(`/api/requestEdit/${params._id}`);
-        // If there is no requested edit, still show the message (not required unless actually requested) This works for now, may need to find a better solution.
-        if (!response.ok) {
-          setRequestedEditData(null);
-        }
-        const data = await response.json();
-        setRequestedEditData(data.data);
-        // console.log(requestedEditData?.requestedEdit);
-      } catch (error) {
-        setError((error as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEdit();
+    // may need to rewrite this function for instances where a requestedEdit is not need (this will avoid failed attempts when moving through messages.)
+    if (params._id) {
+      fetchEditData(params._id, setRequestedEditData, setError, setLoading);
+    }
   }, [params._id]);
 
   if (loading) return <div>Loading...</div>;

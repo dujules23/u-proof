@@ -163,3 +163,26 @@ export const updateMessage = async (
     onError(error);
   }
 };
+
+// may need to rewrite this function to prevent calling on every message click
+export const fetchEditData = async (
+  id: string,
+  setRequestedEditData: (data: any) => void,
+  setError: (error: string) => void,
+  setLoading: (loading: boolean) => void
+) => {
+  try {
+    const response = await fetch(`/api/requestEdit/${id}`);
+    // If there is no requested edit, still show the message (not required unless actually requested) This works for now, may need to find a better solution.
+    if (!response.ok) {
+      setRequestedEditData(null);
+    }
+    const data = await response.json();
+    setRequestedEditData(data.data);
+    // console.log(requestedEditData?.requestedEdit);
+  } catch (error) {
+    setError((error as Error).message);
+  } finally {
+    setLoading(false);
+  }
+};
