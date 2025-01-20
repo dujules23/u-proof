@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { MessageDetail, RequestedEdit } from "@/utils/types";
 import { Modal } from "@/components/common/Modal";
 import TextArea from "@/components/common/TextArea";
-import { deleteMessage } from "@/lib/utils";
+import { deleteMessage, updateMessage } from "@/lib/utils";
 
 const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
   params,
@@ -80,55 +80,22 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
     processed,
   } = messageData;
 
-  // const {requestedEdit  } = requestedEditData
-
   const approvedColor = approved ? "text-green-600" : "text-red-600";
 
-  const handleSubmit = async () => {
-    setSubmitting(true);
-
-    try {
-      // Find a way to change approved and processed to true permanently.
-      // messageData.approved = true;
-      // messageData.processed = true;
-
-      const messageUpdated = await fetch(`/api/messages/${_id}`, {
-        method: "PATCH",
-        body: JSON.stringify({
-          newMessage,
-          needsEdit,
-          approved,
-          processed,
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
-
-      // handles error on the frontend
-      if (messageUpdated.status !== 200) {
-        toast.error("Message did not get updated.", {
-          classNames: {
-            toast: "bg-red-300",
-          },
-        });
-        setSubmitting(false);
-        throw new Error("Failed to send message, Not Found");
-      }
-
-      setNewMessage("");
-
-      toast.success("Message has been updated!", {
-        classNames: {
-          toast: "bg-green-300",
-        },
-      });
-
-      // sets approved and processed to true since this will be edited using the approved suggestion
-
-      setSubmitting(false);
-      setEditClick(false);
-    } catch (error) {
-      console.log("Error: ", error);
-    }
+  const handleEdit = async () => {
+    await updateMessage(
+      _id.toString(),
+      newMessage,
+      needsEdit,
+      approved,
+      processed,
+      setSubmitting,
+      () => {
+        setNewMessage("");
+        setEditClick(false);
+      },
+      (error) => console.error("Update failed:", error)
+    );
   };
 
   const handleDelete = async () => {
@@ -199,7 +166,7 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
             <ActionButton
               disabled={!newMessage}
               busy={submitting}
-              onClick={handleSubmit}
+              onClick={handleEdit}
               title="Submit Edit"
             />
           </div>

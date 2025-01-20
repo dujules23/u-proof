@@ -118,3 +118,48 @@ export const deleteMessage = async (
     console.error("Error:", error);
   }
 };
+
+// updates message from user input after clicking the edit button and submitting the edit.
+export const updateMessage = async (
+  _id: string,
+  newMessage: string,
+  needsEdit: boolean,
+  approved: boolean,
+  processed: boolean,
+  setSubmitting: (isSubmitting: boolean) => void,
+  onSuccess: () => void,
+  onError: (error: unknown) => void
+) => {
+  setSubmitting(true);
+
+  try {
+    const response = await fetch(`/api/messages/${_id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        newMessage,
+        needsEdit,
+        approved,
+        processed,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (response.status !== 200) {
+      toast.error("Message did not get updated.", {
+        classNames: { toast: "bg-red-300" },
+      });
+      setSubmitting(false);
+      throw new Error("Failed to update message, Not Found");
+    }
+
+    toast.success("Message has been updated!", {
+      classNames: { toast: "bg-green-300" },
+    });
+
+    setSubmitting(false);
+    onSuccess();
+  } catch (error) {
+    console.error("Error: ", error);
+    onError(error);
+  }
+};
