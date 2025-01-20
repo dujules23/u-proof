@@ -2,6 +2,7 @@
 import Message, { MessageModelSchema } from "@/models/messageSchema";
 import { MessageDetail, RequestedEdit } from "@/utils/types";
 import dbConnect from "./dbConnect";
+import { toast } from "sonner";
 
 // Function that fetches all messages
 export const fetchAllMessages = async (): Promise<MessageDetail[]> => {
@@ -82,3 +83,38 @@ export const getData = async (
 };
 
 // move api functions from message page here, then import.
+export const deleteMessage = async (
+  _id: string,
+  onSuccess: () => void,
+  onError: (error: unknown) => void,
+  setLoading: (isLoading: boolean) => void
+) => {
+  setLoading(true);
+
+  try {
+    const response = await fetch(`/api/messages/${_id}`, {
+      method: "DELETE",
+      body: JSON.stringify({ _id }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (response.status !== 200) {
+      toast.error("Error deleting message.", {
+        classNames: { toast: "bg-red-300" },
+      });
+      setLoading(false);
+      onError(new Error("Error deleting message."));
+      return;
+    }
+
+    toast.success("Message has been deleted!", {
+      classNames: { toast: "bg-green-300" },
+    });
+
+    setLoading(false);
+    onSuccess();
+  } catch (error) {
+    onError(error);
+    console.error("Error:", error);
+  }
+};

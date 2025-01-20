@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { MessageDetail, RequestedEdit } from "@/utils/types";
 import { Modal } from "@/components/common/Modal";
 import TextArea from "@/components/common/TextArea";
+import { deleteMessage } from "@/lib/utils";
 
 const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
   params,
@@ -131,48 +132,12 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
   };
 
   const handleDelete = async () => {
-    // set delete status hear for loader
-    setIsDeleting(true);
-
-    try {
-      // alert("Message has been successfully deleted.");
-      // Set up for DELETE request
-      console.log(_id);
-
-      const deletedMessage = await fetch(`/api/messages/${_id}`, {
-        method: "DELETE",
-        body: JSON.stringify({
-          _id,
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
-
-      console.log(deletedMessage.status);
-
-      if (deletedMessage.status !== 200) {
-        toast.error("Error deleting message.", {
-          classNames: {
-            toast: "bg-red-300",
-          },
-        });
-
-        // setDelete status to false here
-        setIsDeleting(false);
-        setIsModalOpen(false);
-        throw new Error("Error deleting message.");
-      }
-
-      toast.success("Message has been deleted!", {
-        classNames: {
-          toast: "bg-green-300",
-        },
-      });
-
-      setIsDeleting(false);
-      setIsModalOpen(false);
-    } catch (error) {
-      console.log("Error:", error);
-    }
+    await deleteMessage(
+      _id.toString(),
+      () => setIsModalOpen(false),
+      (error) => console.error(error),
+      setIsDeleting
+    );
   };
 
   return (
