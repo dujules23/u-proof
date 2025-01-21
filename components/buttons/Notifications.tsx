@@ -5,10 +5,10 @@ import { FC, useState, useEffect } from "react";
 import { FaBell } from "react-icons/fa";
 
 interface Notification {
-  _id: string;
-  message: string;
-  messageId: string;
-  status: "approved" | "not_approved" | "viewed" | "request-edit";
+  _id?: string;
+  message?: string;
+  messageId?: string;
+  status?: "approved" | "not_approved" | "viewed" | "request-edit";
 }
 
 interface Props {}
@@ -128,7 +128,7 @@ const Notifications: FC<Notification> = (): JSX.Element => {
                 >
                   {notification.message} -{" "}
                   <strong className="capitalize">
-                    {notification.status.replace("_", " ")}
+                    {notification.status?.replace("_", " ")}
                   </strong>
                 </li>
               ))
