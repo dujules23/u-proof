@@ -1,6 +1,5 @@
-export const dynamic = "force-dynamic";
-
 ("use client"); // Mark the component as a client component
+export const dynamic = "force-dynamic";
 
 import { useState, useEffect } from "react";
 import { MessageDetail } from "@/utils/types";
