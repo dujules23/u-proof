@@ -2,7 +2,6 @@
 
 // This file will set up the Mongo DB Connection
 
-// lib/dbConnect.ts
 import mongoose from "mongoose";
 
 const connection = {
@@ -13,6 +12,15 @@ const dbConnect = async () => {
   if (connection.isConnected) {
     console.log("Already connected to the database.");
     return;
+  }
+
+  const MONGODB_URI =
+    process.env.NODE_ENV === "production"
+      ? process.env.MONGODB_URI_PROD
+      : process.env.MONGODB_URI_DEV;
+
+  if (!MONGODB_URI) {
+    throw new Error("MongoDB URI is not defined in environment variables");
   }
 
   try {
