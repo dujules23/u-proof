@@ -1,4 +1,4 @@
-("use client"); // Mark the component as a client component
+"use client"; // Mark the component as a client component
 export const dynamic = "force-dynamic";
 
 import { useState, useEffect } from "react";
