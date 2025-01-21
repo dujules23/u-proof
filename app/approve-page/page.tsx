@@ -27,6 +27,7 @@ const ApprovePage = () => {
             id,
             approved: approved === "true",
           }),
+          cache: "force-cache",
         });
 
         const data = await response.json();
