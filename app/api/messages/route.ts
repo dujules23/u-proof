@@ -84,6 +84,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const locationEmailMap: { [key: string]: string | undefined } = {
       "1": process.env.EMAIL_1,
       "2": process.env.EMAIL_2,
+      "3": process.env.EMAIL_3,
+      "4": process.env.EMAIL_4,
     };
 
     let recipientEmail = locationEmailMap[location];
