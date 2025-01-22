@@ -37,6 +37,7 @@ const RequestEditPage = () => {
       headers: {
         "Content-Type": "application/json",
       },
+      cache: "no-store",
     });
 
     console.log(message);

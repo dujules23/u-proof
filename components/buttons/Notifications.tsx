@@ -21,9 +21,12 @@ const Notifications: FC<Notification> = (): JSX.Element => {
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch("/api/notifications");
+      const response = await fetch("/api/notifications", {
+        cache: "no-store",
+        next: { revalidate: 0 },
+      });
       const data = await response.json();
-      console.log("Fetched notifications:", data.notifications);
+      // console.log("Fetched notifications:", data.notifications);
       setNotifications(data.notifications);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -33,7 +36,7 @@ const Notifications: FC<Notification> = (): JSX.Element => {
   const handleNotificationClick = async (notification: Notification) => {
     const { _id, messageId } = notification;
 
-    console.log("Handling notification click for ID:", _id);
+    // console.log("Handling notification click for ID:", _id);
     if (!_id) {
       console.error("Notification ID is missing");
       return;
@@ -44,7 +47,7 @@ const Notifications: FC<Notification> = (): JSX.Element => {
       // await markNotificationAsViewed(id);
 
       // Delete the notification
-      console.log("Deleting notification with ID:", _id);
+      // console.log("Deleting notification with ID:", _id);
 
       const response = await fetch("/api/notifications/delete", {
         method: "DELETE",
@@ -52,7 +55,7 @@ const Notifications: FC<Notification> = (): JSX.Element => {
         body: JSON.stringify(_id),
       });
 
-      console.log(response.body);
+      // console.log(response.body);
 
       if (!response.ok) {
         const errorDetails = await response.text();

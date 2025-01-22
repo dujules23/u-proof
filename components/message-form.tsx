@@ -92,12 +92,12 @@ export default function MessageForm() {
       <form onSubmit={handleSubmit}>
         <div className="items-center grid grid-cols-2 space-x-3 mb-4">
           <Input
-            inputName="Name"
+            inputName="name"
             value={name}
             onChange={(event) => setName(event.target.value)}
           />
           <Input
-            inputName="Email"
+            inputName="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />

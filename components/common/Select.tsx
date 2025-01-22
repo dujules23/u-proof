@@ -28,7 +28,7 @@ const Select: FC<SelectProps> = ({
   return (
     <div>
       <label
-        htmlFor={selectName}
+        htmlFor={selectName.toLocaleLowerCase()}
         className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
       >
         {selectName}
