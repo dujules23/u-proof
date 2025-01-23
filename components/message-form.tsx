@@ -39,7 +39,7 @@ export default function MessageForm() {
     // sends message out via resend and sends message to database
     try {
       const messageSent = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/api/messages`,
+        `${process.env.NEXT_PUBLIC_BASE_URL_PROD}api/messages`,
         {
           method: "POST",
           body: JSON.stringify({
