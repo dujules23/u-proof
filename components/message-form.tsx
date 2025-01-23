@@ -50,7 +50,7 @@ export default function MessageForm() {
         }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Origin": "https://u-proof.vercel.app/",
         },
       });
 
