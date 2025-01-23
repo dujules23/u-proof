@@ -38,18 +38,21 @@ export default function MessageForm() {
     setSubmitting(true);
     // sends message out via resend and sends message to database
     try {
-      const messageSent = await fetch("/api/messages", {
-        method: "POST",
-        body: JSON.stringify({
-          name,
-          email,
-          subject,
-          message,
-          location,
-          ministry,
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
+      const messageSent = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/api/messages`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            name,
+            email,
+            subject,
+            message,
+            location,
+            ministry,
+          }),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       // handles error on the frontend
       if (messageSent.status !== 200) {
