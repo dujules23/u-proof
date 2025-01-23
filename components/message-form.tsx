@@ -48,7 +48,10 @@ export default function MessageForm() {
           location,
           ministry,
         }),
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
       });
 
       // handles error on the frontend
