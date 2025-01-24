@@ -12,7 +12,7 @@ const Login: FC<Props> = (props): JSX.Element => {
 
   return (
     <div className="flex items-center justify-center max-w-xl m-auto mt-16 pt-32">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+      <div className="bg-primary-dark dark:bg-white p-8 rounded-lg shadow-lg w-full max-w-md border-3">
         <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
           Sign In
         </h2>

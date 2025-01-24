@@ -11,7 +11,7 @@ const Input: FC<Props> = ({ inputName, value, onChange }): JSX.Element => {
     <div>
       <label
         htmlFor={inputName.toLocaleLowerCase().trimEnd()}
-        className="block font-bold mb-2 text-primary-dark dark:text-black"
+        className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
       >
         {inputName}:
       </label>
