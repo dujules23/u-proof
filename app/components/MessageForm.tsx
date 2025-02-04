@@ -1,11 +1,11 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import ActionButton from "./buttons/ActionButton";
+import ActionButton from "../../components/buttons/ActionButton";
 import { toast } from "sonner";
-import Input from "./common/Input";
-import Select from "./common/Select";
-import TextArea from "./common/TextArea";
+import Input from "../../components/common/Input";
+import Select from "../../components/common/Select";
+import TextArea from "../../components/common/TextArea";
 
 export default function MessageForm() {
   const [name, setName] = useState("");

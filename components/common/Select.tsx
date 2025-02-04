@@ -31,7 +31,7 @@ const Select: FC<SelectProps> = ({
         htmlFor={selectName.toLocaleLowerCase()}
         className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
       >
-        {selectName}
+        {selectName}:{" "}
       </label>
       <select
         id={selectName.toLocaleLowerCase()}

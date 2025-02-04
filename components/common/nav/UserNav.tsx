@@ -1,15 +1,23 @@
+"use client";
+
 import Link from "next/link";
 import { FC } from "react";
 import DarkModeButton from "@/components/buttons/DarkModeButton";
-import { FaBookOpenReader } from "react-icons/fa6";
 import Notifications from "@/components/buttons/Notifications";
 import Image from "next/image";
+import { signOut, useSession } from "next-auth/react";
 
 interface Props {}
 
 const APP_NAME = "uProof";
 
-const UserNav: FC<Props> = (props): JSX.Element => {
+const UserNav: FC<Props> = (): JSX.Element => {
+  const session = useSession();
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: "/" });
+  };
+
   return (
     <div className="bg-nav sticky top-0 z-50 flex items-center justify-between p-6 text-primary">
       {/* Title */}
@@ -22,11 +30,22 @@ const UserNav: FC<Props> = (props): JSX.Element => {
 
       {/* Dark Mode Button  and Past Messages Link*/}
       <div className="flex items-center space-x-5">
-        <div className="hover:text-black transition ease-in-out">
-          <Link href="/past-messages">Past Messages</Link>
-        </div>
+        {session.status === "authenticated" && (
+          <>
+            <Link
+              className="hover:text-black transition ease-in-out"
+              href="/"
+              onClick={handleSignOut}
+            >
+              Log Out
+            </Link>
+            <div className="hover:text-black transition ease-in-out">
+              <Link href="/past-messages">Past Messages</Link>
+            </div>
+            <Notifications />
+          </>
+        )}
         <DarkModeButton />
-        <Notifications />
       </div>
     </div>
   );
