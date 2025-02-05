@@ -63,7 +63,7 @@ const Login: FC<Props> = (props): JSX.Element => {
             Sign In
           </button>
         </form>
-        <div className="flex items-center my-6">
+        {/* <div className="flex items-center my-6">
           <div className="flex-1 border-t border-gray-300"></div>
           <p className="text-sm text-white dark:text-gray-500 mx-4">OR</p>
           <div className="flex-1 border-t border-gray-300"></div>
@@ -80,7 +80,7 @@ const Login: FC<Props> = (props): JSX.Element => {
             height={500}
           />
           Sign in with Google
-        </button>
+        </button> */}
       </div>
     </div>
   );

@@ -1,3 +1,5 @@
+import dbConnect from "@/lib/dbConnect";
+import User from "@/models/userSchema";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -11,23 +13,23 @@ const handler = NextAuth({
         email: { label: "Email", type: "text", placeholder: "email" },
       },
       async authorize(credentials: { email: string } | undefined, req) {
+        await dbConnect();
+
         if (!credentials || !credentials.email) {
-          throw new Error("No credentials provided");
+          throw new Error("No email provided. Please enter your email.");
         }
 
-        const { email } = credentials;
-        const user =
-          email === "jsmith@example.com"
-            ? { id: "1", name: "J Smith", email: "jsmith@example.com" }
-            : null;
+        const user = await User.findOne({ email: credentials.email }).exec();
 
         if (!user) {
           // Any object returned will be saved in `user` property of the JWT
-          throw new Error(
-            "Invalid credentials. Please check your login details."
-          );
+          throw new Error("User not found. Please check your login details.");
         } else {
-          return user;
+          return {
+            id: user._id.toString(),
+            email: user.email,
+            name: user.name,
+          };
         }
       },
     }),
