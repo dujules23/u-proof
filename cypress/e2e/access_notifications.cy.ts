@@ -1,4 +1,8 @@
 describe("Accessing Notifications", () => {
+  beforeEach(() => {
+    cy.login("email@email.com");
+  });
+
   it("can see the notification indicator", () => {
     cy.visit("/");
 

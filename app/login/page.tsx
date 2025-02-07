@@ -31,7 +31,7 @@ const Login: FC<Props> = (props): JSX.Element => {
         <h2 className="text-2xl font-semibold text-center text-primary-light dark:text-primary-dark">
           Sign In
         </h2>
-        <form className="space-y-4">
+        <form id="login" className="space-y-4">
           <div>
             <label
               htmlFor="email"
@@ -42,20 +42,22 @@ const Login: FC<Props> = (props): JSX.Element => {
               Email:
             </label>
             <input
+              id="email"
               className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
-              type="text"
+              type="email"
               value={email}
               onChange={(event) => {
                 setEmail(event.target.value);
               }}
             />
             {error && (
-              <div className="mt-4 text-red-600">
+              <div id="error-message" className="mt-4 text-red-600">
                 <p>{error}</p>
               </div>
             )}
           </div>
           <button
+            id="submit"
             onClick={handleSubmit}
             type="submit"
             className="w-full bg-white dark:bg-nav text-primary-dark dark:text-white py-3 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-400 transition"

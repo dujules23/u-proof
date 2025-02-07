@@ -1,4 +1,8 @@
 describe("Create Message Request", () => {
+  beforeEach(() => {
+    cy.login("email@email.com");
+  });
+
   it("creates message using the form", () => {
     // Visits application
     cy.visit("/");

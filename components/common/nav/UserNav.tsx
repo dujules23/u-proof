@@ -22,17 +22,26 @@ const UserNav: FC<Props> = (): JSX.Element => {
     <div className="bg-nav sticky top-0 z-50 flex items-center justify-between p-6 text-primary">
       {/* Title */}
       <Link href="/">
-        <div className="flex items-center space-x-2">
+        <div id="logo" className="flex items-center space-x-2">
           <Image alt="logo" src="/logo.png" width={35} height={35} />
-          <span className="md:text-xl font-semibold">{APP_NAME}</span>
+          <span id="app-name" className="md:text-xl font-semibold">
+            {APP_NAME}
+          </span>
         </div>
       </Link>
+
+      {session.status === "authenticated" && (
+        <div className="font-semibold">
+          Welcome, {session.data?.user?.name}!
+        </div>
+      )}
 
       {/* Dark Mode Button  and Past Messages Link*/}
       <div className="flex items-center space-x-5">
         {session.status === "authenticated" && (
           <>
             <Link
+              id="logout"
               className="hover:text-black transition ease-in-out"
               href="/"
               onClick={handleSignOut}
