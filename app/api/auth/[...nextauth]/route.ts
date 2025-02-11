@@ -19,6 +19,13 @@ const handler = NextAuth({
           throw new Error("No email provided. Please enter your email.");
         }
 
+        const allowedDomain = process.env.ALLOWED_DOMAIN || "";
+        const emailDomain = credentials?.email.split("@")[1];
+
+        if (emailDomain == allowedDomain) {
+          return { id: credentials.email, email: credentials.email };
+        }
+
         const user = await User.findOne({ email: credentials.email }).exec();
 
         if (!user) {

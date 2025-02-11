@@ -30,9 +30,13 @@ const UserNav: FC<Props> = (): JSX.Element => {
         </div>
       </Link>
 
-      {session.status === "authenticated" && (
+      {session.data?.user && session.status === "authenticated" && (
         <div className="font-semibold">
-          Welcome, {session.data?.user?.name}!
+          Welcome,{" "}
+          {session.data?.user?.name
+            ? session.data?.user?.name
+            : session.data?.user?.email}
+          !
         </div>
       )}
 

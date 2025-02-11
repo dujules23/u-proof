@@ -5,6 +5,8 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { FC, useState } from "react";
 import { useRouter } from "next/navigation";
+import { set } from "mongoose";
+import { BiLoader } from "react-icons/bi";
 
 interface Props {}
 
@@ -12,15 +14,19 @@ const Login: FC<Props> = (props): JSX.Element => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     const response = await signIn("credentials", { redirect: false, email });
 
     if (response?.error) {
       setError(response.error);
+      setLoading(false);
       console.log(error);
     } else {
+      setLoading(false);
       router.push("/");
     }
   };
@@ -56,14 +62,17 @@ const Login: FC<Props> = (props): JSX.Element => {
               </div>
             )}
           </div>
-          <button
-            id="submit"
-            onClick={handleSubmit}
-            type="submit"
-            className="w-full bg-white dark:bg-nav text-primary-dark dark:text-white py-3 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-400 transition"
-          >
-            Sign In
-          </button>
+          <div className="">
+            <button
+              id="submit"
+              onClick={handleSubmit}
+              type="submit"
+              className="flex items-center justify-center w-full bg-white dark:bg-nav text-primary-dark dark:text-white py-3 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-400 transition"
+            >
+              Sign In
+              {loading && <BiLoader className="animate-spin" size={20} />}
+            </button>
+          </div>
         </form>
         {/* <div className="flex items-center my-6">
           <div className="flex-1 border-t border-gray-300"></div>
