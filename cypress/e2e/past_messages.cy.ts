@@ -1,7 +1,11 @@
 describe("Past Messages", () => {
+  beforeEach(() => {
+    cy.login("email@email.com");
+  });
+
   it("allows user to access past message", () => {
     // visits site
-    cy.visit("/");
+    // cy.visit("/");
 
     // Clicks past messages link
     cy.get('a[href*="past-messages"]').click();
@@ -18,7 +22,7 @@ describe("Past Messages", () => {
   const message2 = "This is being edited again to be even better.";
 
   it("allows user to edit a message", () => {
-    cy.visit("/past-messages");
+    cy.get('a[href*="past-messages"]').click();
 
     cy.get("#0").should("be.visible").click();
 
@@ -32,7 +36,7 @@ describe("Past Messages", () => {
   });
 
   it("allows user to go back to past messages screen", () => {
-    cy.visit("/past-messages");
+    cy.get('a[href*="past-messages"]').click();
 
     cy.get("#0").should("be.visible").click();
 
@@ -42,7 +46,7 @@ describe("Past Messages", () => {
   });
 
   it("allows user to search for a message using search bar", () => {
-    cy.visit("/past-messages");
+    cy.get('a[href*="past-messages"]').click();
 
     cy.get("#search")
       .should("have.attr", "placeholder", "Search...")
@@ -53,14 +57,14 @@ describe("Past Messages", () => {
   });
 
   it("allows user to move through past message pages", () => {
-    cy.visit("/past-messages");
+    cy.get('a[href*="past-messages"]').click();
 
-    cy.get("#page-counter").contains("Page 1 of 2");
+    cy.get("#page-counter").contains("Page 1 of 3");
 
     cy.get("#right-arrow").click();
 
     cy.get("div").contains("Praise Team Updates");
-    cy.get("#page-counter").contains("Page 2 of 2");
+    cy.get("#page-counter").contains("Page 2 of 3");
 
     cy.get("#left-arrow").click();
 
@@ -70,11 +74,11 @@ describe("Past Messages", () => {
     cy.get("div").contains("Mai");
     cy.get("div").contains("Terry");
 
-    cy.get("#page-counter").contains("Page 1 of 2");
+    cy.get("#page-counter").contains("Page 1 of 3");
   });
 
   it("allows user to delete a message", () => {
-    cy.visit("/past-messages");
+    cy.get('a[href*="past-messages"]').click();
 
     cy.get("#right-arrow").click();
 

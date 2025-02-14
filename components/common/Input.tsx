@@ -4,14 +4,22 @@ interface Props {
   inputName: string;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  className?: string;
 }
 
-const Input: FC<Props> = ({ inputName, value, onChange }): JSX.Element => {
+const Input: FC<Props> = ({
+  inputName,
+  value,
+  onChange,
+  className,
+}): JSX.Element => {
   return (
     <div>
       <label
         htmlFor={inputName.toLocaleLowerCase().trimEnd()}
-        className="block font-bold mb-2 text-primary-dark dark:text-primary-light"
+        className={`block font-bold mb-2 text-primary-dark dark:text-primary-light ${
+          className || ""
+        }`}
       >
         {inputName}:
       </label>

@@ -14,7 +14,7 @@ const PastMessages: FC<Props> = async ({
 }: {
   searchParams?: { query: string; page: string };
 }) => {
-  // console.log(messages);
+  // console.log(messages)
 
   let page = parseInt(searchParams?.page || "1", 10);
 

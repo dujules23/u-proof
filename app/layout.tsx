@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Sending Messages for Review Safely and Securely",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

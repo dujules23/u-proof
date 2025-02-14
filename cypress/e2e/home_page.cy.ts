@@ -3,22 +3,15 @@ describe("The Home Page", () => {
     // Visits homepage
     cy.visit("/");
 
-    // Asserts Nav Links
-    cy.contains("uProof").should("be.visible");
-    cy.contains("Past Messages").should("be.visible");
+    cy.contains("form", "Sign In").should("be.visible");
 
-    // Asserts Message for form
-    cy.contains("Submit Your Message").should("be.visible");
+    cy.contains("form", "Email:").should("be.visible");
+    cy.get("#dark-mode-button").should("be.visible");
+    cy.get("#submit").should("be.visible");
 
-    // Asserts Message form
-    cy.contains("Name").should("be.visible");
-    cy.contains("Email").should("be.visible");
-    cy.contains("Locations").should("be.visible");
-    cy.contains("Ministry").should("be.visible");
-    cy.contains("Subject").should("be.visible");
-    cy.contains("Message").should("be.visible");
+    // Asserts Logo  and Title of the page is visible  and correct
 
-    // Asserts Submit button
-    cy.contains("Send Message").should("be.visible");
+    cy.get("img").should("be.visible");
+    cy.get("#app-name").contains("uProof").should("be.visible");
   });
 });
