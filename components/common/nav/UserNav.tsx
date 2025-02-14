@@ -21,24 +21,25 @@ const UserNav: FC<Props> = (): JSX.Element => {
   return (
     <div className="bg-nav sticky top-0 z-50 flex items-center justify-between p-6 text-primary">
       {/* Title */}
-      <Link href="/">
-        <div id="logo" className="flex items-center space-x-2">
-          <Image alt="logo" src="/logo.png" width={35} height={35} />
-          <span id="app-name" className="md:text-xl font-semibold">
-            {APP_NAME}
-          </span>
-        </div>
-      </Link>
-
-      {session.data?.user && session.status === "authenticated" && (
-        <div className="font-semibold">
-          Welcome,{" "}
-          {session.data?.user?.name
-            ? session.data?.user?.name
-            : session.data?.user?.email}
-          !
-        </div>
-      )}
+      <div className="flex items-center space-x-5">
+        <Link href="/">
+          <div id="logo" className="flex items-center space-x-2">
+            <Image alt="logo" src="/logo.png" width={35} height={35} />
+            <span id="app-name" className="md:text-xl font-semibold">
+              {APP_NAME}
+            </span>
+          </div>
+        </Link>
+        {session.data?.user && session.status === "authenticated" && (
+          <div className="font-semibold items-center">
+            Welcome,{" "}
+            {session.data?.user?.name
+              ? session.data?.user?.name
+              : session.data?.user?.email}
+            !
+          </div>
+        )}
+      </div>
 
       {/* Dark Mode Button  and Past Messages Link*/}
       <div className="flex items-center space-x-5">
