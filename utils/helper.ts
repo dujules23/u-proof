@@ -12,15 +12,18 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export const sendPrimaryEmail = async (
   to: string,
   name: string,
+  subject: string,
   message: string,
   messageId: string
 ) => {
+  console.log(message);
   return resend.emails.send({
     from: "FWC <uproof@mychurchisawesome.com>",
     to,
     subject: "A new message is ready to be approved.",
     react: AirbnbReviewEmail({
       authorName: name,
+      subject: subject,
       reviewText: message,
       messageId: messageId,
     }) as React.ReactElement,
@@ -31,6 +34,7 @@ export const sendPrimaryEmail = async (
 export const sendFollowUpEmail = async (
   to: string,
   name: string,
+  subject: string,
   message: string,
   messageId: string
 ) => {
@@ -40,6 +44,7 @@ export const sendFollowUpEmail = async (
     subject: "A new message is ready to be reviewed",
     react: AirbnbReviewEmail({
       authorName: name,
+      subject: subject,
       reviewText: message,
       messageId: messageId,
     }) as React.ReactElement,

@@ -100,6 +100,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const { data, error: primaryError } = await sendPrimaryEmail(
       recipientEmail,
       name,
+      subject,
       message,
       messageId
     );
@@ -124,6 +125,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       const { data, error: followUpError } = await sendFollowUpEmail(
         otherEmail,
         name,
+        subject,
         message,
         messageId
       );
