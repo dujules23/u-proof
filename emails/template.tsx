@@ -20,6 +20,7 @@ import { FaBookOpenReader } from "react-icons/fa6";
 interface AirbnbReviewEmailProps {
   authorName?: string;
   authorImage?: string;
+  subject?: string;
   reviewText?: string;
   messageId: string;
 }
@@ -36,6 +37,7 @@ const baseUrl =
 export const AirbnbReviewEmail = ({
   authorName,
   authorImage,
+  subject,
   reviewText,
   messageId,
 }: AirbnbReviewEmailProps) => {
@@ -43,7 +45,7 @@ export const AirbnbReviewEmail = ({
   const APP_NAME = "uProof";
   const logo = "./logo.png";
 
-  console.log("Message Id:--------->", messageId);
+  console.log(reviewText);
 
   const approveLink = `${baseUrl}/approve-page?id=${messageId}&approved=true`;
 
@@ -65,15 +67,18 @@ export const AirbnbReviewEmail = ({
             />
             <span style={title}>{APP_NAME}</span>
           </Section>
-          <Section style={{ paddingBottom: "20px" }}>
+          <Section style={{ paddingBottom: "5px" }}>
             <Row>
               <Text
                 style={heading}
               >{`You've received a message from ${authorName} that needs review.`}</Text>
               <Text style={heading}>{`Here's what ${authorName} wrote:`}</Text>
-              <Text style={review}>{reviewText}</Text>
+              <Section style={review}>
+                <Text style={subjectHeading}> Subject: {subject}</Text>
+                <Text>{reviewText}</Text>
+              </Section>
               <Text style={paragraph}>
-                {`Approve or request an edit for ${authorName}'s
+                {`Approve this message or request an edit for ${authorName}'s
                 message below.`}
               </Text>
             </Row>
@@ -81,7 +86,7 @@ export const AirbnbReviewEmail = ({
 
           <Hr style={hr} />
         </Container>
-        <Container style={container2}>
+        <Container style={container}>
           <Button style={button1} href={approveLink}>
             Approve Message
           </Button>
@@ -98,6 +103,7 @@ export const AirbnbReviewEmail = ({
 AirbnbReviewEmail.PreviewProps = {
   authorName: "Alex",
   authorImage: `${baseUrl}/static/airbnb-review-user.jpg`,
+  subject: "New Message",
   reviewText: `“Alan was a great guest! Easy communication, the apartment was left
     in great condition, very polite, and respectful of all house rules.
     He’s welcome back anytime and would easily recommend him to any
@@ -112,32 +118,23 @@ const main = {
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
 };
 
-const buttonArea = {
-  display: "flex",
-  justifyContent: "space-between",
-};
-
 const container = {
   margin: "0 auto",
-  padding: "20px 0 48px",
+  padding: "20px",
   width: "580px",
   maxWidth: "100%",
-};
-
-const container2 = {
-  paddingLeft: "35px",
-  justifyContent: "space-between",
-};
-
-const userImage = {
-  margin: "0 auto",
-  marginBottom: "16px",
-  borderRadius: "50%",
 };
 
 const heading = {
   fontSize: "32px",
   lineHeight: "1.3",
+  fontWeight: "700",
+  color: "#484848",
+};
+
+const subjectHeading = {
+  fontSize: "20px",
+  // lineHeight: "1",
   fontWeight: "700",
   color: "#484848",
 };
@@ -150,7 +147,7 @@ const paragraph = {
 
 const review = {
   ...paragraph,
-  padding: "24px",
+  padding: "20px",
   backgroundColor: "#f2f3f3",
   borderRadius: "4px",
 };
@@ -181,27 +178,9 @@ const button2 = {
   width: "100%",
 };
 
-const link = {
-  ...paragraph,
-  color: "#ff5a5f",
-  display: "block",
-};
-
-const reportLink = {
-  fontSize: "14px",
-  color: "#9ca299",
-  textDecoration: "underline",
-};
-
 const hr = {
   borderColor: "#cccccc",
   margin: "20px 0",
-};
-
-const footer = {
-  color: "#9ca299",
-  fontSize: "14px",
-  marginBottom: "10px",
 };
 
 const header = {
@@ -209,10 +188,6 @@ const header = {
   alignItems: "center",
   fontSize: "40px",
   justifyContent: "space-between",
-};
-
-const icon = {
-  color: "#000000",
 };
 
 const title = {
