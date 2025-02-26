@@ -106,13 +106,16 @@ const Notifications: FC<Notification> = (): JSX.Element => {
         onClick={toggleModal}
         className="relative items-center"
       >
-        <FaBell className="text-xxl" />
-        {unreadNotifications.length > 0 && (
-          <span
-            id="notification-indicator"
-            className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"
-          />
-        )}
+        <FaBell className="hidden md:block text-xxl" />
+        <span className="md:hidden">
+          Notifications
+          {unreadNotifications.length > 0 && (
+            <span
+              id="notification-indicator"
+              className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"
+            />
+          )}
+        </span>
       </button>
       {isModalOpen && (
         <div
