@@ -18,77 +18,55 @@ const MobileMenu: FC<Props> = ({
   onClick,
 }): JSX.Element => {
   return (
-    <>
-      {/* Overlay */}
-      {isMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm md:hidden z-40"
-          onClick={() => setIsMenuOpen(false)}
-        />
-      )}
-
+    <div className="md:hidden">
+      {/* Slide-down Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-64 bg-white dark:bg-gray-800 transform transition-transform duration-300 ease-in-out ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
-        } md:hidden shadow-lg z-50`}
+        className={`absolute top-[100%] left-0 right-0 bg-nav shadow-lg transform transition-all duration-300 ease-in-out ${
+          isMenuOpen
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-2 pointer-events-none"
+        }`}
       >
-        <div className="p-6">
-          {/* Close Button */}
-          <button
-            onClick={() => setIsMenuOpen(false)}
-            className="text-primary-dark dark:text-primary-light absolute top-4 right-4 p-2"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-
-          {/* Mobile Menu Content */}
-          <div className="mt-8 space-y-6">
-            {session.data?.user && session.status === "authenticated" && (
-              <div className="text-primary-dark dark:text-primary-light font-semibold border-b pb-2">
-                Welcome, {session.data?.user?.name || session.data?.user?.email}
-                !
+        <div className="p-4 space-y-4">
+          {session.data?.user && session.status === "authenticated" && (
+            <div className="text-primary-light font-semibold border-b pb-2">
+              Welcome, {session.data?.user?.name || session.data?.user?.email}!
+            </div>
+          )}
+          {session.status === "authenticated" && (
+            <nav className="space-y-2">
+              <Link
+                href="/"
+                className="block py-2 hover:text-gray-600 dark:hover:text-gray-300 text-primary-light"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Create A Message
+              </Link>
+              <Link
+                href="/past-messages"
+                className="block py-2 hover:text-gray-600 dark:hover:text-gray-300 text-primary-light"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Past Messages
+              </Link>
+              <div className="py-2">
+                <Notifications />
               </div>
-            )}
-            {session.status === "authenticated" && (
-              <>
-                <Link
-                  href="/past-messages"
-                  className="block py-2 hover:text-gray-600 dark:hover:text-gray-300 text-primary-dark dark:text-primary-light"
-                  onClick={onClick}
-                >
-                  Past Messages
-                </Link>
-                <div className="dark:text-primary-light text-primary-dark py-2">
-                  <Notifications />
-                </div>
-                <Link
-                  href="/"
-                  onClick={(e) => {
-                    onClick();
-                    handleSignOut();
-                  }}
-                  className="block py-2 text-red-500 hover:text-red-600"
-                >
-                  Log Out
-                </Link>
-              </>
-            )}
-          </div>
+              <Link
+                href="/"
+                onClick={(e) => {
+                  setIsMenuOpen(false);
+                  handleSignOut();
+                }}
+                className="block py-2 text-red-500 hover:text-red-600"
+              >
+                Log Out
+              </Link>
+            </nav>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

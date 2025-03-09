@@ -107,7 +107,7 @@ const Notifications: FC<Notification> = (): JSX.Element => {
         className="relative items-center"
       >
         <FaBell className="hidden md:block text-xxl" />
-        <span className="md:hidden">
+        <span className="md:hidden text-primary-light">
           Notifications
           {unreadNotifications.length > 0 && (
             <span

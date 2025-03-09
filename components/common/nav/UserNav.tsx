@@ -23,7 +23,7 @@ const UserNav: FC<Props> = (): JSX.Element => {
   };
 
   return (
-    <div className="bg-nav sticky top-0 z-50 flex items-center justify-between p-6 text-primary">
+    <div className="bg-nav sticky top-0 z-50 flex items-center justify-between p-3 md:p-5 text-primary">
       {/* Title */}
       <div className="flex items-center space-x-5">
         <Link href="/">
@@ -39,8 +39,8 @@ const UserNav: FC<Props> = (): JSX.Element => {
       </div>
 
       {/* Dark Mode Button  and Past Messages Link*/}
-      <div className="flex items-center space-x-5">
-        <div className="hidden md:flex items-center space-x-5">
+      <div className="flex items-center space-x-3">
+        <div className="hidden md:flex items-center space-x-4">
           {session.status === "authenticated" && (
             <>
               <div className="font-semibold items-center hidden md:block">
@@ -71,7 +71,11 @@ const UserNav: FC<Props> = (): JSX.Element => {
         </div>
         {/* Hamburger Menu */}
         {session.status === "authenticated" && (
-          <div className="md:hidden" onClick={() => setIsMenuOpen(true)}>
+          <div
+            className="md:hidden p-2"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
             <HamburgerMenu
               isOpen={isMenuOpen}
               toggle={() => setIsMenuOpen(!isMenuOpen)}
@@ -81,7 +85,7 @@ const UserNav: FC<Props> = (): JSX.Element => {
         <DarkModeButton />
 
         <MobileMenu
-          onClick={() => {}}
+          onClick={() => setIsMenuOpen(false)}
           handleSignOut={handleSignOut}
           session={session}
           isMenuOpen={isMenuOpen}
