@@ -85,15 +85,15 @@ export default function MessageForm() {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-16">
+    <div className="max-w-xl mx-auto mt-4 md:mt-16">
       <h1 className="text-2xl font-bold mb-4 text-primary-dark dark:text-primary-light">
         Submit Your Message
       </h1>
-      <p className="mb-4 text-primary-dark dark:text-primary-light">
+      <p className="mb-2 md:mb-4 text-primary-dark dark:text-primary-light">
         Please make sure to complete all fields before submitting your message.
       </p>
       <form onSubmit={handleSubmit}>
-        <div className="items-center grid grid-cols-2 space-x-3 mb-4">
+        <div className="items-center grid grid-cols-2 space-x-3 mb-2 md:mb-4">
           <Input
             inputName="Name"
             value={name}
@@ -105,7 +105,7 @@ export default function MessageForm() {
             onChange={(event) => setEmail(event.target.value)}
           />
         </div>
-        <div className="items-center grid grid-cols-2 space-x-3 mb-4">
+        <div className="items-center grid grid-cols-2 space-x-3 mb-2 md:mb-4">
           <Select
             selectName="Locations"
             value={location}
@@ -119,14 +119,14 @@ export default function MessageForm() {
             options={ministryOptions}
           />
         </div>
-        <div className="mb-4">
+        <div className="mb-2 md:mb-4">
           <Input
             inputName="Subject"
             value={subject}
             onChange={(event) => setSubject(event.target.value)}
           />
         </div>
-        <div className="mb-4 h-92">
+        <div className="mb-2 md:mb-4 h-92">
           <TextArea
             textAreaName="Message"
             value={message}
