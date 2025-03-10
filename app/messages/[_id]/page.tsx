@@ -95,13 +95,20 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
   return (
     <div
       id="message-container"
-      className="flex justify-center items-center min-w-screen m-12 space-x-6"
+      className="flex flex-col md:flex-row gap-6 justify-center m-4 min-w-screen md:m-12 "
     >
-      <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-auto max-w-xl sm:min-w-auto md:min-w-96">
-        <h1 id="message-subject" className="text-2xl font-bold mb-2">
+      <div
+        className="flex-1 rounded-lg shadow-md p-4 shadow-secondary-dark 
+        dark:shadow-grey-100 overflow-hidden 
+        transition flex flex-col max-w-2xl w-full bg-white dark:bg-gray-800"
+      >
+        <h1
+          id="message-subject"
+          className="text-2xl font-bold mb-2 text-primary-dark dark:text-primary-light"
+        >
           {subject}
         </h1>
-        <div className="text-sm text-gray-500 mb-4">
+        <div className="text-sm text-primary-dark dark:text-primary-light mb-4">
           <span id="message-name">By: {name}</span> |{" "}
           <span>
             {createdAt
@@ -109,13 +116,15 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
               : "Unknown Date"}
           </span>
         </div>
-        <p className="text-gray-700 mb-4">{message}</p>
-        <div className="flex place-content-between space-x-8">
+        <p className="text-primary-dark dark:text-primary-light mb-4">
+          {message}
+        </p>
+        <div className="md:flex md:place-content-between md:space-x-8 space-y-3">
           <div className={`place-content-center ${approvedColor}`}>
             {approved ? "Approved" : "Pending Approval"}
           </div>
 
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 items-start">
             {approved ? null : (
               <div>
                 <ActionButton
@@ -159,9 +168,16 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
       </div>
 
       {needsEdit && (
-        <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-auto max-w-lg sm:min-w-auto md:min-w-96">
+        <div
+          className="flex-1 rounded-lg shadow-md p-4 shadow-secondary-dark 
+        dark:shadow-grey-100 overflow-hidden bg-white dark:bg-gray-800 
+        transition flex flex-col max-w-2xl w-full"
+        >
           <h1 className="text-2xl font-bold mb-2">Requested Edit</h1>
-          <p id="requested-data" className="text-gray-700 mb-4">
+          <p
+            id="requested-data"
+            className="text-primary-dark dark:text-primary-light mb-4"
+          >
             {requestedEditData?.requestedEdit}
           </p>
         </div>
