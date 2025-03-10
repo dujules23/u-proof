@@ -11,6 +11,7 @@ export interface MessageModelSchema {
   approved: boolean;
   processed: boolean;
   needsEdit: boolean;
+  createdAt?: string;
 }
 
 const MessageSchema = new Schema<MessageModelSchema>(

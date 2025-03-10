@@ -10,6 +10,8 @@ export interface MessageDetail {
   approved: boolean;
   needsEdit: boolean;
   processed: boolean;
+  location: string;
+  ministry: string;
 }
 
 export interface RequestedEdit {

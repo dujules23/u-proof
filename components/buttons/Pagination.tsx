@@ -63,7 +63,7 @@ export function PaginationComponent({ pageCount }: PaginationProps) {
   const nextPage = currentPage < pageCount ? currentPage + 1 : pageCount;
 
   return (
-    <div className="flex mt-12 justify-evenly items-center">
+    <div className="flex p-2 md:mt-8 justify-evenly items-center">
       {/* Left arrow for previous page */}
       <PaginationArrow
         direction="left"

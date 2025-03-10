@@ -24,7 +24,7 @@ const TextArea: FC<Props> = ({
         value={value}
         onChange={onChange}
         required
-        className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light min-h-[15rem]"
+        className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light min-h-[7rem] md:min-h-[15rem]"
       />
     </>
   );
