@@ -106,14 +106,24 @@ const Notifications: FC<Notification> = (): JSX.Element => {
         onClick={toggleModal}
         className="relative items-center"
       >
-        <FaBell className="hidden md:block text-xxl" />
-        <span className="md:hidden text-primary-light">
-          Notifications
+        {/* Desktop View */}
+        <div className="relative hidden md:block">
+          <FaBell className="text-xxl" />
           {unreadNotifications.length > 0 && (
             <span
               id="notification-indicator"
-              className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"
+              className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full"
             />
+          )}
+        </div>
+
+        {/* Mobile View */}
+        <span className="md:hidden text-primary-light flex items-center">
+          Notifications
+          {unreadNotifications.length > 0 && (
+            <span className="ml-2 text-xs bg-red-500 text-white px-2 py-0.5 rounded-full">
+              {unreadNotifications.length}
+            </span>
           )}
         </span>
       </button>

@@ -29,37 +29,42 @@ const RequestEditPage = () => {
   }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    setSubmitting(true);
-    e.preventDefault();
-    const response = await fetch(`/api/requestEdit`, {
-      method: "POST",
-      body: JSON.stringify({ id, requestedEdit: editSuggestion }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-    });
+    try {
+      e.preventDefault();
+      setSubmitting(true);
 
-    console.log(message);
+      // Check if message already has a pending edit before making the request
+      if (message?.needsEdit) {
+        toast.error("This message is already being edited.", {
+          classNames: {
+            toast: "bg-red-300",
+          },
+        });
+        return;
+      }
 
-    if (message?.needsEdit) {
-      toast.error("This message is already being edited.", {
-        classNames: {
-          toast: "bg-red-300",
+      const response = await fetch(`/api/requestEdit`, {
+        method: "POST",
+        body: JSON.stringify({ id, requestedEdit: editSuggestion }),
+        headers: {
+          "Content-Type": "application/json",
         },
+        cache: "no-store",
       });
-      setSubmitting(false);
-      throw new Error("Failed to send edit suggestion.");
-    }
 
-    console.log(response);
+      if (!response.ok) {
+        throw new Error("Failed to send edit suggestion.");
+      }
 
-    if (response.ok) {
       setIsSuccess(true);
+      setEditSuggestion("");
+      toast.success("Edit request submitted successfully!");
+    } catch (error) {
+      toast.error("Failed to submit edit request. Please try again.");
+      console.error("Error submitting edit:", error);
+    } finally {
+      setSubmitting(false);
     }
-    setIsSuccess(true);
-    setEditSuggestion("");
-    setSubmitting(false);
   };
 
   if (!message) {
