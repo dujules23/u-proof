@@ -42,9 +42,26 @@ export async function PATCH(req: NextRequest) {
   }
 
   try {
-    const updatedMessage = await Message.updateOne(
-      { _id: _id },
-      { $set: { message: newMessage }, needsEdit: false }
+    // Different update objects based on whether it's a requested edit or regular edit
+    const updateData = needsEdit
+      ? {
+          // For requested edits
+          message: newMessage,
+          needsEdit: false,
+          status: "approved",
+          requestedEdit: null,
+          processed: true,
+        }
+      : {
+          // For regular edits
+          message: newMessage,
+          // Preserve existing status and other fields
+        };
+
+    const updatedMessage = await Message.findByIdAndUpdate(
+      _id,
+      { $set: updateData },
+      { new: true }
     );
 
     if (!updatedMessage) {
@@ -52,6 +69,7 @@ export async function PATCH(req: NextRequest) {
     }
     return NextResponse.json({
       message: "Message field updated successfully.",
+      data: updatedMessage,
     });
   } catch (error) {
     console.error("Error updating message:", error);
