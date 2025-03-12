@@ -3,10 +3,10 @@ describe("Accessing Notifications", () => {
     cy.login("email@email.com");
   });
 
-  it("can see the notification indicator", () => {
+  it("can see the notification button", () => {
     cy.visit("/");
 
-    cy.get("#notification-indicator").should("be.visible");
+    cy.get("#notification-button").should("be.visible");
   });
 
   it("can view recent notifications", () => {
