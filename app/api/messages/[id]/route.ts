@@ -48,7 +48,7 @@ export async function PATCH(req: NextRequest) {
           // For requested edits
           message: newMessage,
           needsEdit: false,
-          status: "approved",
+          approved: "true",
           requestedEdit: null,
           processed: true,
         }
