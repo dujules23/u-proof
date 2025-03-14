@@ -73,15 +73,21 @@ const RequestEditPage = () => {
 
   return (
     <div className="flex justify-center items-center min-w-screen m-12 space-y-6 space-x-6">
-      <div className="rounded shadow-md border p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-auto max-w-xl sm:min-w-auto md:min-w-96">
-        <h1 className="text-2xl font-bold mb-2">Request Edit</h1>
-        <p className="mb-4">
+      <div className="rounded-lg shadow-md p-4 shadow-secondary-dark dark:shadow-grey-100 overflow-hidden bg-primary dark:bg-primary transition flex flex-col h-auto max-w-xl sm:min-w-auto md:min-w-96 bg-white dark:bg-gray-800">
+        <h1 className="text-2xl font-bold mb-2 text-primary-dark dark:text-primary-light">
+          Request Edit
+        </h1>
+        <p className="mb-4 text-primary-dark dark:text-primary-light">
           <strong>
             Message from {message.name} ({message.email}):
           </strong>
         </p>
-        <p>Original Message:</p>
-        <p className="text-gray-700 mb-4">{message.message}</p>
+        <p className="text-primary-dark dark:text-primary-light">
+          Original Message:
+        </p>
+        <p className="text-primary-dark dark:text-primary-light mb-4 ">
+          {message.message}
+        </p>
 
         {!isSuccess ? (
           <div>
@@ -100,7 +106,9 @@ const RequestEditPage = () => {
             />
           </div>
         ) : (
-          <p>Your edit request was successfully submitted!</p>
+          <p className="text-primary-dark dark:text-primary-light">
+            Your edit request was successfully submitted!
+          </p>
         )}
       </div>
     </div>

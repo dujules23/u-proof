@@ -50,7 +50,12 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
     }
   }, [params._id]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="text-primary-dark dark:text-primary-light">
+        Loading...
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
   if (!messageData) return <div>No message found</div>;
 
@@ -173,7 +178,9 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
         dark:shadow-grey-100 overflow-hidden bg-white dark:bg-gray-800 
         transition flex flex-col max-w-2xl w-full"
         >
-          <h1 className="text-2xl font-bold mb-2">Requested Edit</h1>
+          <h1 className="text-2xl font-bold mb-2 text-primary-dark dark:text-primary-light">
+            Requested Edit
+          </h1>
           <p
             id="requested-data"
             className="text-primary-dark dark:text-primary-light mb-4"
