@@ -51,11 +51,17 @@ const ApprovePage = () => {
   return (
     <div>
       {isProcessing ? (
-        <p>Processing your request...</p>
+        <p className="text-primary-dark dark:text-primary-light">
+          Processing your request...
+        </p>
       ) : error ? (
-        <p>Error: {error}</p>
+        <p className="text-primary-dark dark:text-primary-light">
+          Error: {error}
+        </p>
       ) : (
-        <p>Message has been processed successfully.</p>
+        <p className="text-primary-dark dark:text-primary-light">
+          Message has been processed successfully.
+        </p>
       )}
     </div>
   );
