@@ -19,6 +19,8 @@ const dbConnect = async () => {
       ? process.env.MONGODB_URI_PROD
       : process.env.MONGODB_URI_DEV;
 
+  console.log(MONGODB_URI);
+
   if (!MONGODB_URI) {
     throw new Error("MongoDB URI is not defined in environment variables");
   }
