@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# u-proof ✉️
 
-## Getting Started
+A message proofing system built for church staff across multiple locations. `u-proof` ensures clear and reviewed communication by enabling staff to send messages for proofreading before sharing them with volunteers or other team members.
 
-First, run the development server:
+## ✨ Features
+
+- Compose messages with subject and department selection
+- Route messages to appropriate church locations for review
+- Staff at each location can proofread and approve or request edits
+- Email notifications powered by Resend
+- Designed for internal communication within church networks
+
+## 🛠️ Tech Stack
+
+- **Framework:** [Next.js](https://nextjs.org/)
+- **Language:** TypeScript
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **Database:** [MongoDB](https://www.mongodb.com/)
+- **Email Service:** [Resend](https://resend.com/)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18+)
+- MongoDB connection URI
+- Resend API key
+
+### Installation
+
+```bash
+git clone https://github.com/dujules23/u-proof.git
+cd u-proof
+npm install
+```
+
+### Environment Variables
+
+Create a `.env.local` file with the following:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+RESEND_API_KEY=your_resend_api_key
+```
+
+### Run Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then visit `http://localhost:3000` in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧪 Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Staff member logs in.
+2. Composes a message with subject and department.
+3. Selects their church location.
+4. Submits for review.
+5. Staff at the location receive an email with the message to proofread.
+6. They approve or request edits via email or interface.
 
-## Learn More
+## 🤝 Contributing
 
-To learn more about Next.js, take a look at the following resources:
+This project is currently not open to external contributions.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📄 License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+_This project currently has **no license**, meaning all rights are reserved._
 
-## Deploy on Vercel
+## 🙏 Acknowledgments
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Built with ❤️ to help ensure effective and thoughtful communication in ministry.
