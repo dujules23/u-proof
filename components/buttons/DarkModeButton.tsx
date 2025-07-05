@@ -27,11 +27,11 @@ const DarkModeButton: FC<Props> = (props): JSX.Element => {
   return (
     <>
       {isDark ? (
-        <button id="dark-mode-button" onClick={switchButton}>
+        <button id="dark-mode-button" onClick={switchButton} title="Dark Mode">
           <MoonIcon className="h-6 w-6 hover:text-yellow-400 transition ease-in-out" />
         </button>
       ) : (
-        <button id="dark-mode-button" onClick={switchButton}>
+        <button id="dark-mode-button" onClick={switchButton} title="Light Mode">
           <SunIcon className="h-6 w-6 hover:text-yellow-400 transition ease-in-out" />
         </button>
       )}

@@ -109,6 +109,7 @@ const Notifications: FC<Notification> = (): JSX.Element => {
         id="notification-button"
         onClick={toggleModal}
         className="relative items-center"
+        title="notification-button"
       >
         {/* Desktop View */}
         <div className="relative hidden md:block">
@@ -160,6 +161,7 @@ const Notifications: FC<Notification> = (): JSX.Element => {
             id="notification-close"
             onClick={toggleModal}
             className="mt-4 text-blue-500 hover:text-blue-600"
+            title="Close Notifications"
           >
             Close
           </button>
