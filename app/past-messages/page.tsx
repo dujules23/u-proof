@@ -2,10 +2,7 @@ import { PaginationComponent } from "@/components/buttons/Pagination";
 import MessageCard from "@/components/common/MessageCard";
 import SearchBar from "@/components/search/SearchBar";
 import { getData } from "@/lib/utils";
-import Link from "next/link";
 import { FC, Suspense } from "react";
-import dateformat from "dateformat";
-import MessagesList from "@/components/common/MessagesList";
 import MobileMessageCard from "@/components/common/MobileMessageCard";
 
 interface Props {
