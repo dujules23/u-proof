@@ -6,6 +6,7 @@ import Link from "next/link";
 import { FC, Suspense } from "react";
 import dateformat from "dateformat";
 import MessagesList from "@/components/common/MessagesList";
+import MobileMessageCard from "@/components/common/MobileMessageCard";
 
 interface Props {
   searchParams?: { page: string; query: string };
@@ -16,6 +17,7 @@ const PastMessages: FC<Props> = async ({
 }: {
   searchParams?: { query: string; page: string };
 }) => {
+  // Needed for pagination and search functionality
   let page = parseInt(searchParams?.page || "1", 10);
 
   page = !page || page < 1 ? 1 : page;
@@ -52,7 +54,6 @@ const PastMessages: FC<Props> = async ({
               Message(s) Not Found.
             </p>
           ) : (
-            // <MessagesList messages={messagesFromDb} />
             <>
               {/* Mobile List View */}
               <div className="block sm:hidden">
@@ -62,34 +63,7 @@ const PastMessages: FC<Props> = async ({
                       key={item._id.toString()}
                       className="bg-white dark:bg-gray-800 rounded-lg shadow p-4"
                     >
-                      <div className="flex justify-between items-start mb-2">
-                        <span className="font-semibold text-primary-dark dark:text-primary-light">
-                          {item.name}
-                        </span>
-                        <span className="text-xs text-gray-500">
-                          {dateformat(item.createdAt, "mm/dd/yyyy")}
-                        </span>
-                      </div>
-                      <p className="text-sm text-primary-dark dark:text-primary-light line-clamp-2 mb-2">
-                        {item.message}
-                      </p>
-                      <div className="flex justify-between items-center">
-                        <span
-                          className={`px-2 py-1 text-xs rounded-full ${
-                            item.approved
-                              ? "bg-blue-100 text-nav"
-                              : "bg-red-100 text-red-800"
-                          }`}
-                        >
-                          {item.approved ? "Approved" : "Awaiting Approval"}
-                        </span>
-                        <Link
-                          href={`/messages/${item._id}`}
-                          className="text-blue-600 hover:text-blue-800"
-                        >
-                          View
-                        </Link>
-                      </div>
+                      <MobileMessageCard messageData={item} />
                     </div>
                   ))}
                 </div>

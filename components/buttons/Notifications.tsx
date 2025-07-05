@@ -77,6 +77,10 @@ const Notifications: FC<Notification> = (): JSX.Element => {
 
   useEffect(() => {
     fetchNotifications();
+
+    // const interval = setInterval(fetchNotifications, 60000); // Fetch every 60 seconds
+
+    // return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
   const unreadNotifications = notifications.filter(

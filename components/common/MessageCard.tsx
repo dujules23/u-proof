@@ -3,21 +3,12 @@ import { MessageDetail } from "@/utils/types";
 import Link from "next/link";
 import { FC } from "react";
 import dateformat from "dateformat";
-import ActionButton from "../buttons/ActionButton";
 
 interface Props {
   messageData: MessageDetail;
-  controls?: boolean;
-  busy?: boolean;
-  handleApproved?(): void;
 }
 
-const MessageCard: FC<Props> = ({
-  messageData,
-  controls = false,
-  busy = false,
-  handleApproved = () => {},
-}): JSX.Element => {
+const MessageCard: FC<Props> = ({ messageData }): JSX.Element => {
   const { _id, name, subject, message, createdAt, approved } = messageData;
 
   return (
@@ -51,16 +42,6 @@ const MessageCard: FC<Props> = ({
           <span className="mt-4 px-6 py-2 bg-red-600 rounded cursor-pointer flex justify-center">
             Awaiting Approval
           </span>
-        )}
-
-        {busy ? (
-          <span className="animate-pulse">Removing</span>
-        ) : (
-          controls && (
-            <div className="hover:underline dark:text-primary-light text-primary-dark">
-              Delete
-            </div>
-          )
         )}
       </div>
     </Link>
