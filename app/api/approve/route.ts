@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "../../../lib/dbConnect";
 import Message from "@/models/messageSchema";
 import Notifications from "@/models/notificationsSchema";
+import { sendApprovalNotification } from "@/utils/helper";
+import {
+  ApiErrorMessage,
+  createSuccessResponse,
+  createErrorResponse,
+  handleApiError,
+} from "@/utils/errorHandler";
 
 export async function POST(request: NextRequest) {
   await dbConnect();
@@ -12,23 +19,58 @@ export async function POST(request: NextRequest) {
     // Check if the message has already been processed
     const existingMessage = await Message.findById(id);
     if (!existingMessage) {
-      return NextResponse.json(
-        { success: false, error: "Message(s) not found" },
-        { status: 404 }
-      );
+      throw new Error(ApiErrorMessage.MESSAGE_NOT_FOUND);
     }
 
     if (existingMessage.processed) {
-      return NextResponse.json(
-        { success: false, error: "This message has already been processed." },
-        { status: 400 }
-      );
+      throw new Error(ApiErrorMessage.ALREADY_PROCESSED);
     }
 
     // Update the message's approval status and mark as processed
     existingMessage.approved = approved;
     existingMessage.processed = true;
     await existingMessage.save();
+
+    // if (existingMessage.location === "2") {
+    //   const otherEmail = process.env.SECONDARY_EMAIL!;
+
+    //   const { error: notificationError } = await sendApprovalNotification(
+    //     otherEmail,
+    //     existingMessage.name,
+    //     existingMessage.subject,
+    //     existingMessage.id.toString()
+    //   );
+
+    //   if (notificationError) {
+    //     console.error("Error sending notification email:", notificationError);
+    //   }
+    // }
+
+    // For Location 2, notify both reviewers about the decision
+    if (existingMessage.location === "2") {
+      const primaryEmail = process.env.EMAIL_1!;
+      const secondaryEmail = process.env.SECONDARY_EMAIL!;
+
+      // Send to both reviewers
+      try {
+        await Promise.all([
+          sendApprovalNotification(
+            primaryEmail,
+            existingMessage.name,
+            existingMessage.subject,
+            existingMessage.id.toString()
+          ),
+          sendApprovalNotification(
+            secondaryEmail,
+            existingMessage.name,
+            existingMessage.subject,
+            existingMessage.id.toString()
+          ),
+        ]);
+      } catch (error) {
+        console.error("Error sending notification emails:", error);
+      }
+    }
 
     // Create a notification
     const notificationMessage = approved
@@ -43,11 +85,9 @@ export async function POST(request: NextRequest) {
       status: approved ? "approved" : "not_approved",
     });
 
-    return NextResponse.json({ success: true, data: existingMessage });
+    return createSuccessResponse(existingMessage);
   } catch (error: any) {
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 400 }
-    );
+    const errorState = handleApiError(error);
+    return createErrorResponse(errorState);
   }
 }
