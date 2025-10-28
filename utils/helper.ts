@@ -1,4 +1,6 @@
+import NotificationEmail from "@/emails/notification-template";
 import AirbnbReviewEmail from "@/emails/template";
+import { Trykker } from "next/font/google";
 import { Resend } from "resend";
 
 // function that trims text
@@ -50,3 +52,27 @@ export const sendFollowUpEmail = async (
     }) as React.ReactElement,
   });
 };
+
+export async function sendApprovalNotification(
+  email: string,
+  name: string,
+  subject: string,
+  messageId: string,
+  status?: "approved" | "edited"
+) {
+  try {
+    const data = await resend.emails.send({
+      from: "FWC <uproof@mychurchisawesome.com>",
+      to: email,
+      subject: `Message Has Been Approved - ${subject}`,
+      react: NotificationEmail({
+        authorName: name,
+        status: (status ?? "approved") as "approved" | "edited",
+        messageId,
+      }) as React.ReactElement,
+    });
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+}
