@@ -1,6 +1,5 @@
 import NotificationEmail from "@/emails/notification-template";
 import AirbnbReviewEmail from "@/emails/template";
-import { Trykker } from "next/font/google";
 import { Resend } from "resend";
 
 // function that trims text

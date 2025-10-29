@@ -118,29 +118,72 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // Log email sending result
     console.log("Email send result:", { data, primaryError });
 
-    let otherEmail: string = process.env.SECONDARY_EMAIL!;
+    // New logic for sending follow-up emails to SECONDARY_EMAIL and SECONDARY_EMAIL_2 for location 1 and 2
 
-    // if specific location, send an additional email to another person
-    if (location === "2") {
+    const locationOneSecondaryEmail = process.env.SECONDARY_EMAIL;
+    const locationTwoSecondaryEmail = process.env.SECONDARY_EMAIL_2;
+
+    if (!locationOneSecondaryEmail || !locationTwoSecondaryEmail) {
+      throw new Error(
+        "Missing required environment variables for follow-up emails"
+      );
+    }
+
+    // Map of locations to follow-up emails
+
+    const followUpEmails: Record<string, string> = {
+      "1": locationOneSecondaryEmail,
+      "2": locationTwoSecondaryEmail,
+    };
+
+    const followUpEmail = followUpEmails[location];
+
+    if (followUpEmail) {
       const { data, error: followUpError } = await sendFollowUpEmail(
-        otherEmail,
+        followUpEmail,
         name,
         subject,
         message,
         messageId
       );
+
       if (followUpError) {
         console.error("Error sending follow-up email:", followUpError);
-        await transaction.abortTransaction(); // Roll back if sending fails
+        await transaction.abortTransaction();
         return NextResponse.json(
           { error: "Failed to send follow-up email" },
           { status: 500 }
         );
       }
 
-      // Log email sending result
       console.log("Email send result:", { data, followUpError });
     }
+
+    // KEEP THIS COMMENTED OUT FOR NOW, this was the original logic where only location 2 got a follow-up email
+
+    // let otherEmail: string = process.env.SECONDARY_EMAIL!;
+
+    // // if specific location, send an additional email to another person
+    // if (location === "2") {
+    //   const { data, error: followUpError } = await sendFollowUpEmail(
+    //     otherEmail,
+    //     name,
+    //     subject,
+    //     message,
+    //     messageId
+    //   );
+    //   if (followUpError) {
+    //     console.error("Error sending follow-up email:", followUpError);
+    //     await transaction.abortTransaction(); // Roll back if sending fails
+    //     return NextResponse.json(
+    //       { error: "Failed to send follow-up email" },
+    //       { status: 500 }
+    //     );
+    //   }
+
+    //   // Log email sending result
+    //   console.log("Email send result:", { data, followUpError });
+    // }
 
     // Commit the transaction if both operations are successful
     console.log("Committing transaction...");

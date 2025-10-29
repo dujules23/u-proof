@@ -31,6 +31,7 @@ export async function POST(request: NextRequest) {
     existingMessage.processed = true;
     await existingMessage.save();
 
+    // old implementation
     // if (existingMessage.location === "2") {
     //   const otherEmail = process.env.SECONDARY_EMAIL!;
 
@@ -46,27 +47,69 @@ export async function POST(request: NextRequest) {
     //   }
     // }
 
-    // For Location 2, notify both reviewers about the decision
-    if (existingMessage.location === "2") {
-      const primaryEmail = process.env.EMAIL_1!;
-      const secondaryEmail = process.env.SECONDARY_EMAIL!;
+    // // For Location 2, notify both reviewers about the decision
+    // if (existingMessage.location === "2") {
+    //   const primaryEmail = process.env.EMAIL_1!;
+    //   const secondaryEmail = process.env.SECONDARY_EMAIL!;
 
-      // Send to both reviewers
+    //   // Send to both reviewers
+    //   try {
+    //     await Promise.all([
+    //       sendApprovalNotification(
+    //         primaryEmail,
+    //         existingMessage.name,
+    //         existingMessage.subject,
+    //         existingMessage.id.toString()
+    //       ),
+    //       sendApprovalNotification(
+    //         secondaryEmail,
+    //         existingMessage.name,
+    //         existingMessage.subject,
+    //         existingMessage.id.toString()
+    //       ),
+    //     ]);
+    //   } catch (error) {
+    //     console.error("Error sending notification emails:", error);
+    //   }
+    // }
+
+    const locationOneEmail = process.env.EMAIL_1;
+    const locationOneSecondaryEmail = process.env.SECONDARY_EMAIL;
+    const locationTwoEmail = process.env.EMAIL_2;
+    const locationTwoSecondaryEmail = process.env.SECONDARY_EMAIL_2;
+
+    if (
+      !locationOneEmail ||
+      !locationOneSecondaryEmail ||
+      !locationTwoEmail ||
+      !locationTwoSecondaryEmail
+    ) {
+      throw new Error(
+        "Missing required environment variables for notification emails"
+      );
+    }
+
+    // Map of locations to their reviewer. email lists
+
+    const reviewerEmails: Record<string, string[]> = {
+      "1": [locationOneEmail, locationOneSecondaryEmail],
+      "2": [locationTwoEmail, locationTwoSecondaryEmail],
+    };
+
+    const reviewers = reviewerEmails[existingMessage.location];
+
+    if (reviewers && reviewers.length > 0) {
       try {
-        await Promise.all([
-          sendApprovalNotification(
-            primaryEmail,
-            existingMessage.name,
-            existingMessage.subject,
-            existingMessage.id.toString()
-          ),
-          sendApprovalNotification(
-            secondaryEmail,
-            existingMessage.name,
-            existingMessage.subject,
-            existingMessage.id.toString()
-          ),
-        ]);
+        await Promise.all(
+          reviewers.map((email) =>
+            sendApprovalNotification(
+              email,
+              existingMessage.name,
+              existingMessage.subject,
+              existingMessage.id.toString()
+            )
+          )
+        );
       } catch (error) {
         console.error("Error sending notification emails:", error);
       }
