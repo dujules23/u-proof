@@ -25,6 +25,7 @@ const Input: FC<Props> = ({
       </label>
       <input
         type="text"
+        name={inputName}
         id={inputName.toLocaleLowerCase().trimEnd()}
         value={value}
         onChange={onChange}

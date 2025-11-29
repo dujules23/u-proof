@@ -35,10 +35,12 @@ const Select: FC<SelectProps> = ({
       </label>
       <select
         id={selectName.toLocaleLowerCase()}
+        name={selectName}
         className="cursor-pointer appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light"
         value={value}
         disabled={disabled}
         onChange={onChange}
+        required
       >
         {placeholder && (
           <option value="" disabled>
