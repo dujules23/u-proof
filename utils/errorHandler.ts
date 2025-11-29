@@ -46,6 +46,10 @@ export enum ApiErrorMessage {
   UNAUTHORIZED = "Unauthorized access",
   AUTH_FAILED = "Authentication failed",
 
+  // Support Ticket Errors
+  TICKET_CREATION_FAILED = "Failed to create support ticket",
+  TOO_MANY_REQUESTS = "Too many requests, please try again later",
+
   // Common errors
   NETWORK_ERROR = "Network connection error",
   SERVER_ERROR = "Internal server error",
@@ -176,6 +180,25 @@ function categorizeError(error: Error): ErrorDetails {
       type: ErrorType.VALIDATION,
       status: 400,
       action: "Please check your input and try again",
+    };
+  }
+
+  // Support Ticket Errors
+  if (error.message.includes("support ticket")) {
+    return {
+      message: ApiErrorMessage.TICKET_CREATION_FAILED,
+      type: ErrorType.DATABASE,
+      status: 500,
+      action: "Please try again later",
+    };
+  }
+
+  if (error.message.includes("too many requests")) {
+    return {
+      message: ApiErrorMessage.TOO_MANY_REQUESTS,
+      type: ErrorType.VALIDATION,
+      status: 429,
+      action: "Please wait before submitting another request",
     };
   }
 

@@ -101,6 +101,7 @@ export default function MessageForm() {
           />
           <Input
             inputName="Email"
+            validateEmail={true}
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />

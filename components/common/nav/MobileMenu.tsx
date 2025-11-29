@@ -46,12 +46,20 @@ const MobileMenu: FC<Props> = ({
                 href="/past-messages"
                 className="block py-2 hover:text-gray-600 dark:hover:text-gray-300 text-primary-light"
                 onClick={() => setIsMenuOpen(false)}
+                id="mobile-past-messages-link"
               >
                 Past Messages
               </Link>
               <div className="py-2">
                 <Notifications />
               </div>
+              <Link
+                href="/support"
+                className="block py-2 hover:text-gray-600 dark:hover:text-gray-300 text-primary-light"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Support
+              </Link>
               <Link
                 href="/"
                 onClick={(e) => {

@@ -21,6 +21,7 @@ const TextArea: FC<Props> = ({
       </label>
       <textarea
         id="message"
+        name={textAreaName}
         value={value}
         onChange={onChange}
         required
