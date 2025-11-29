@@ -34,8 +34,15 @@ const UserNav: FC<Props> = (): JSX.Element => {
             </span>
           </div>
         </Link>
-        {/* {session.data?.user && session.status === "authenticated" && (
-        )} */}
+        {session.status === "authenticated" && (
+          <Link
+            className=" hidden md:flex hover:text-black transition ease-in-out "
+            href="/support"
+            id="support-link"
+          >
+            Support
+          </Link>
+        )}
       </div>
 
       {/* Dark Mode Button  and Past Messages Link*/}

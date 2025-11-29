@@ -54,6 +54,13 @@ const MobileMenu: FC<Props> = ({
                 <Notifications />
               </div>
               <Link
+                href="/support"
+                className="block py-2 hover:text-gray-600 dark:hover:text-gray-300 text-primary-light"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Support
+              </Link>
+              <Link
                 href="/"
                 onClick={(e) => {
                   setIsMenuOpen(false);

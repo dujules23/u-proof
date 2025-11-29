@@ -8,6 +8,14 @@ describe("Support Page", () => {
     cy.visit("/support");
   });
 
+  it("allows user to click the support link from the nav bar", () => {
+    // Clicks Support link in nav bar
+    cy.get("#support-link").click();
+
+    // Asserts URL is correct
+    cy.url().should("include", "/support");
+  });
+
   it("allows user to submit a support ticket", () => {
     cy.visit("/support");
 
