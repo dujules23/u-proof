@@ -64,7 +64,7 @@ const SupportPage: FC<Props> = (): JSX.Element => {
         tag: "",
         description: "",
       });
-      toast.success("Support ticket submitted successfully.", {
+      toast.success("Support ticket submitted successfully!", {
         classNames: {
           toast: "bg-green-300",
         },
@@ -112,6 +112,7 @@ const SupportPage: FC<Props> = (): JSX.Element => {
         />
         <Input
           inputName="Email"
+          validateEmail={true}
           value={formData.email}
           onChange={(event) =>
             setFormData({ ...formData, email: event.target.value })

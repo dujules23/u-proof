@@ -4,6 +4,8 @@ interface Props {
   inputName: string;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+  validateEmail?: boolean;
   className?: string;
 }
 
@@ -11,6 +13,8 @@ const Input: FC<Props> = ({
   inputName,
   value,
   onChange,
+  type = "text",
+  validateEmail = false,
   className,
 }): JSX.Element => {
   return (
@@ -24,7 +28,7 @@ const Input: FC<Props> = ({
         {inputName}:
       </label>
       <input
-        type="text"
+        type={validateEmail ? "email" : type}
         name={inputName}
         id={inputName.toLocaleLowerCase().trimEnd()}
         value={value}

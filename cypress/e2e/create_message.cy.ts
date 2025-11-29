@@ -4,9 +4,6 @@ describe("Create Message Request", () => {
   });
 
   it("creates message using the form", () => {
-    // Visits application
-    cy.visit("/");
-
     // Fills out Message form
     cy.get("#name").type("Samuel B.");
     cy.get("#email").type("email@email.com");

@@ -53,6 +53,7 @@ const UserNav: FC<Props> = (): JSX.Element => {
               <Link
                 className="hover:text-black transition ease-in-out"
                 href="/past-messages"
+                id="full-past-messages-link"
               >
                 Past Messages
               </Link>

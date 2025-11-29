@@ -8,7 +8,7 @@ describe("Past Messages", () => {
     // cy.visit("/");
 
     // Clicks past messages link
-    cy.get('a[href*="past-messages"]').click();
+    cy.get("[id^=full-]").click();
 
     //
     cy.get("#0").should("be.visible").click();
@@ -22,7 +22,7 @@ describe("Past Messages", () => {
   const message2 = "This is being edited again to be even better.";
 
   it("allows user to edit a message", () => {
-    cy.get('a[href*="past-messages"]').click();
+    cy.get("[id^=full-]").click();
 
     cy.get("#0").should("be.visible").click();
 
@@ -36,7 +36,7 @@ describe("Past Messages", () => {
   });
 
   it("allows user to go back to past messages screen", () => {
-    cy.get('a[href*="past-messages"]').click();
+    cy.get("[id^=full-]").click();
 
     cy.get("#0").should("be.visible").click();
 
@@ -46,7 +46,7 @@ describe("Past Messages", () => {
   });
 
   it("allows user to search for a message using search bar", () => {
-    cy.get('a[href*="past-messages"]').click();
+    cy.get("[id^=full-]").click();
 
     cy.get("#search")
       .should("have.attr", "placeholder", "Search...")
@@ -57,7 +57,7 @@ describe("Past Messages", () => {
   });
 
   it("allows user to move through past message pages", () => {
-    cy.get('a[href*="past-messages"]').click();
+    cy.get("[id^=full-]").click();
 
     cy.get("#page-counter").contains("Page 1 of 3");
 
@@ -78,7 +78,7 @@ describe("Past Messages", () => {
   });
 
   it("allows user to delete a message", () => {
-    cy.get('a[href*="past-messages"]').click();
+    cy.get("[id^=full-]").click();
 
     cy.get("#right-arrow").click();
 

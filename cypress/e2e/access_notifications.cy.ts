@@ -4,13 +4,13 @@ describe("Accessing Notifications", () => {
   });
 
   it("can see the notification button", () => {
-    cy.visit("/");
+    // cy.visit("/");
 
     cy.get("#notification-button").should("be.visible");
   });
 
   it("can view recent notifications", () => {
-    cy.visit("/");
+    // cy.visit("/");
 
     cy.get("#notification-button").click();
 
@@ -22,7 +22,7 @@ describe("Accessing Notifications", () => {
   });
 
   it("can delete notification and route to the message page", () => {
-    cy.visit("/");
+    // cy.visit("/");
 
     cy.get("#notification-button").click();
 

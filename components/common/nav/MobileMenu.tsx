@@ -46,6 +46,7 @@ const MobileMenu: FC<Props> = ({
                 href="/past-messages"
                 className="block py-2 hover:text-gray-600 dark:hover:text-gray-300 text-primary-light"
                 onClick={() => setIsMenuOpen(false)}
+                id="mobile-past-messages-link"
               >
                 Past Messages
               </Link>
