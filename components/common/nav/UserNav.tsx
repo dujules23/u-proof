@@ -23,7 +23,7 @@ const UserNav: FC<Props> = (): JSX.Element => {
   };
 
   return (
-    <div className="bg-nav sticky top-0 z-50 flex items-center justify-between p-3 md:p-5 text-primary">
+    <div className="bg-nav sticky top-0 z-50 flex items-center justify-between p-3 md:p-5 text-primary-light">
       {/* Title */}
       <div className="flex items-center space-x-5">
         <Link href="/">
