@@ -88,7 +88,7 @@ export default function MessageForm() {
 
   const editorOnChange = (content: string) => {
     setMessage(content);
-    console.log("Message content: ", content);
+    // console.log("Message content: ", content);
   };
 
   return (

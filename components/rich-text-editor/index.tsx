@@ -1,6 +1,6 @@
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import MenuBar from "./menu-bar";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
@@ -44,6 +44,12 @@ const RichTextEditor: FC<Props> = ({ content, onChange }): JSX.Element => {
       onChange(editor.getHTML());
     },
   });
+
+  useEffect(() => {
+    if (editor && content === "" && editor.getHTML() !== "") {
+      editor.commands.clearContent();
+    }
+  }, [content, editor]);
 
   return (
     <div className="border border-gray-300 rounded-md">
