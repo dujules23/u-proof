@@ -89,7 +89,7 @@ const MenuBar: FC<Props> = ({ editor }): JSX.Element | null => {
   ];
 
   return (
-    <div className="flex items-center space-x-2 border-b border-gray-300 p-2 dark:bg-primary-light bg-white">
+    <div className="grid grid-cols-6 md:grid-cols-12 gap-1 border-b border-gray-300 p-2 dark:bg-primary-light bg-white">
       {Options.map((option, index) => (
         <Toggle
           key={index}
