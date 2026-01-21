@@ -183,7 +183,11 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
             id="requested-data"
             className="text-primary-dark dark:text-primary-light mb-4"
           >
-            {requestedEditData?.requestedEdit}
+            {requestedEditData?.requestedEdit && (
+              <FormattedMessageDisplay
+                content={requestedEditData?.requestedEdit}
+              />
+            )}
           </p>
         </div>
       )}

@@ -6,6 +6,8 @@ import { MessageDetail } from "@/utils/types";
 import { useSearchParams } from "next/navigation";
 import ActionButton from "@/components/buttons/ActionButton";
 import { toast } from "sonner";
+import FormattedMessageDisplay from "@/components/common/FormattedMessageDisplay";
+import RichTextEditor from "@/components/rich-text-editor";
 
 const RequestEditPage = () => {
   const searchParams = useSearchParams();
@@ -86,17 +88,15 @@ const RequestEditPage = () => {
           Original Message:
         </p>
         <p className="text-primary-dark dark:text-primary-light mb-4 ">
-          {message.message}
+          {/* {message.message} */}
+          <FormattedMessageDisplay content={message.message} />
         </p>
 
         {!isSuccess ? (
-          <div>
-            <textarea
-              value={editSuggestion}
-              onChange={(e) => setEditSuggestion(e.target.value)}
-              placeholder="Suggest your edit here"
-              required
-              className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black dark:bg-primary-light min-h-[15rem]"
+          <div className="space-y-3">
+            <RichTextEditor
+              content={editSuggestion}
+              onChange={setEditSuggestion}
             />
             <ActionButton
               disabled={!editSuggestion}
