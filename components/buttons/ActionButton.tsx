@@ -20,7 +20,7 @@ const ActionButton: FC<Props> = ({
   busy = false,
   title,
   onClick,
-  textColor = "text-highlight-dark",
+  textColor = "text-primary-light",
   padding = "px-6 py-2",
   borderRadius = "rounded",
   variant = "primary",
@@ -41,7 +41,7 @@ const ActionButton: FC<Props> = ({
       "bg-red-600 hover:bg-red-700": variant === "danger",
       "bg-gray-400 hover:bg-gray-500": variant === "cancel",
       disabledColor: variant === "disabled",
-    }
+    },
   );
   return (
     <button

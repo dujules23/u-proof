@@ -15,12 +15,13 @@ export async function GET(req: NextRequest) {
     if (!message) {
       return NextResponse.json({ error: "Message not found" }, { status: 404 });
     }
+
     return NextResponse.json(message);
   } catch (error) {
     console.error("Error fetching message:", error);
     return NextResponse.json(
       { success: false, error: "Failed to fetch message" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -61,7 +62,7 @@ export async function PATCH(req: NextRequest) {
     const updatedMessage = await Message.findByIdAndUpdate(
       _id,
       { $set: updateData },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedMessage) {
@@ -75,7 +76,7 @@ export async function PATCH(req: NextRequest) {
     console.error("Error updating message:", error);
     return NextResponse.json(
       { success: false, error: "Failed to update message" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -92,7 +93,7 @@ export async function DELETE(req: NextRequest) {
   if (!_id || !ObjectId.isValid(_id)) {
     return NextResponse.json(
       { error: "Invalid or missing ID" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -107,12 +108,12 @@ export async function DELETE(req: NextRequest) {
     // Happy path, Message deleted successfully
     return NextResponse.json(
       { message: "Message deleted successfully" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

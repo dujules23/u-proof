@@ -7,6 +7,8 @@ import { MessageDetail, RequestedEdit } from "@/utils/types";
 import { Modal } from "@/components/common/Modal";
 import TextArea from "@/components/common/TextArea";
 import { deleteMessage, fetchEditData, updateMessage } from "@/lib/utils";
+import FormattedMessageDisplay from "@/components/common/FormattedMessageDisplay";
+import RichTextEditor from "@/components/rich-text-editor";
 
 const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
   params,
@@ -84,7 +86,7 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
         setNewMessage("");
         setEditClick(false);
       },
-      (error) => console.error("Update failed:", error)
+      (error) => console.error("Update failed:", error),
     );
   };
 
@@ -93,7 +95,7 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
       _id.toString(),
       () => setIsModalOpen(false),
       (error) => console.error(error),
-      setIsDeleting
+      setIsDeleting,
     );
   };
 
@@ -121,9 +123,9 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
               : "Unknown Date"}
           </span>
         </div>
-        <p className="text-primary-dark dark:text-primary-light mb-4">
-          {message}
-        </p>
+        <div className="text-primary-dark dark:text-primary-light">
+          <FormattedMessageDisplay content={message} />
+        </div>
         <div className="md:flex md:place-content-between md:space-x-8 space-y-3">
           <div className={`place-content-center ${approvedColor}`}>
             {approved ? "Approved" : "Pending Approval"}
@@ -156,12 +158,8 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
         </div>
 
         {editClick && (
-          <div className="pt-5">
-            <TextArea
-              textAreaName="Message"
-              value={newMessage}
-              onChange={(event) => setNewMessage(event.target.value)}
-            />
+          <div id="edit-message-editor" className="pt-5 space-y-3">
+            <RichTextEditor content={newMessage} onChange={setNewMessage} />
             <ActionButton
               disabled={!newMessage}
               busy={submitting}
@@ -185,7 +183,11 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
             id="requested-data"
             className="text-primary-dark dark:text-primary-light mb-4"
           >
-            {requestedEditData?.requestedEdit}
+            {requestedEditData?.requestedEdit && (
+              <FormattedMessageDisplay
+                content={requestedEditData?.requestedEdit}
+              />
+            )}
           </p>
         </div>
       )}

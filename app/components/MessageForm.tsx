@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import Input from "../../components/common/Input";
 import Select from "../../components/common/Select";
 import TextArea from "../../components/common/TextArea";
+import RichTextEditor from "@/components/rich-text-editor";
+import MenuBar from "@/components/rich-text-editor/menu-bar";
 
 export default function MessageForm() {
   const [name, setName] = useState("");
@@ -84,6 +86,11 @@ export default function MessageForm() {
     }
   };
 
+  const editorOnChange = (content: string) => {
+    setMessage(content);
+    // console.log("Message content: ", content);
+  };
+
   return (
     <div className="max-w-xl mx-auto mt-4 md:mt-16">
       <h1 className="text-2xl font-bold mb-4 text-primary-dark dark:text-primary-light">
@@ -128,11 +135,12 @@ export default function MessageForm() {
           />
         </div>
         <div className="mb-2 md:mb-4 h-92">
-          <TextArea
+          {/* <TextArea
             textAreaName="Message"
             value={message}
             onChange={(event) => setMessage(event.target.value)}
-          />
+          /> */}
+          <RichTextEditor content={message} onChange={editorOnChange} />
         </div>
         <div className="inline-block">
           <ActionButton

@@ -3,6 +3,13 @@ import Message, { MessageModelSchema } from "@/models/messageSchema";
 import { MessageDetail, RequestedEdit } from "@/utils/types";
 import dbConnect from "./dbConnect";
 import { toast } from "sonner";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+// Utility function to merge class names with tailwind-merge
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 // Function that fetches all messages
 export const fetchAllMessages = async (): Promise<MessageDetail[]> => {
@@ -39,7 +46,7 @@ export const fetchRequestedEdit = async (): Promise<RequestedEdit[]> => {
 export const getData = async (
   perPage: number,
   page: number,
-  query: string
+  query: string,
 ): Promise<{ messagesFromDb: MessageModelSchema[]; itemCount: number }> => {
   try {
     await dbConnect(); // Connect to the database
@@ -87,7 +94,7 @@ export const deleteMessage = async (
   _id: string,
   onSuccess: () => void,
   onError: (error: unknown) => void,
-  setLoading: (isLoading: boolean) => void
+  setLoading: (isLoading: boolean) => void,
 ) => {
   setLoading(true);
 
@@ -128,7 +135,7 @@ export const updateMessage = async (
   processed: boolean,
   setSubmitting: (isSubmitting: boolean) => void,
   onSuccess: () => void,
-  onError: (error: unknown) => void
+  onError: (error: unknown) => void,
 ) => {
   setSubmitting(true);
 
@@ -169,7 +176,7 @@ export const fetchEditData = async (
   id: string,
   setRequestedEditData: (data: any) => void,
   setError: (error: string) => void,
-  setLoading: (loading: boolean) => void
+  setLoading: (loading: boolean) => void,
 ) => {
   try {
     const response = await fetch(`/api/requestEdit/${id}`);

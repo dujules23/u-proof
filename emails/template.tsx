@@ -14,6 +14,7 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 import Image from "next/image";
+import sanitizeHtml from "sanitize-html";
 
 import { FaBookOpenReader } from "react-icons/fa6";
 
@@ -24,6 +25,29 @@ interface AirbnbReviewEmailProps {
   reviewText?: string;
   messageId: string;
 }
+
+const cleanHtml = (dirty: string) =>
+  sanitizeHtml(dirty, {
+    allowedTags: [
+      "b",
+      "i",
+      "em",
+      "strong",
+      "p",
+      "br",
+      "ul",
+      "ol",
+      "li",
+      "a",
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "h5",
+      "h6",
+    ],
+    allowedAttributes: { a: ["href"] },
+  });
 
 // const baseUrl = process.env.VERCEL_URL
 //   ? `https://${process.env.VERCEL_URL}`
@@ -75,7 +99,7 @@ export const AirbnbReviewEmail = ({
               <Text style={heading}>{`Here's what ${authorName} wrote:`}</Text>
               <Section style={review}>
                 <Text style={subjectHeading}> Subject: {subject}</Text>
-                <Text>{reviewText}</Text>
+                <div dangerouslySetInnerHTML={{ __html: cleanHtml(reviewText || "") }} />
               </Section>
               <Text style={paragraph}>
                 {`Approve this message or request an edit for ${authorName}'s

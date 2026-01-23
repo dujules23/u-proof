@@ -5,7 +5,6 @@ import { getData } from "@/lib/utils";
 import Link from "next/link";
 import { FC, Suspense } from "react";
 import dateformat from "dateformat";
-import MessagesList from "@/components/common/MessagesList";
 
 interface Props {
   searchParams?: { page: string; query: string };
@@ -52,7 +51,6 @@ const PastMessages: FC<Props> = async ({
               Message(s) Not Found.
             </p>
           ) : (
-            // <MessagesList messages={messagesFromDb} />
             <>
               {/* Mobile List View */}
               <div className="block sm:hidden">
