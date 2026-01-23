@@ -5,6 +5,7 @@ import { getData } from "@/lib/utils";
 import Link from "next/link";
 import { FC, Suspense } from "react";
 import dateformat from "dateformat";
+import FormattedMessageDisplay from "@/components/common/FormattedMessageDisplay";
 
 interface Props {
   searchParams?: { page: string; query: string };
@@ -68,9 +69,9 @@ const PastMessages: FC<Props> = async ({
                           {dateformat(item.createdAt, "mm/dd/yyyy")}
                         </span>
                       </div>
-                      <p className="text-sm text-primary-dark dark:text-primary-light line-clamp-2 mb-2">
-                        {item.message}
-                      </p>
+                      <div className="text-sm text-primary-dark dark:text-primary-light line-clamp-2 mb-2">
+                        <FormattedMessageDisplay content={item.message} />
+                      </div>
                       <div className="flex justify-between items-center">
                         <span
                           className={`px-2 py-1 text-xs rounded-full ${
