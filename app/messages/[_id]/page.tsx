@@ -158,7 +158,7 @@ const Message: FC<{ params: { _id: string; requestedEditId: string } }> = ({
         </div>
 
         {editClick && (
-          <div className="pt-5 space-y-3">
+          <div id="edit-message-editor" className="pt-5 space-y-3">
             <RichTextEditor content={newMessage} onChange={setNewMessage} />
             <ActionButton
               disabled={!newMessage}

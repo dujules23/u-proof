@@ -52,7 +52,7 @@ const RichTextEditor: FC<Props> = ({ content, onChange }): JSX.Element => {
   }, [content, editor]);
 
   return (
-    <div className="border border-gray-300 rounded-md">
+    <div id="message" className="border border-gray-300 rounded-md">
       <MenuBar editor={editor} />
       <EditorContent editor={editor} />
     </div>

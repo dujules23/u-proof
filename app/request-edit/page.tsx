@@ -93,7 +93,7 @@ const RequestEditPage = () => {
         </p>
 
         {!isSuccess ? (
-          <div className="space-y-3">
+          <div id="request-edit-editor" className="space-y-3">
             <RichTextEditor
               content={editSuggestion}
               onChange={setEditSuggestion}
