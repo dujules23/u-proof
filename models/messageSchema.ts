@@ -54,10 +54,19 @@ const MessageSchema = new Schema<MessageModelSchema>(
       type: Boolean,
       default: false,
     },
+    createdAt: {
+      type: Date,
+      default: () => {
+        const now = new Date();
+        return new Date(
+          now.getTime() - now.getTimezoneOffset() * 60000,
+        ).toISOString();
+      },
+    },
   },
   {
-    timestamps: true,
-  }
+    timestamps: false,
+  },
 );
 
 // Prevents duplicate entries from going to MongoDB
